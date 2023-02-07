@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class FindOutMyCreditScoreApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(FindOutMyCreditScoreApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(FindOutMyCreditScoreApplication.class, args);
+    }
 
 }
