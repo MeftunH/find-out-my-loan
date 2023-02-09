@@ -1,6 +1,9 @@
 package com.findoutmycreditscore.application.creditscore.service;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
+import com.findoutmycreditscore.application.creditscore.dto.CreditScoreDTO;
+import com.findoutmycreditscore.application.creditscore.dto.CreditScoreSaveRequestDTO;
+
 public interface CreditScoreApiService {
-    public int getCreditScore();
+   CreditScoreDTO getCreditScore(CreditScoreSaveRequestDTO creditScoreSaveRequestDTO);
 }
