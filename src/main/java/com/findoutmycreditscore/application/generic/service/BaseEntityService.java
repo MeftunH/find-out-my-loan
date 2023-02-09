@@ -2,7 +2,7 @@ package com.findoutmycreditscore.application.generic.service;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
 import com.findoutmycreditscore.application.generic.errorMessage.GenericErrorMessage;
-import com.findoutmycreditscore.application.generic.exceptions.ItemNotFoundException;
+import com.findoutmycreditscore.application.generic.exception.ItemNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
@@ -41,5 +41,8 @@ public abstract class BaseEntityService<Entity, Repository extends JpaRepository
             throw new ItemNotFoundException(GenericErrorMessage.ITEM_NOT_FOUND);
         }
         return _entity;
+    }
+    public Repository getRepository() {
+        return repository;
     }
 }
