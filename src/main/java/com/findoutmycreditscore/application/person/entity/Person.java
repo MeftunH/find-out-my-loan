@@ -1,4 +1,4 @@
-package com.findoutmycreditscore.application.person.model;
+package com.findoutmycreditscore.application.person.entity;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
 import com.findoutmycreditscore.application.person.enums.PersonType;
@@ -33,6 +33,7 @@ public abstract class Person {
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date birthDate;
 
+   //TODO: Move to Contact Information Entity for one to many relationship
     @Column(name = "phone_number", nullable = false, length = 10)
     private String phoneNumber;
 
