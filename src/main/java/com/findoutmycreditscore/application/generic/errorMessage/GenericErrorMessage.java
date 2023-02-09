@@ -19,6 +19,6 @@ public enum GenericErrorMessage implements BaseErrorMessage {
 
     @Override
     public String getErrorMessage() {
-        return null;
+        return message;
     }
 }
