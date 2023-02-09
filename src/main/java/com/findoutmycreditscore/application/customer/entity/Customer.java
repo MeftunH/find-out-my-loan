@@ -11,6 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "customer")
+@PrimaryKeyJoinColumn(name = "customer_id")
 public class Customer extends Person {
     @Column(name = "monthly_income", nullable = false)
     private float monthlyIncome;
