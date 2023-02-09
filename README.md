@@ -29,3 +29,7 @@ The following guides illustrate how to use some features concretely:
 * [Spring Boot and OAuth2](https://spring.io/guides/tutorials/spring-boot-oauth2/)
 * [Authenticating a User with LDAP](https://spring.io/guides/gs/authenticating-ldap/)
 
+### Resources
+https://www.hangikredi.com/bilgi-merkezi/findeks-kredi-notu-kac-olmali/#findeks-kredi-notu-nasil-hesaplanir
+https://www.halkbankkobi.com.tr/tr/uzmanina-danisin/makaleler/finansal-yonetim/bankalarin-kredi-taleplerinde-sahsi-teminat-kavrami.html
+https://anil-antonetti.com/tr/turk-hukuku-teminat/
