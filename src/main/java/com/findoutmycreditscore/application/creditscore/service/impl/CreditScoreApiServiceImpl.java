@@ -2,6 +2,8 @@ package com.findoutmycreditscore.application.creditscore.service.impl;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
 import com.findoutmycreditscore.application.creditscore.config.RestTemplateConfiguration;
+import com.findoutmycreditscore.application.creditscore.dto.CreditScoreDTO;
+import com.findoutmycreditscore.application.creditscore.dto.CreditScoreSaveRequestDTO;
 import com.findoutmycreditscore.application.creditscore.entity.CreditScore;
 import com.findoutmycreditscore.application.creditscore.service.CreditScoreApiService;
 import org.apache.logging.log4j.util.Base64Util;
@@ -13,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Base64Utils;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Objects;
@@ -30,14 +33,10 @@ public class CreditScoreApiServiceImpl implements CreditScoreApiService {
     private String CREDIT_SCORE_ENDPOINT_URL;
 
     @Override
-    public int getCreditScore() {
-        String userAndPass = "Test:Test123";
+    public CreditScoreDTO getCreditScore(CreditScoreSaveRequestDTO creditScoreDTO) {
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
-        httpHeaders.add("Authorization", "Basic " + Base64Utils.encode(userAndPass.getBytes()));
-
-        HttpEntity<String> entity = new HttpEntity<>("parameters", httpHeaders);
-        ResponseEntity<CreditScore> response=restTemplateConfiguration.restTemplate().getForEntity(CREDIT_SCORE_ENDPOINT_URL, CreditScore.class);
-        return Objects.requireNonNull(response.getBody()).getCreditScore();
-
+        ResponseEntity<CreditScoreDTO> response=restTemplateConfiguration.restTemplate().
+                postForEntity(CREDIT_SCORE_ENDPOINT_URL, creditScoreDTO, CreditScoreDTO.class);
+        return response.getBody();
     }
 }
