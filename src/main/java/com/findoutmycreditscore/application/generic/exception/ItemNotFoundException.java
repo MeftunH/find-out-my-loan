@@ -1,4 +1,4 @@
-package com.findoutmycreditscore.application.generic.exceptions;
+package com.findoutmycreditscore.application.generic.exception;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
 import com.findoutmycreditscore.application.generic.errorMessage.BaseErrorMessage;
