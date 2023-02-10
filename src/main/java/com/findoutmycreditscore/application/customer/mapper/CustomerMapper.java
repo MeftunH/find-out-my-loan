@@ -1,15 +1,24 @@
 package com.findoutmycreditscore.application.customer.mapper;
 
+import com.findoutmycreditscore.application.creditscore.mapper.CreditScoreMapper;
 import com.findoutmycreditscore.application.customer.dto.CustomerDTO;
 import com.findoutmycreditscore.application.customer.entity.Customer;
+import com.findoutmycreditscore.application.customer.dto.CustomerSaveRequestDTO;
 import org.mapstruct.*;
+import org.mapstruct.factory.Mappers;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface CustomerMapper {
-    Customer toEntity(CustomerDTO customerDto);
+    CustomerMapper INSTANCE=Mappers.getMapper(CustomerMapper.class);
 
-    CustomerDTO toDto(Customer customer);
+    Customer toEntity(CustomerSaveRequestDTO customerSaveRequestDTO);
+
+    CustomerSaveRequestDTO toDto(Customer customer);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Customer partialUpdate(CustomerDTO customerDto, @MappingTarget Customer customer);
+    Customer partialUpdate(CustomerSaveRequestDTO customerSaveRequestDTO, @MappingTarget Customer customer);
+
+    Customer convertToCustomer(CustomerSaveRequestDTO customerSaveRequestDTO);
+
+    CustomerDTO convertToCustomerDTO(Customer customer);
 }
