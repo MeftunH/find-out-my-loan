@@ -7,10 +7,7 @@ import com.findoutmycreditscore.application.customer.dto.CustomerSaveRequestDTO;
 import com.findoutmycreditscore.application.customer.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/customer")
@@ -18,7 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class CustomerController {
     private final CustomerService customerService;
 
-   @PostMapping("/save")
+    @GetMapping("/{id}")
+    public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable Long id) {
+        CustomerDTO customerDTO = customerService.getByIdWithControl(id);
+        return ResponseEntity.ok(customerDTO);
+    }
+    @PostMapping("/save")
     public ResponseEntity<CustomerDTO> saveCustomer(@RequestBody CustomerSaveRequestDTO customerSaveRequestDTO) {
         CustomerDTO customerDTO = customerService.saveCustomer(customerSaveRequestDTO);
         return ResponseEntity.ok(customerDTO);
