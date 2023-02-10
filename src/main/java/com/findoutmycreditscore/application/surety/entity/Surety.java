@@ -11,6 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "surety")
+@PrimaryKeyJoinColumn(name = "surety_id")
 public class Surety  extends Person {
     @Enumerated(EnumType.STRING)
     @Column(name = "surety_type", length = 30)

@@ -11,6 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "customer")
+@PrimaryKeyJoinColumn(name = "customer_id")
 public class Customer extends Person {
     @Column(name = "monthly_income", nullable = false)
     private float monthlyIncome;
@@ -18,4 +19,7 @@ public class Customer extends Person {
     @Enumerated(EnumType.STRING)
     @Column(name = "payback_guarantee_type", length = 30)
     private PaybackGuaranteeType paybackGuaranteeType;
+
+    @Column(name = "customer_limit")
+    private float customerLimit;
 }
