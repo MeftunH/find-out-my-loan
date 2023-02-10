@@ -8,7 +8,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 //No repository bean is used to prevent Spring Data from creating an instance of this interface.
 @NoRepositoryBean
-public interface PersonRepository<T extends Person,L extends Long> extends JpaRepository<T, Long> {
+public interface PersonRepository extends JpaRepository<Person, Long> {
 
 
 }
