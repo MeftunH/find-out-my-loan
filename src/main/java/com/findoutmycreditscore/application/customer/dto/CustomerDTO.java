@@ -1,20 +1,26 @@
 package com.findoutmycreditscore.application.customer.dto;
-/* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
+import com.findoutmycreditscore.application.customer.entity.Customer;
 import com.findoutmycreditscore.application.customer.enums.PaybackGuaranteeType;
-import com.findoutmycreditscore.application.person.dto.PersonDTO;
 import com.findoutmycreditscore.application.person.enums.PersonType;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * A DTO for the {@link Customer} entity
+ */
 @Data
-@SuperBuilder
-@EqualsAndHashCode(callSuper=true)
-public class CustomerDTO extends PersonDTO implements Serializable{
+public class CustomerDTO implements Serializable {
+    private final Long id;
+    private final String name;
+    private final String surname;
+    private final long identityNo;
+    private final Date birthDate;
+    private final String phoneNumber;
+    private final PersonType personType;
     private final float monthlyIncome;
     private final PaybackGuaranteeType paybackGuaranteeType;
+    private final float customerLimit;
 }
