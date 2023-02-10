@@ -1,10 +1,12 @@
 package com.findoutmycreditscore.application.person.entity;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
+import com.findoutmycreditscore.application.generic.entity.BaseEntity;
 import com.findoutmycreditscore.application.person.enums.PersonType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
@@ -14,7 +16,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Person {
+public abstract class Person extends BaseEntity {
     @Id
     @SequenceGenerator(name = "personSeq", sequenceName = "person_id_seq")
     @GeneratedValue(generator="personSeq", strategy = GenerationType.SEQUENCE)
@@ -32,13 +34,12 @@ public abstract class Person {
     @Column(name = "birth_date", nullable = false)
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date birthDate;
-
-   //TODO: Move to Contact Information Entity for one to many relationship
-    @Column(name = "phone_number", nullable = false, length = 10)
-    private String phoneNumber;
+    //Todo: move to ContactInfo entity
+   @Column(name = "phone_number", nullable = false, length = 10)
+   private String phoneNumber;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "person_type", length = 30, nullable = false)
+    @Column(name = "person_type", nullable = false, length = 30)
     private PersonType personType;
 
 
