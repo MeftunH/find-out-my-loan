@@ -15,7 +15,6 @@ import java.util.Date;
 /**
  * A DTO for the {@link Surety} entity
  */
-//TODO: Extend with Person DTO
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class SuretySaveRequestDTO extends PersonDTO implements Serializable {
