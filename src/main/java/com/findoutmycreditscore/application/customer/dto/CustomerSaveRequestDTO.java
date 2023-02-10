@@ -6,7 +6,6 @@ import com.findoutmycreditscore.application.person.dto.PersonDTO;
 import com.findoutmycreditscore.application.person.enums.PersonType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -16,8 +15,7 @@ import java.util.Date;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@SuperBuilder
-public class CustomerDTO extends PersonDTO implements Serializable {
+public class CustomerSaveRequestDTO extends PersonDTO implements Serializable {
     private final float monthlyIncome;
     private final PaybackGuaranteeType paybackGuaranteeType;
     private final float customerLimit;
