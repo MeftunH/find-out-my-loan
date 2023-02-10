@@ -10,15 +10,6 @@ import org.mapstruct.factory.Mappers;
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface CustomerMapper {
     CustomerMapper INSTANCE=Mappers.getMapper(CustomerMapper.class);
-
-    Customer toEntity(CustomerSaveRequestDTO customerSaveRequestDTO);
-
-    CustomerSaveRequestDTO toDto(Customer customer);
-
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Customer partialUpdate(CustomerSaveRequestDTO customerSaveRequestDTO, @MappingTarget Customer customer);
-
     Customer convertToCustomer(CustomerSaveRequestDTO customerSaveRequestDTO);
-
     CustomerDTO convertToCustomerDTO(Customer customer);
 }
