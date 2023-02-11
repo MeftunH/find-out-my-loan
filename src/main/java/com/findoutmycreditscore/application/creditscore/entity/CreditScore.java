@@ -1,6 +1,7 @@
 package com.findoutmycreditscore.application.creditscore.entity;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
+import com.findoutmycreditscore.application.generic.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -10,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "credit_score")
-public class CreditScore {
+public class CreditScore extends BaseEntity {
     @Id
     @SequenceGenerator(name = "creditScoreSeq", sequenceName = "credit_score_id_seq")
     @GeneratedValue(generator="creditScoreSeq", strategy = GenerationType.SEQUENCE)
