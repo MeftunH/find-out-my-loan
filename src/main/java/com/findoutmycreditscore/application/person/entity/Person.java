@@ -19,7 +19,7 @@ import java.util.Date;
 public abstract class Person extends BaseEntity {
     @Id
     @SequenceGenerator(name = "personSeq", sequenceName = "person_id_seq")
-    @GeneratedValue(generator="personSeq", strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(generator="personSeq")
     private Long id;
 
     @Column(name = "name", nullable = false)
