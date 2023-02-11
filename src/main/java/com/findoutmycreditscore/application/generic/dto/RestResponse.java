@@ -15,7 +15,7 @@ public class RestResponse<T> implements Serializable {
     private T data;
     private Date responseDate;
     private boolean isSuccess;
-    private String messages;
+    private String message;
 
     public RestResponse(T data, boolean isSuccess) {
         this.data = data;
@@ -35,12 +35,12 @@ public class RestResponse<T> implements Serializable {
         return new RestResponse<>(null, true);
     }
 
-    public void setMessages(String messages) {
-        this.messages = messages;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public String getMessage(){
-        return messages;
+        return message;
     }
 
 }
