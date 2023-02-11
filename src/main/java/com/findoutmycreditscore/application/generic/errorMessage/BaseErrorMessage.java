@@ -2,5 +2,6 @@ package com.findoutmycreditscore.application.generic.errorMessage;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
 public interface BaseErrorMessage {
-    String getErrorMessage();
+    String getMessage();
+    String getDetailMessage();
 }
