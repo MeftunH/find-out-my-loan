@@ -2,6 +2,7 @@ package com.findoutmycreditscore.application.customer.mapper;
 
 import com.findoutmycreditscore.application.creditscore.mapper.CreditScoreMapper;
 import com.findoutmycreditscore.application.customer.dto.CustomerDTO;
+import com.findoutmycreditscore.application.customer.dto.CustomerUpdateRequestDTO;
 import com.findoutmycreditscore.application.customer.entity.Customer;
 import com.findoutmycreditscore.application.customer.dto.CustomerSaveRequestDTO;
 import org.mapstruct.*;
@@ -12,4 +13,6 @@ public interface CustomerMapper {
     CustomerMapper INSTANCE=Mappers.getMapper(CustomerMapper.class);
     Customer convertToCustomer(CustomerSaveRequestDTO customerSaveRequestDTO);
     CustomerDTO convertToCustomerDTO(Customer customer);
+
+    Customer convertToCustomer(CustomerUpdateRequestDTO customerUpdateRequestDTO);
 }

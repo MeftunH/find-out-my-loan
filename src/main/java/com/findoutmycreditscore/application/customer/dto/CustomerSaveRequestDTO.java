@@ -19,4 +19,5 @@ public class CustomerSaveRequestDTO extends PersonDTO implements Serializable {
     private final float monthlyIncome;
     private final PaybackGuaranteeType paybackGuaranteeType;
     private final float customerLimit;
+    private final String accountPassword;
 }
