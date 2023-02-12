@@ -22,7 +22,7 @@ public class Credit extends BaseEntity {
     private Long customerId;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "payback_guarantee_type", length = 30)
+    @Column(name = "payback_guarantee_type", length = 30,nullable=false)
     private PaybackGuaranteeType paybackGuaranteeType;
 
     @Enumerated(EnumType.STRING)
