@@ -1,4 +1,4 @@
-package com.findoutmycreditscore.application.customer.enums;
+package com.findoutmycreditscore.application.credit.enums;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
 public enum PaybackGuaranteeType {
