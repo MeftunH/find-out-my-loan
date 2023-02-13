@@ -1,7 +1,7 @@
 package com.findoutmyloan.application.loan.dto;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
-import com.findoutmyloan.application.loan.enums.CreditConclusion;
+import com.findoutmyloan.application.loan.enums.LoanResult;
 import com.findoutmyloan.application.loan.enums.PaybackGuaranteeType;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -17,5 +17,7 @@ public class LoanSaveRequestDTO implements Serializable {
    @NotNull
     private float amount;
     @NotNull
-    private final CreditConclusion conclusion;
+    private final LoanResult result;
+
+    private final int creditScore;
 }
