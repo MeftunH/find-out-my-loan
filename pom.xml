@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>find-out-my-credit-score</artifactId>
+    <artifactId>find-out-my-loan</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>find-out-my-credit-score</name>
-    <description>find-out-my-credit-score</description>
+    <name>find-out-my-loan</name>
+    <description>find-out-my-loan</description>
     <properties>
         <java.version>17</java.version>
     </properties>
