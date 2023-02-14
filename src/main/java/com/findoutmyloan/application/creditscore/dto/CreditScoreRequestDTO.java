@@ -12,14 +12,18 @@ import com.findoutmyloan.application.surety.dto.SuretyDTO;
 import com.findoutmyloan.application.surety.dto.SuretySaveRequestDTO;
 import com.findoutmyloan.application.surety.enums.SuretyType;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
-public class CreditScoreRequestDTO {
-    @NotNull
+@Builder
+public class CreditScoreRequestDTO implements Serializable {
+    private long customerId;
     private CustomerCreditScoreRequestDTO customerCreditScoreRequestDTO;
     private SuretySaveRequestDTO suretySaveRequestDTO;
     private CollateralSaveRequestDTO collateralSaveRequestDTO;
+    private PaybackGuaranteeType paybackGuaranteeType;
 }
