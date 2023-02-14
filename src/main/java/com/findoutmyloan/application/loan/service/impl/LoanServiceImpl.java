@@ -1,8 +1,11 @@
 package com.findoutmyloan.application.loan.service.impl;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
+import com.findoutmyloan.application.collateral.enums.CollateralWorthPercentageToBeAddToTheLoanLimit;
+import com.findoutmyloan.application.creditscore.enums.CreditScoreType;
 import com.findoutmyloan.application.customer.entity.Customer;
 import com.findoutmyloan.application.customer.repository.CustomerRepository;
+import com.findoutmyloan.application.customer.service.CustomerProfilerService;
 import com.findoutmyloan.application.loan.dto.LoanDTO;
 import com.findoutmyloan.application.loan.dto.LoanSaveRequestDTO;
 import com.findoutmyloan.application.loan.entity.Loan;
@@ -18,32 +21,39 @@ import org.springframework.stereotype.Service;
 public class LoanServiceImpl implements LoanService {
     private final LoanRepository loanRepository;
     private final CustomerRepository customerRepository;
+    private final CustomerProfilerService customerProfilerService;
 
-    public boolean decisioner(int creditScore)
+   @Override
+    public boolean isSuitableForCalculate(int creditScore)
     {
-        return creditScore>=500;
+        return creditScore>=CreditScoreType.LOW_CREDIT_SCORE.getMaximumCreditScore();
+    }
+
+    @Override
+    public float calculateLimitOfCustomer(int creditScore, float monthlyIncome)
+    {
+        float limit=0;
+        final float bronzeCustomerLimit=10000.0f;
+        final float silverCustomerLimit=20000.0f;
+        final float loanLimitMultiplier=4.0f;
+        final float halfDividerValue=2.0f;
+        switch (customerProfilerService.getCustomerProfile(creditScore, monthlyIncome)) {
+            case BRONZE ->
+                    limit=bronzeCustomerLimit;
+            case SILVER ->
+                    limit=silverCustomerLimit;
+            case GOLD ->
+                    limit=limit+loanLimitMultiplier*monthlyIncome/halfDividerValue;
+            case PLATINUM ->
+                    limit=limit+loanLimitMultiplier*monthlyIncome;
+        }
+        return limit;
     }
 
   //Todo: Refactor this method
     @Override
     public LoanDTO saveLoan(LoanSaveRequestDTO loanSaveRequestDTO) {
-        Loan loan=new Loan();
-        if (decisioner(loanSaveRequestDTO.getCreditScore())) {
-//            float customerMonthlyIncome=loanRepository.findMonthlyIncomeByCustomerId(loanSaveRequestDTO.getCustomerId());
-            Customer customer=(Customer) customerRepository.findById(loanSaveRequestDTO.getCustomerId()).get();
-            float customerMonthlyIncome=customer.getMonthlyIncome();
-            if ((customer.getMonthlyIncome()>=0&&customer.getMonthlyIncome()<=5000)
-                    &&loanSaveRequestDTO.getCreditScore()>=500&&loanSaveRequestDTO.getCreditScore()<1000) {
-
-                loan.setCustomerId(loanSaveRequestDTO.getCustomerId());
-                loan.setPaybackGuaranteeType(loanSaveRequestDTO.getPaybackGuaranteeType());
-                loan.setResult(LoanResult.APPROVED);
-                loan=loanRepository.save(loan);
-                customer.setCustomerLimit(customer.getCustomerLimit()+10000);
-                customerRepository.save(customer);
-
-            }
-        }
+        Loan loan = loanRepository.save(LoanMapper.INSTANCE.convertToLoan(loanSaveRequestDTO));
         return LoanMapper.INSTANCE.convertToLoanDto(loan);
     }
 }

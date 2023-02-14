@@ -10,14 +10,14 @@ import java.io.Serializable;
 
 @Data
 public class LoanSaveRequestDTO implements Serializable {
-   @NotNull
-    private final Long customerId;
-   @NotNull
-   private final PaybackGuaranteeType paybackGuaranteeType;
-   @NotNull
+    @NotNull
+    private Long customerId;
+    @NotNull
+    private PaybackGuaranteeType paybackGuaranteeType;
+    @NotNull
     private float amount;
     @NotNull
-    private final LoanResult result;
+    private LoanResult result;
 
-    private final int creditScore;
+    private int creditScore;
 }
