@@ -1,7 +1,7 @@
 package com.findoutmyloan.application.loan.enums;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
-public enum CreditConclusion {
+public enum LoanResult {
     APPROVED,
     REJECTED
 }

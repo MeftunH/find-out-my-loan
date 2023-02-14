@@ -15,8 +15,6 @@ public class Customer extends Person {
     @Column(name = "monthly_income", nullable = false)
     private float monthlyIncome;
 
-
-
     @Column(name = "customer_limit")
     private float customerLimit;
 

@@ -9,8 +9,8 @@ import org.mapstruct.factory.Mappers;
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface LoanMapper {
    LoanMapper INSTANCE = Mappers.getMapper(LoanMapper.class);
-   LoanDTO convertToCreditDto(Loan loan);
-   Loan convertToCredit(LoanDTO loanDTO);
+   LoanDTO convertToLoanDto(Loan loan);
+   Loan convertToLoan(LoanDTO loanDTO);
 
-    Loan convertToCredit(LoanSaveRequestDTO creditDto);
+    Loan convertToLoan(LoanSaveRequestDTO loanSaveRequestDTO);
 }
