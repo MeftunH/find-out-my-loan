@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 @Data
 public class CollateralDTO implements Serializable {
-    private final CollateralType collateralType;
-    private final long creditId;
-    private final float worth;
+    private CollateralType collateralType;
+    private long customerId;
+    private float worth;
 }
