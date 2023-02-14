@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/credit")
+@RequestMapping("/api/v1/loan")
 @RequiredArgsConstructor
-public class CreditController {
+public class LoanController {
     private final LoanService loanService;
     @PostMapping
-    public ResponseEntity<RestResponse<LoanDTO>> saveCredit(@RequestBody LoanSaveRequestDTO loanSaveRequestDTO) {
-        LoanDTO loanDTO= loanService.saveCredit(loanSaveRequestDTO);
+    public ResponseEntity<RestResponse<LoanDTO>> saveLoan(@RequestBody LoanSaveRequestDTO loanSaveRequestDTO) {
+        LoanDTO loanDTO= loanService.saveLoan(loanSaveRequestDTO);
         return ResponseEntity.ok(RestResponse.of(loanDTO));
     }
 }

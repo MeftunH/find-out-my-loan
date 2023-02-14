@@ -1,7 +1,7 @@
 package com.findoutmyloan.application.loan.entity;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
-import com.findoutmyloan.application.loan.enums.CreditConclusion;
+import com.findoutmyloan.application.loan.enums.LoanResult;
 import com.findoutmyloan.application.loan.enums.PaybackGuaranteeType;
 import com.findoutmyloan.application.generic.entity.BaseEntity;
 import jakarta.persistence.*;
@@ -27,7 +27,7 @@ public class Loan extends BaseEntity {
     @Column(name = "amount", nullable = false)
     private float amount;
     @Enumerated(EnumType.STRING)
-    @Column(name = "conclusion", nullable = false)
-    private CreditConclusion conclusion;
+    @Column(name = "result", nullable = false)
+    private LoanResult result;
 
 }
