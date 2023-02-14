@@ -21,7 +21,7 @@ import java.util.Date;
 @Data
 @Builder
 public class CreditScoreRequestDTO implements Serializable {
-    private long customerId;
+    private long customerIdentityNo;
     private CustomerCreditScoreRequestDTO customerCreditScoreRequestDTO;
     private SuretySaveRequestDTO suretySaveRequestDTO;
     private CollateralSaveRequestDTO collateralSaveRequestDTO;

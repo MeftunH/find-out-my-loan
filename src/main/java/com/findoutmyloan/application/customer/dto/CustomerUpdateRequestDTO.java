@@ -14,8 +14,8 @@ import java.io.Serializable;
 @Data
 public class CustomerUpdateRequestDTO extends PersonDTO implements Serializable {
     @NotNull
-    private final float monthlyIncome;
+    private float monthlyIncome;
     @NotNull
-    private final float customerLimit;
-    private final String password;
+    private float customerLimit;
+    private String password;
 }
