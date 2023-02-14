@@ -17,7 +17,7 @@ import java.io.Serializable;
 @SuperBuilder
 public class CustomerDTO extends PersonDTO implements Serializable {
    @NotNull
-    private final float monthlyIncome;
+    private float monthlyIncome;
     @NotNull
     private final float customerLimit;
 }
