@@ -1,5 +1,6 @@
 package com.findoutmyloan.application.loan.mapper;
 
+import com.findoutmyloan.application.loan.dto.LoanApplicationRequestDTO;
 import com.findoutmyloan.application.loan.dto.LoanSaveRequestDTO;
 import com.findoutmyloan.application.loan.dto.LoanDTO;
 import com.findoutmyloan.application.loan.entity.Loan;
@@ -13,4 +14,6 @@ public interface LoanMapper {
    Loan convertToLoan(LoanDTO loanDTO);
 
     Loan convertToLoan(LoanSaveRequestDTO loanSaveRequestDTO);
+
+    LoanSaveRequestDTO loanRequestFromCustomerDTOToLoanSaveRequestDTO(LoanApplicationRequestDTO loanRequestFromCustomerDTO);
 }

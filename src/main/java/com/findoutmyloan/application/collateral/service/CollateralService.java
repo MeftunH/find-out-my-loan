@@ -6,5 +6,5 @@ import com.findoutmyloan.application.collateral.dto.CollateralSaveRequestDTO;
 
 public interface CollateralService {
     CollateralDTO saveCollateral(CollateralSaveRequestDTO collateralSaveRequestDTO);
-
+    float addCollateralWorthToLoanLimit(float collateralWorth, int creditScore, float monthlyIncome, float amount);
 }

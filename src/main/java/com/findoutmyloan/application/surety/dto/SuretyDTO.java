@@ -16,7 +16,7 @@ import java.io.Serializable;
 @Data
 @SuperBuilder
 public class SuretyDTO extends PersonDTO implements Serializable {
-    private final Long id;
-    private final SuretyType suretyType;
-    private final Long toCustomerId;
+    private Long id;
+    private SuretyType suretyType;
+    private Long toCustomerId;
 }

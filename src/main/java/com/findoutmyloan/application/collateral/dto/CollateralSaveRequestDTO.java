@@ -2,13 +2,15 @@ package com.findoutmyloan.application.collateral.dto;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
 import com.findoutmyloan.application.collateral.CollateralType;
+import lombok.Builder;
 import lombok.Data;
 
 import java.io.Serializable;
 
 @Data
+@Builder
 public class CollateralSaveRequestDTO implements Serializable {
-    private final CollateralType collateralType;
-    private final long creditId;
-    private final float worth;
+    private CollateralType collateralType;
+    private long customerId;
+    private float worth;
 }
