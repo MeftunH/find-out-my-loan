@@ -19,8 +19,8 @@ public class Collateral extends BaseEntity {
     @SequenceGenerator(name = "collateralSeq", sequenceName = "collateral_id_seq")
     @GeneratedValue(generator="collateralSeq")
     private Long id;
-    @Column(name="credit_id", nullable = false)
-    private long creditId;
+    @Column(name="customer_id", nullable = false)
+    private long customerId;
     @Enumerated(EnumType.STRING)
     @Column(name = "collateral_type", length = 30,nullable=false)
     private CollateralType collateralType;

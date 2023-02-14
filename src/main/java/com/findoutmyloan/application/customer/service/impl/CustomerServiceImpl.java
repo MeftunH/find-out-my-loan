@@ -5,6 +5,7 @@ import com.findoutmyloan.application.customer.dto.CustomerDTO;
 import com.findoutmyloan.application.customer.dto.CustomerSaveRequestDTO;
 import com.findoutmyloan.application.customer.dto.CustomerUpdateRequestDTO;
 import com.findoutmyloan.application.customer.entity.Customer;
+import com.findoutmyloan.application.customer.enums.CustomerTypeAccordingToMonthlyIncome;
 import com.findoutmyloan.application.customer.mapper.CustomerMapper;
 import com.findoutmyloan.application.customer.repository.CustomerRepository;
 import com.findoutmyloan.application.customer.service.CustomerService;
@@ -31,6 +32,32 @@ public class CustomerServiceImpl implements CustomerService {
         Customer savedCustomer=customerRepository.save(customer);
         return CustomerMapper.INSTANCE.convertToCustomerDTO(savedCustomer);
     }
+    public CustomerTypeAccordingToMonthlyIncome getCustomerTypeAccordingToMonthlyIncome(float monthlyIncome) {
+        if(isMonthlyIncomeInLowRange(monthlyIncome)){
+            return CustomerTypeAccordingToMonthlyIncome.LOW_INCOME;
+        }
+        else if(isMonthlyIncomeInMediumRange(monthlyIncome)){
+            return CustomerTypeAccordingToMonthlyIncome.MEDIUM_INCOME;
+        }
+        else if(isMonthlyIncomeInHighRange(monthlyIncome)){
+            return CustomerTypeAccordingToMonthlyIncome.HIGH_INCOME;
+        }
+        return null;
+    }
+    private boolean isMonthlyIncomeInLowRange(float monthlyIncome){
+        return monthlyIncome>=CustomerTypeAccordingToMonthlyIncome.LOW_INCOME.getMinimumMonthlyIncome()&&
+               monthlyIncome<=CustomerTypeAccordingToMonthlyIncome.LOW_INCOME.getMaximumMonthlyIncome();
+    }
+    private boolean isMonthlyIncomeInMediumRange(float monthlyIncome){
+        return monthlyIncome>=CustomerTypeAccordingToMonthlyIncome.MEDIUM_INCOME.getMinimumMonthlyIncome()&&
+               monthlyIncome<=CustomerTypeAccordingToMonthlyIncome.MEDIUM_INCOME.getMaximumMonthlyIncome();
+    }
+    private boolean isMonthlyIncomeInHighRange(float monthlyIncome){
+        return monthlyIncome>=CustomerTypeAccordingToMonthlyIncome.HIGH_INCOME.getMinimumMonthlyIncome()&&monthlyIncome<=
+               CustomerTypeAccordingToMonthlyIncome.HIGH_INCOME.getMaximumMonthlyIncome();
+    }
+
+
     //TODO: move to base service
     private void setAdditionalFields(Customer customer) {
         BaseAdditionalFields baseAdditionalFields = customer.getBaseAdditionalFields();
@@ -54,8 +81,7 @@ public class CustomerServiceImpl implements CustomerService {
     private Customer findCustomerByIdOrThrowException(Long id) {
         return (Customer) customerRepository.findById(id).orElseThrow(()->new ItemNotFoundException(GenericErrorMessage.ITEM_NOT_FOUND));
     }
-
-    private Customer findCustomerByIdentityNoOrThrowException(Long id) {
+    public Customer findCustomerByIdentityNoOrThrowException(Long id) {
         return (Customer) customerRepository.findByIdentityNo(id).orElseThrow(()->new ItemNotFoundException(GenericErrorMessage.ITEM_NOT_FOUND));
     }
 
@@ -66,7 +92,6 @@ public class CustomerServiceImpl implements CustomerService {
         return CustomerMapper.INSTANCE.convertToCustomerDTO(customer);
     }
 
-    //TODO: move to base service
     public void deleteCustomerByIdWithControl(Long id) {
         Customer customer=findCustomerByIdOrThrowException(id);
         customerRepository.delete(customer);

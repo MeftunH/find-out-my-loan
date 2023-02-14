@@ -5,5 +5,7 @@ import com.findoutmyloan.application.loan.dto.LoanDTO;
 import com.findoutmyloan.application.loan.dto.LoanSaveRequestDTO;
 
 public interface LoanService {
-    LoanDTO saveLoan(LoanSaveRequestDTO loanSaveRequestDTO);
+     LoanDTO saveLoan(LoanSaveRequestDTO loanSaveRequestDTO);
+     boolean isSuitableForCalculate(int creditScore);
+     float calculateLimitOfCustomer(int creditScore, float monthlyIncome);
 }
