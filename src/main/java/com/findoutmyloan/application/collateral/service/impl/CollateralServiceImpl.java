@@ -8,22 +8,21 @@ import com.findoutmyloan.application.collateral.enums.CollateralWorthPercentageT
 import com.findoutmyloan.application.collateral.mapper.CollateralMapper;
 import com.findoutmyloan.application.collateral.repository.CollateralRepository;
 import com.findoutmyloan.application.collateral.service.CollateralService;
-import com.findoutmyloan.application.creditscore.enums.CreditScoreType;
-import com.findoutmyloan.application.customer.enums.CustomerTypeAccordingToMonthlyIncome;
 import com.findoutmyloan.application.customer.service.CustomerProfilerService;
+import com.findoutmyloan.application.generic.service.BaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CollateralServiceImpl implements CollateralService {
+public class CollateralServiceImpl extends BaseService<Collateral> implements CollateralService {
     private final CollateralRepository collateralRepository;
     private final CustomerProfilerService customerProfilerService;
 
     @Override
     public CollateralDTO saveCollateral(CollateralSaveRequestDTO collateralSaveRequestDTO) {
         Collateral collateral=CollateralMapper.INSTANCE.convertToCollateral(collateralSaveRequestDTO);
-
+        setAdditionalFields(collateral);
         Collateral savedCollateral=collateralRepository.save(collateral);
         return CollateralMapper.INSTANCE.convertToCollateralDTO(savedCollateral);
     }
@@ -42,17 +41,4 @@ public class CollateralServiceImpl implements CollateralService {
         }
         return amount;
     }
-//        if (C) {
-//            amount=amount+collateralWorth*CollateralWorthPercentageToBeAddToTheLoanLimit.VERY_HIGH_PERCENTAGE.getWorthPercentage();
-//        } else {
-//            if (CreditScoreType.getCreditScoreType(creditScore)==CreditScoreType.MEDIUM_CREDIT_SCORE) {
-//                if (CustomerTypeAccordingToMonthlyIncome.getCustomerTypeAccordingToMonthlyIncome(monthlyIncome)==CustomerTypeAccordingToMonthlyIncome.LOW_INCOME) {
-//                    amount=amount+collateralWorthToBeAddToTheLoanLimitByMonthlyIncome(collateralWorth, CustomerTypeAccordingToMonthlyIncome.LOW_INCOME);
-//                } else if (CustomerTypeAccordingToMonthlyIncome.getCustomerTypeAccordingToMonthlyIncome(monthlyIncome)==CustomerTypeAccordingToMonthlyIncome.MEDIUM_INCOME) {
-//                    amount=amount+collateralWorthToBeAddToTheLoanLimitByMonthlyIncome(collateralWorth, CustomerTypeAccordingToMonthlyIncome.MEDIUM_INCOME);
-//                } else if (CustomerTypeAccordingToMonthlyIncome.getCustomerTypeAccordingToMonthlyIncome(monthlyIncome)==CustomerTypeAccordingToMonthlyIncome.HIGH_INCOME) {
-//                    amount=amount+collateralWorthToBeAddToTheLoanLimitByMonthlyIncome(collateralWorth, CustomerTypeAccordingToMonthlyIncome.HIGH_INCOME);
-//                }
-//            }
-//        }
 }
