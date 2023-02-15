@@ -10,12 +10,8 @@ import com.findoutmyloan.application.customer.enums.CustomerTypeAccordingToMonth
 import com.findoutmyloan.application.customer.mapper.CustomerMapper;
 import com.findoutmyloan.application.customer.repository.CustomerRepository;
 import com.findoutmyloan.application.customer.service.CustomerService;
-import com.findoutmyloan.application.generic.errorMessage.GenericErrorMessage;
 import com.findoutmyloan.application.generic.exception.ItemNotFoundException;
 import com.findoutmyloan.application.generic.service.BaseService;
-import com.findoutmyloan.application.notification.factory.NotificationFactory;
-import com.findoutmyloan.application.person.entity.Person;
-import com.findoutmyloan.application.person.entity.PersonRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,16 +21,6 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class CustomerServiceImpl extends BaseService<Customer> implements CustomerService {
     private final CustomerRepository customerRepository;
-
-    private final NotificationFactory notificationFactory;
-
-    @Override
-    public void notifyCustomer(Customer customer) {
-        Person person=(Person) customer;
-        notificationFactory.getNotificationService(person)
-                           .orElse(notificationFactory.getDefaultNotificationService())
-                           .notify(person,"You have been registered as a customer");
-    }
 
     @Override
     public CustomerDTO saveCustomer(CustomerSaveRequestDTO customerSaveRequestDTO) {
