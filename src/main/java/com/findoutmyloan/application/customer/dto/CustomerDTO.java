@@ -17,7 +17,7 @@ import java.util.Date;
 @Data
 @SuperBuilder
 public class CustomerDTO extends PersonDTO implements Serializable {
-  private long id;
+   private long id;
    @NotNull
     private float monthlyIncome;
     @NotNull

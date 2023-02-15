@@ -14,6 +14,8 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class CustomerUpdateRequestDTO extends PersonDTO implements Serializable {
+
+    private long id;
     @NotNull
     private float monthlyIncome;
     @NotNull
