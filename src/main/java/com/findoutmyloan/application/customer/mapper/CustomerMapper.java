@@ -11,6 +11,8 @@ import org.mapstruct.factory.Mappers;
 public interface CustomerMapper {
     CustomerMapper INSTANCE=Mappers.getMapper(CustomerMapper.class);
     Customer convertToCustomer(CustomerSaveRequestDTO customerSaveRequestDTO);
+    @Mapping(source = "baseAdditionalFields.updatedDate", target = "baseAdditionalFieldsUpdatedDate")
+    @Mapping(source = "baseAdditionalFields.createdDate", target = "baseAdditionalFieldsCreatedDate")
     CustomerDTO convertToCustomerDTO(Customer customer);
 
     Customer convertToCustomer(CustomerUpdateRequestDTO customerUpdateRequestDTO);
