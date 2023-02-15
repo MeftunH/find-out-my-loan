@@ -7,6 +7,8 @@ import com.findoutmyloan.application.loan.entity.Loan;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
+import java.util.List;
+
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface LoanMapper {
    LoanMapper INSTANCE = Mappers.getMapper(LoanMapper.class);
@@ -20,4 +22,6 @@ public interface LoanMapper {
     Loan convertToLoan(LoanSaveRequestDTO loanSaveRequestDTO);
 
     LoanSaveRequestDTO loanRequestFromCustomerDTOToLoanSaveRequestDTO(LoanApplicationRequestDTO loanRequestFromCustomerDTO);
+
+    List<LoanDTO> convertToLoanDTOList(List<Loan> loans);
 }
