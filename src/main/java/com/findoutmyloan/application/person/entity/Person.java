@@ -39,6 +39,4 @@ public abstract class Person extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "person_type", nullable = false, length = 30)
     private PersonType personType;
-
-
 }
