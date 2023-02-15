@@ -10,17 +10,33 @@ import com.findoutmyloan.application.customer.enums.CustomerTypeAccordingToMonth
 import com.findoutmyloan.application.customer.mapper.CustomerMapper;
 import com.findoutmyloan.application.customer.repository.CustomerRepository;
 import com.findoutmyloan.application.customer.service.CustomerService;
+import com.findoutmyloan.application.generic.exception.InformationMismatchException;
 import com.findoutmyloan.application.generic.exception.ItemNotFoundException;
 import com.findoutmyloan.application.generic.service.BaseService;
+import com.findoutmyloan.application.loan.dto.LoanDTO;
+import com.findoutmyloan.application.loan.entity.Loan;
+import com.findoutmyloan.application.loan.mapper.LoanMapper;
+import com.findoutmyloan.application.loan.service.LoanService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class CustomerServiceImpl extends BaseService<Customer> implements CustomerService {
-    private final CustomerRepository customerRepository;
+    private CustomerRepository customerRepository;
+
+    private LoanService loanService;
+
+    //fixed: @Lazy annotation is used to avoid circular dependency
+    @Autowired
+    public CustomerServiceImpl(CustomerRepository customerRepository,@Lazy LoanService loanService) {
+        this.customerRepository=customerRepository;
+        this.loanService=loanService;
+    }
 
     @Override
     public CustomerDTO saveCustomer(CustomerSaveRequestDTO customerSaveRequestDTO) {
@@ -29,34 +45,37 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
         Customer savedCustomer=customerRepository.save(customer);
         return CustomerMapper.INSTANCE.convertToCustomerDTO(savedCustomer);
     }
+
     public CustomerTypeAccordingToMonthlyIncome getCustomerTypeAccordingToMonthlyIncome(float monthlyIncome) {
-        if(isMonthlyIncomeInLowRange(monthlyIncome)){
+        if (isMonthlyIncomeInLowRange(monthlyIncome)) {
             return CustomerTypeAccordingToMonthlyIncome.LOW_INCOME;
-        }
-        else if(isMonthlyIncomeInMediumRange(monthlyIncome)){
+        } else if (isMonthlyIncomeInMediumRange(monthlyIncome)) {
             return CustomerTypeAccordingToMonthlyIncome.MEDIUM_INCOME;
-        }
-        else if(isMonthlyIncomeInHighRange(monthlyIncome)){
+        } else if (isMonthlyIncomeInHighRange(monthlyIncome)) {
             return CustomerTypeAccordingToMonthlyIncome.HIGH_INCOME;
         }
         return null;
     }
-    private boolean isMonthlyIncomeInLowRange(float monthlyIncome){
+
+    private boolean isMonthlyIncomeInLowRange(float monthlyIncome) {
         return monthlyIncome>=CustomerTypeAccordingToMonthlyIncome.LOW_INCOME.getMinimumMonthlyIncome()&&
-               monthlyIncome<=CustomerTypeAccordingToMonthlyIncome.LOW_INCOME.getMaximumMonthlyIncome();
+                monthlyIncome<=CustomerTypeAccordingToMonthlyIncome.LOW_INCOME.getMaximumMonthlyIncome();
     }
-    private boolean isMonthlyIncomeInMediumRange(float monthlyIncome){
+
+    private boolean isMonthlyIncomeInMediumRange(float monthlyIncome) {
         return monthlyIncome>=CustomerTypeAccordingToMonthlyIncome.MEDIUM_INCOME.getMinimumMonthlyIncome()&&
-               monthlyIncome<=CustomerTypeAccordingToMonthlyIncome.MEDIUM_INCOME.getMaximumMonthlyIncome();
+                monthlyIncome<=CustomerTypeAccordingToMonthlyIncome.MEDIUM_INCOME.getMaximumMonthlyIncome();
     }
-    private boolean isMonthlyIncomeInHighRange(float monthlyIncome){
+
+    private boolean isMonthlyIncomeInHighRange(float monthlyIncome) {
         return monthlyIncome>=CustomerTypeAccordingToMonthlyIncome.HIGH_INCOME.getMinimumMonthlyIncome()&&monthlyIncome<=
-               CustomerTypeAccordingToMonthlyIncome.HIGH_INCOME.getMaximumMonthlyIncome();
+                CustomerTypeAccordingToMonthlyIncome.HIGH_INCOME.getMaximumMonthlyIncome();
     }
 
     private Customer findCustomerByIdOrThrowException(Long id) {
         return (Customer) customerRepository.findById(id).orElseThrow(()->new ItemNotFoundException(CustomerErrorMessage.CUSTOMER_NOT_FOUND));
     }
+
     public Customer findCustomerByIdentityNoOrThrowException(Long id) {
         return (Customer) customerRepository.findByIdentityNo(id).orElseThrow(()->new ItemNotFoundException(CustomerErrorMessage.CUSTOMER_NOT_FOUND));
     }
@@ -74,8 +93,8 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
 
     @Override
     public CustomerDTO updateCustomer(CustomerUpdateRequestDTO customerUpdateRequestDTO) {
-        Customer customer = CustomerMapper.INSTANCE.convertToCustomer(customerUpdateRequestDTO);
-        Customer customerToUpdate = findCustomerByIdentityNoOrThrowException(customer.getIdentityNo());
+        Customer customer=CustomerMapper.INSTANCE.convertToCustomer(customerUpdateRequestDTO);
+        Customer customerToUpdate=findCustomerByIdentityNoOrThrowException(customer.getIdentityNo());
         setAdditionalFields(customerToUpdate);
         customerToUpdate.setName(customer.getName());
         customerToUpdate.setSurname(customer.getSurname());
@@ -86,5 +105,16 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
         customerRepository.save(customerToUpdate);
 
         return CustomerMapper.INSTANCE.convertToCustomerDTO(customer);
+    }
+
+    //fixme: exception handling
+    @Override
+    public List<LoanDTO> findLoansByCustomerIdentityNoAndCustomerBirthDate(long identityNo, Date birthDate) {
+        Customer customer=customerRepository.findByIdentityNoAndBirthDate(identityNo, birthDate);
+        if (customer==null) {
+            throw new InformationMismatchException(CustomerErrorMessage.CUSTOMER_NOT_FOUND);
+        }
+        List<Loan> loans=loanService.findLoansByCustomerIdentityNoAndCustomerBirthDate(identityNo, birthDate);
+        return LoanMapper.INSTANCE.convertToLoanDTOList(loans);
     }
 }
