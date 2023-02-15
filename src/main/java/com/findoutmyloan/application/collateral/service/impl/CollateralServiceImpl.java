@@ -12,9 +12,12 @@ import com.findoutmyloan.application.customer.service.CustomerProfilerService;
 import com.findoutmyloan.application.generic.service.BaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(propagation = Propagation.REQUIRED)
 public class CollateralServiceImpl extends BaseService<Collateral> implements CollateralService {
     private final CollateralRepository collateralRepository;
     private final CustomerProfilerService customerProfilerService;

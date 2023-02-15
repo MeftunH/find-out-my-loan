@@ -1,4 +1,4 @@
-package com.findoutmyloan.application.generic.errorMessage;
+package com.findoutmyloan.application.general.errorMessage;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
 public interface BaseErrorMessage {

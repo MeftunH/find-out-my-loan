@@ -8,6 +8,7 @@ import com.findoutmyloan.application.customer.entity.Customer;
 import com.findoutmyloan.application.customer.enums.CustomerTypeAccordingToMonthlyIncome;
 import com.findoutmyloan.application.loan.dto.LoanDTO;
 
+import java.security.GeneralSecurityException;
 import java.util.Date;
 import java.util.List;
 
@@ -19,5 +20,5 @@ public interface CustomerService {
     void deleteCustomerByIdWithControl(Long id);
     CustomerTypeAccordingToMonthlyIncome getCustomerTypeAccordingToMonthlyIncome(float monthlyIncome);
     CustomerDTO updateCustomer(CustomerUpdateRequestDTO customerUpdateRequestDTO);
-    List<LoanDTO> findLoansByCustomerIdentityNoAndCustomerBirthDate(long identityNo, Date birthDate);
+    List<LoanDTO> findLoansByCustomerIdentityNoAndCustomerBirthDate(long identityNo, Date birthDate) throws GeneralSecurityException;
 }

@@ -4,7 +4,6 @@ package com.findoutmyloan.application.collateral.controller;
 import com.findoutmyloan.application.collateral.dto.CollateralDTO;
 import com.findoutmyloan.application.collateral.dto.CollateralSaveRequestDTO;
 import com.findoutmyloan.application.collateral.service.CollateralService;
-import com.findoutmyloan.application.customer.dto.CustomerDTO;
 import com.findoutmyloan.application.generic.dto.RestResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

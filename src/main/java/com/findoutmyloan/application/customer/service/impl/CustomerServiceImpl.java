@@ -10,31 +10,36 @@ import com.findoutmyloan.application.customer.enums.CustomerTypeAccordingToMonth
 import com.findoutmyloan.application.customer.mapper.CustomerMapper;
 import com.findoutmyloan.application.customer.repository.CustomerRepository;
 import com.findoutmyloan.application.customer.service.CustomerService;
-import com.findoutmyloan.application.generic.exception.InformationMismatchException;
-import com.findoutmyloan.application.generic.exception.ItemNotFoundException;
+import com.findoutmyloan.application.customer.service.CustomerValidationService;
+import com.findoutmyloan.application.general.exception.ItemNotFoundException;
 import com.findoutmyloan.application.generic.service.BaseService;
 import com.findoutmyloan.application.loan.dto.LoanDTO;
 import com.findoutmyloan.application.loan.entity.Loan;
 import com.findoutmyloan.application.loan.mapper.LoanMapper;
 import com.findoutmyloan.application.loan.service.LoanService;
-import lombok.RequiredArgsConstructor;
+import com.findoutmyloan.application.person.enums.PersonType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.security.GeneralSecurityException;
 import java.util.Date;
 import java.util.List;
 
 @Service
+@Transactional(propagation = Propagation.REQUIRED)
 public class CustomerServiceImpl extends BaseService<Customer> implements CustomerService {
     private CustomerRepository customerRepository;
-
+    private CustomerValidationService customerValidationService;
     private LoanService loanService;
 
     //fixed: @Lazy annotation is used to avoid circular dependency
     @Autowired
-    public CustomerServiceImpl(CustomerRepository customerRepository,@Lazy LoanService loanService) {
+    public CustomerServiceImpl(CustomerRepository customerRepository, CustomerValidationService customerValidationService, @Lazy LoanService loanService) {
         this.customerRepository=customerRepository;
+        this.customerValidationService=customerValidationService;
         this.loanService=loanService;
     }
 
@@ -73,13 +78,18 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
     }
 
     private Customer findCustomerByIdOrThrowException(Long id) {
-        return (Customer) customerRepository.findById(id).orElseThrow(()->new ItemNotFoundException(CustomerErrorMessage.CUSTOMER_NOT_FOUND));
+        Customer customer = (Customer) customerRepository.findById(id).orElseThrow(() -> new ItemNotFoundException(CustomerErrorMessage.CUSTOMER_NOT_FOUND));
+        if (customer.getPersonType()== PersonType.CUSTOMER)
+            return customer;
+        else
+            throw new ItemNotFoundException(CustomerErrorMessage.CUSTOMER_NOT_FOUND);
     }
 
     public Customer findCustomerByIdentityNoOrThrowException(Long id) {
         return (Customer) customerRepository.findByIdentityNo(id).orElseThrow(()->new ItemNotFoundException(CustomerErrorMessage.CUSTOMER_NOT_FOUND));
     }
 
+    @Transactional(propagation= Propagation.NOT_SUPPORTED)
     @Override
     public CustomerDTO getByIdWithControl(Long id) {
         Customer customer=findCustomerByIdOrThrowException(id);
@@ -107,13 +117,10 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
         return CustomerMapper.INSTANCE.convertToCustomerDTO(customer);
     }
 
-    //fixme: exception handling
     @Override
-    public List<LoanDTO> findLoansByCustomerIdentityNoAndCustomerBirthDate(long identityNo, Date birthDate) {
-        Customer customer=customerRepository.findByIdentityNoAndBirthDate(identityNo, birthDate);
-        if (customer==null) {
-            throw new InformationMismatchException(CustomerErrorMessage.CUSTOMER_NOT_FOUND);
-        }
+    public List<LoanDTO> findLoansByCustomerIdentityNoAndCustomerBirthDate(long identityNo, Date birthDate) throws GeneralSecurityException {
+        customerValidationService.validateCustomerByIdentityNoAndBirthDate(identityNo, birthDate);
+
         List<Loan> loans=loanService.findLoansByCustomerIdentityNoAndCustomerBirthDate(identityNo, birthDate);
         return LoanMapper.INSTANCE.convertToLoanDTOList(loans);
     }
