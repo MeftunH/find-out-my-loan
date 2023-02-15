@@ -12,5 +12,5 @@ import java.util.Optional;
 @Repository
 public interface CustomerRepository extends PersonRepository {
     Optional<Person> findByIdentityNo(Long id);
-    Customer findByIdentityNoAndBirthDate(Long id, Date birthDate);
+    Optional<Person> findByIdentityNoAndBirthDate(Long id, Date birthDate);
 }
