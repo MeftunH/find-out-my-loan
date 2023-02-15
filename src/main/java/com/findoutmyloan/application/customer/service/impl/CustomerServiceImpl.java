@@ -5,6 +5,7 @@ import com.findoutmyloan.application.customer.dto.CustomerDTO;
 import com.findoutmyloan.application.customer.dto.CustomerSaveRequestDTO;
 import com.findoutmyloan.application.customer.dto.CustomerUpdateRequestDTO;
 import com.findoutmyloan.application.customer.entity.Customer;
+import com.findoutmyloan.application.customer.enums.CustomerErrorMessage;
 import com.findoutmyloan.application.customer.enums.CustomerTypeAccordingToMonthlyIncome;
 import com.findoutmyloan.application.customer.mapper.CustomerMapper;
 import com.findoutmyloan.application.customer.repository.CustomerRepository;
@@ -22,7 +23,6 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class CustomerServiceImpl extends BaseService<Customer> implements CustomerService {
     private final CustomerRepository customerRepository;
-    private final PersonRepository personRepository;
 
     @Override
     public CustomerDTO saveCustomer(CustomerSaveRequestDTO customerSaveRequestDTO) {
@@ -56,15 +56,13 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
                CustomerTypeAccordingToMonthlyIncome.HIGH_INCOME.getMaximumMonthlyIncome();
     }
 
-    //TODO: move to base service
     private Customer findCustomerByIdOrThrowException(Long id) {
-        return (Customer) customerRepository.findById(id).orElseThrow(()->new ItemNotFoundException(GenericErrorMessage.ITEM_NOT_FOUND));
+        return (Customer) customerRepository.findById(id).orElseThrow(()->new ItemNotFoundException(CustomerErrorMessage.CUSTOMER_NOT_FOUND));
     }
     public Customer findCustomerByIdentityNoOrThrowException(Long id) {
-        return (Customer) customerRepository.findByIdentityNo(id).orElseThrow(()->new ItemNotFoundException(GenericErrorMessage.ITEM_NOT_FOUND));
+        return (Customer) customerRepository.findByIdentityNo(id).orElseThrow(()->new ItemNotFoundException(CustomerErrorMessage.CUSTOMER_NOT_FOUND));
     }
 
-    //TODO: move to base service
     @Override
     public CustomerDTO getByIdWithControl(Long id) {
         Customer customer=findCustomerByIdOrThrowException(id);
@@ -87,7 +85,6 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
         customerToUpdate.setMonthlyIncome(customer.getMonthlyIncome());
         customerToUpdate.setPhoneNumber(customer.getPhoneNumber());
         customerToUpdate.setBirthDate(customer.getBirthDate());
-//        customerToUpdate.setBaseAdditionalFields(customer.getBaseAdditionalFields());
         customerRepository.save(customerToUpdate);
 
         return CustomerMapper.INSTANCE.convertToCustomerDTO(customer);
