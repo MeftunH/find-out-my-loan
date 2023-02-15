@@ -1,11 +1,9 @@
 package com.findoutmyloan.application.loan.controller;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
-import com.findoutmyloan.application.creditscore.dto.CreditScoreRequestDTO;
 import com.findoutmyloan.application.facade.LoanFacade;
 import com.findoutmyloan.application.loan.dto.LoanApplicationRequestDTO;
 import com.findoutmyloan.application.loan.dto.LoanDTO;
-import com.findoutmyloan.application.loan.dto.LoanRequestFromCustomerDTO;
 import com.findoutmyloan.application.loan.dto.LoanSaveRequestDTO;
 import com.findoutmyloan.application.loan.service.LoanService;
 import com.findoutmyloan.application.generic.dto.RestResponse;

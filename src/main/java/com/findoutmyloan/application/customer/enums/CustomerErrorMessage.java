@@ -1,7 +1,7 @@
 package com.findoutmyloan.application.customer.enums;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
-import com.findoutmyloan.application.generic.errorMessage.BaseErrorMessage;
+import com.findoutmyloan.application.general.errorMessage.BaseErrorMessage;
 
 public enum CustomerErrorMessage implements BaseErrorMessage {
     CUSTOMER_NOT_FOUND("Customer Not Found!","Please check the id of the customer."),

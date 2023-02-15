@@ -3,7 +3,6 @@ package com.findoutmyloan.application.customer.service;
 
 import com.findoutmyloan.application.customer.enums.CustomerErrorMessage;
 import com.findoutmyloan.application.customer.repository.CustomerRepository;
-import com.findoutmyloan.application.generic.exception.InformationMismatchException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +12,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class CustomerValidationService {
+public class CustomerValidationService{
     private final CustomerRepository customerRepository;
 
     public void validateCustomerByIdentityNoAndBirthDate(Long identityNo, Date birthDate) throws GeneralSecurityException {

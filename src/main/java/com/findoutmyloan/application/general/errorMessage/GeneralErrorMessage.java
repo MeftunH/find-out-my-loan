@@ -1,7 +1,7 @@
-package com.findoutmyloan.application.generic.errorMessage;
+package com.findoutmyloan.application.general.errorMessage;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
-public enum GenericErrorMessage implements BaseErrorMessage {
+public enum GeneralErrorMessage implements BaseErrorMessage {
     ITEM_NOT_FOUND("Item not found!","Please check the id of the item."),
     DATE_COULD_NOT_BE_CONVERTED("Date could not be converted!","Please be sure your date is correct."),
     VALUE_CANNOT_BE_NEGATIVE("Value cannot be negative!","Please enter a value that is zero or larger."),
@@ -11,7 +11,7 @@ public enum GenericErrorMessage implements BaseErrorMessage {
     private final String message;
     private  final String detailMessage;
 
-    GenericErrorMessage(String message, String detailMessage){
+    GeneralErrorMessage(String message, String detailMessage){
         this.message = message;
         this.detailMessage = detailMessage;
     }

@@ -1,4 +1,4 @@
-package com.findoutmyloan.application.generic.handler;
+package com.findoutmyloan.application.general.handler;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
 import lombok.AllArgsConstructor;
@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Data
 @AllArgsConstructor
-public class GenericExceptionResponse {
+public class GeneralExceptionResponse {
 
     private Date errorDate;
     private String message;

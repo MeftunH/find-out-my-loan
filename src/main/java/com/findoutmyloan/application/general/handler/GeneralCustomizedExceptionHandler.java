@@ -1,11 +1,11 @@
-package com.findoutmyloan.application.generic.handler;
+package com.findoutmyloan.application.general.handler;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
 import com.findoutmyloan.application.generic.dto.RestResponse;
-import com.findoutmyloan.application.generic.errorMessage.BaseErrorMessage;
-import com.findoutmyloan.application.generic.exception.GenericBusinessException;
-import com.findoutmyloan.application.generic.exception.IllegalFieldException;
-import com.findoutmyloan.application.generic.exception.ItemNotFoundException;
+import com.findoutmyloan.application.general.errorMessage.BaseErrorMessage;
+import com.findoutmyloan.application.general.exception.GeneralBusinessException;
+import com.findoutmyloan.application.general.exception.IllegalFieldException;
+import com.findoutmyloan.application.general.exception.ItemNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,7 @@ import java.util.Date;
 
 @RestController
 @ControllerAdvice
-public class GenericCustomizedExceptionHandler extends ResponseEntityExceptionHandler {
+public class GeneralCustomizedExceptionHandler extends ResponseEntityExceptionHandler {
    private final String validationMessage = "Validation failed!";
     @ExceptionHandler
     public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest webRequest){
@@ -29,9 +29,9 @@ public class GenericCustomizedExceptionHandler extends ResponseEntityExceptionHa
         String message = ex.getMessage();
         String description = webRequest.getDescription(false);
 
-        GenericExceptionResponse genExceptionResponse = new GenericExceptionResponse(errorDate, message, description);
+        GeneralExceptionResponse genExceptionResponse = new GeneralExceptionResponse(errorDate, message, description);
 
-        RestResponse<GenericExceptionResponse> restResponse = RestResponse.error(genExceptionResponse);
+        RestResponse<GeneralExceptionResponse> restResponse = RestResponse.error(genExceptionResponse);
         restResponse.setMessage(message);
 
         return new ResponseEntity<>(restResponse, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -48,16 +48,16 @@ public class GenericCustomizedExceptionHandler extends ResponseEntityExceptionHa
         String message = baseErrorMessage.getMessage();
         String description = baseErrorMessage.getDetailMessage();
 
-        GenericExceptionResponse genExceptionResponse = new GenericExceptionResponse(errorDate, message, description);
+        GeneralExceptionResponse genExceptionResponse = new GeneralExceptionResponse(errorDate, message, description);
 
-        RestResponse<GenericExceptionResponse> restResponse = RestResponse.error(genExceptionResponse);
+        RestResponse<GeneralExceptionResponse> restResponse = RestResponse.error(genExceptionResponse);
         restResponse.setMessage(message);
 
         return new ResponseEntity<>(restResponse, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler
-    public final ResponseEntity<Object> handleAllGenBusinessException(GenericBusinessException ex, WebRequest webRequest){
+    public final ResponseEntity<Object> handleAllGenBusinessException(GeneralBusinessException ex, WebRequest webRequest){
 
         //Exc casting
         return getObjectResponseEntity(ex.getBaseErrorMessage(), (ItemNotFoundException) ex);
@@ -70,9 +70,9 @@ public class GenericCustomizedExceptionHandler extends ResponseEntityExceptionHa
         String message = ex.getBaseErrorMessage().getMessage();
         String description = ex.getBaseErrorMessage().getDetailMessage();
 
-        GenericExceptionResponse genExceptionResponse = new GenericExceptionResponse(errorDate, message, description);
+        GeneralExceptionResponse genExceptionResponse = new GeneralExceptionResponse(errorDate, message, description);
 
-        RestResponse<GenericExceptionResponse> restResponse = RestResponse.error(genExceptionResponse);
+        RestResponse<GeneralExceptionResponse> restResponse = RestResponse.error(genExceptionResponse);
         restResponse.setMessage(message);
 
         return new ResponseEntity<>(restResponse, HttpStatus.BAD_REQUEST);
@@ -83,8 +83,8 @@ public class GenericCustomizedExceptionHandler extends ResponseEntityExceptionHa
         Date errorDate = new Date();
         String description = ex.getBindingResult().toString();
 
-        GenericExceptionResponse genExceptionResponse = new GenericExceptionResponse(errorDate, validationMessage, description);
-        RestResponse<GenericExceptionResponse> restResponse = RestResponse.error(genExceptionResponse);
+        GeneralExceptionResponse genExceptionResponse = new GeneralExceptionResponse(errorDate, validationMessage, description);
+        RestResponse<GeneralExceptionResponse> restResponse = RestResponse.error(genExceptionResponse);
         restResponse.setMessage(validationMessage);
 
         return new ResponseEntity<>(restResponse, HttpStatus.BAD_REQUEST);
