@@ -1,7 +1,7 @@
-package com.findoutmyloan.application.generic.exception;
+package com.findoutmyloan.application.general.exception;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
-import com.findoutmyloan.application.generic.errorMessage.BaseErrorMessage;
+import com.findoutmyloan.application.general.errorMessage.BaseErrorMessage;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @RequiredArgsConstructor
 @Getter
 @Setter
-public class GenericBusinessException extends RuntimeException{
+public class GeneralBusinessException extends RuntimeException{
     private final BaseErrorMessage baseErrorMessage;
 
 }

@@ -23,9 +23,12 @@ import com.findoutmyloan.application.person.dto.PersonDTO;
 import com.findoutmyloan.application.surety.dto.SuretySaveRequestDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(propagation = Propagation.REQUIRED)
 public class LoanFacadeImpl implements LoanFacade {
     private final LoanService loanService;
     private final CreditScoreApiService creditScoreApiService;
@@ -76,7 +79,6 @@ public class LoanFacadeImpl implements LoanFacade {
         } else {
             loanSaveRequestDTO.setResult(LoanResult.APPROVED);
         }
-        LoanDTO loanDTO=loanService.saveLoan(loanSaveRequestDTO);
-        return loanDTO;
+        return loanService.saveLoan(loanSaveRequestDTO);
     }
 }
