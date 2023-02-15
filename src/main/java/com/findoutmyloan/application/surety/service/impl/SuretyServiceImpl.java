@@ -11,11 +11,14 @@ import com.findoutmyloan.application.surety.repository.SuretyRepository;
 import com.findoutmyloan.application.surety.service.SuretyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(propagation = Propagation.REQUIRED)
 public class SuretyServiceImpl extends BaseService<Surety> implements SuretyService {
 
     private final SuretyRepository suretyRepository;

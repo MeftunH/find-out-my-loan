@@ -24,6 +24,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(propagation = Propagation.REQUIRED)
 public class LoanServiceImpl extends BaseService<Loan> implements LoanService {
     private final LoanRepository loanRepository;
     private final CustomerProfilerService customerProfilerService;

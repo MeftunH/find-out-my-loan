@@ -17,15 +17,19 @@ import com.findoutmyloan.application.loan.dto.LoanDTO;
 import com.findoutmyloan.application.loan.entity.Loan;
 import com.findoutmyloan.application.loan.mapper.LoanMapper;
 import com.findoutmyloan.application.loan.service.LoanService;
+import com.findoutmyloan.application.person.enums.PersonType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.security.GeneralSecurityException;
 import java.util.Date;
 import java.util.List;
 
 @Service
+@Transactional(propagation = Propagation.REQUIRED)
 public class CustomerServiceImpl extends BaseService<Customer> implements CustomerService {
     private CustomerRepository customerRepository;
     private CustomerValidationService customerValidationService;
@@ -74,13 +78,18 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
     }
 
     private Customer findCustomerByIdOrThrowException(Long id) {
-        return (Customer) customerRepository.findById(id).orElseThrow(()->new ItemNotFoundException(CustomerErrorMessage.CUSTOMER_NOT_FOUND));
+        Customer customer = (Customer) customerRepository.findById(id).orElseThrow(() -> new ItemNotFoundException(CustomerErrorMessage.CUSTOMER_NOT_FOUND));
+        if (customer.getPersonType()== PersonType.CUSTOMER)
+            return customer;
+        else
+            throw new ItemNotFoundException(CustomerErrorMessage.CUSTOMER_NOT_FOUND);
     }
 
     public Customer findCustomerByIdentityNoOrThrowException(Long id) {
         return (Customer) customerRepository.findByIdentityNo(id).orElseThrow(()->new ItemNotFoundException(CustomerErrorMessage.CUSTOMER_NOT_FOUND));
     }
 
+    @Transactional(propagation= Propagation.NOT_SUPPORTED)
     @Override
     public CustomerDTO getByIdWithControl(Long id) {
         Customer customer=findCustomerByIdOrThrowException(id);
@@ -108,7 +117,6 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
         return CustomerMapper.INSTANCE.convertToCustomerDTO(customer);
     }
 
-    //fixme: exception handling
     @Override
     public List<LoanDTO> findLoansByCustomerIdentityNoAndCustomerBirthDate(long identityNo, Date birthDate) throws GeneralSecurityException {
         customerValidationService.validateCustomerByIdentityNoAndBirthDate(identityNo, birthDate);

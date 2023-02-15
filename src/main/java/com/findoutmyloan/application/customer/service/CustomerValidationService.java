@@ -5,6 +5,8 @@ import com.findoutmyloan.application.customer.enums.CustomerErrorMessage;
 import com.findoutmyloan.application.customer.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.security.GeneralSecurityException;
 import java.util.Date;
@@ -12,6 +14,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(propagation = Propagation.REQUIRED)
 public class CustomerValidationService{
     private final CustomerRepository customerRepository;
 
