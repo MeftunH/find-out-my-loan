@@ -16,4 +16,5 @@ public interface CustomerMapper {
     CustomerDTO convertToCustomerDTO(Customer customer);
 
     Customer convertToCustomer(CustomerUpdateRequestDTO customerUpdateRequestDTO);
+    Customer convertToCustomer(CustomerDTO customerDTO);
 }

@@ -12,7 +12,7 @@ public interface CustomerService {
 
     CustomerDTO getByIdWithControl(Long id);
     Customer findCustomerByIdentityNoOrThrowException(Long id);
-
+    void notifyCustomer(Customer customer);
     void deleteCustomerByIdWithControl(Long id);
     CustomerTypeAccordingToMonthlyIncome getCustomerTypeAccordingToMonthlyIncome(float monthlyIncome);
     CustomerDTO updateCustomer(CustomerUpdateRequestDTO customerUpdateRequestDTO);
