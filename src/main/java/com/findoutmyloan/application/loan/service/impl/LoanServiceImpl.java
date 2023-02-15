@@ -2,10 +2,9 @@ package com.findoutmyloan.application.loan.service.impl;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
 import com.findoutmyloan.application.creditscore.enums.CreditScoreType;
-import com.findoutmyloan.application.customer.entity.Customer;
-import com.findoutmyloan.application.customer.repository.CustomerRepository;
+import com.findoutmyloan.application.customer.mapper.CustomerMapper;
 import com.findoutmyloan.application.customer.service.CustomerProfilerService;
-import com.findoutmyloan.application.generic.entity.BaseAdditionalFields;
+import com.findoutmyloan.application.customer.service.CustomerService;
 import com.findoutmyloan.application.generic.service.BaseService;
 import com.findoutmyloan.application.loan.dto.LoanDTO;
 import com.findoutmyloan.application.loan.dto.LoanSaveRequestDTO;
@@ -13,16 +12,18 @@ import com.findoutmyloan.application.loan.entity.Loan;
 import com.findoutmyloan.application.loan.mapper.LoanMapper;
 import com.findoutmyloan.application.loan.repository.LoanRepository;
 import com.findoutmyloan.application.loan.service.LoanService;
+import com.findoutmyloan.application.notification.event.CustomerLoanApplicationEvent;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
-
-import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
 public class LoanServiceImpl extends BaseService<Loan> implements LoanService {
     private final LoanRepository loanRepository;
     private final CustomerProfilerService customerProfilerService;
+    private final ApplicationEventPublisher applicationEventPublisher;
+    private final CustomerService customerService;
 
     @Override
     public boolean isSuitableForCalculate(int creditScore) {
@@ -50,6 +51,9 @@ public class LoanServiceImpl extends BaseService<Loan> implements LoanService {
         Loan loan=LoanMapper.INSTANCE.convertToLoan(loanSaveRequestDTO);
         setAdditionalFields(loan);
         loanRepository.save(loan);
+        applicationEventPublisher.publishEvent(new CustomerLoanApplicationEvent(this,
+                CustomerMapper.INSTANCE.convertToCustomer(customerService.getByIdWithControl(loanSaveRequestDTO.getCustomerId()))));
+
         return LoanMapper.INSTANCE.convertToLoanDto(loan);
     }
 }
