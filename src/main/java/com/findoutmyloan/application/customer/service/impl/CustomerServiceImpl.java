@@ -20,6 +20,7 @@ import com.findoutmyloan.application.loan.service.LoanService;
 import com.findoutmyloan.application.person.enums.PersonType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,19 +35,25 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
     private CustomerRepository customerRepository;
     private CustomerValidationService customerValidationService;
     private LoanService loanService;
+    private PasswordEncoder passwordEncoder;
 
     //fixed: @Lazy annotation is used to avoid circular dependency
     @Autowired
-    public CustomerServiceImpl(CustomerRepository customerRepository, CustomerValidationService customerValidationService, @Lazy LoanService loanService) {
+    public CustomerServiceImpl(CustomerRepository customerRepository, CustomerValidationService customerValidationService, @Lazy LoanService loanService, PasswordEncoder passwordEncoder) {
         this.customerRepository=customerRepository;
         this.customerValidationService=customerValidationService;
         this.loanService=loanService;
+        this.passwordEncoder=passwordEncoder;
     }
 
     @Override
     public CustomerDTO saveCustomer(CustomerSaveRequestDTO customerSaveRequestDTO) {
         Customer customer=CustomerMapper.INSTANCE.convertToCustomer(customerSaveRequestDTO);
         setAdditionalFields(customer);
+
+        String password=passwordEncoder.encode(customer.getPassword());
+        customer.setPassword(password);
+
         Customer savedCustomer=customerRepository.save(customer);
         return CustomerMapper.INSTANCE.convertToCustomerDTO(savedCustomer);
     }
@@ -78,18 +85,18 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
     }
 
     private Customer findCustomerByIdOrThrowException(Long id) {
-        Customer customer = (Customer) customerRepository.findById(id).orElseThrow(() -> new ItemNotFoundException(CustomerErrorMessage.CUSTOMER_NOT_FOUND));
-        if (customer.getPersonType()== PersonType.CUSTOMER)
+        Customer customer=(Customer) customerRepository.findById(id).orElseThrow(()->new ItemNotFoundException(CustomerErrorMessage.CUSTOMER_NOT_FOUND));
+        if (customer.getPersonType()==PersonType.CUSTOMER)
             return customer;
         else
             throw new ItemNotFoundException(CustomerErrorMessage.CUSTOMER_NOT_FOUND);
     }
 
-    public Customer findCustomerByIdentityNoOrThrowException(Long id) {
-        return (Customer) customerRepository.findByIdentityNo(id).orElseThrow(()->new ItemNotFoundException(CustomerErrorMessage.CUSTOMER_NOT_FOUND));
+    public Customer findCustomerByIdentityNoOrThrowException(Long identityNo) {
+        return (Customer) customerRepository.findByIdentityNo(identityNo).orElseThrow(()->new ItemNotFoundException(CustomerErrorMessage.CUSTOMER_NOT_FOUND));
     }
 
-    @Transactional(propagation= Propagation.NOT_SUPPORTED)
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     @Override
     public CustomerDTO getByIdWithControl(Long id) {
         Customer customer=findCustomerByIdOrThrowException(id);

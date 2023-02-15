@@ -16,7 +16,7 @@ public interface CustomerService {
     CustomerDTO saveCustomer(CustomerSaveRequestDTO customerSaveRequestDTO);
 
     CustomerDTO getByIdWithControl(Long id);
-    Customer findCustomerByIdentityNoOrThrowException(Long id);
+    Customer findCustomerByIdentityNoOrThrowException(Long identityNo);
     void deleteCustomerByIdWithControl(Long id);
     CustomerTypeAccordingToMonthlyIncome getCustomerTypeAccordingToMonthlyIncome(float monthlyIncome);
     CustomerDTO updateCustomer(CustomerUpdateRequestDTO customerUpdateRequestDTO);

@@ -27,28 +27,18 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<RestResponse<CustomerDTO>> getCustomerById(@PathVariable Long id) {
+    public ResponseEntity<RestResponse<MappingJacksonValue>> getCustomerById(@PathVariable Long id) {
         CustomerDTO customerDTO=customerService.getByIdWithControl(id);
-
-        return ResponseEntity.ok(RestResponse.of(customerDTO));
-    }
-
-    @PostMapping
-    public ResponseEntity<RestResponse<MappingJacksonValue>> saveCustomer(@RequestBody CustomerSaveRequestDTO customerSaveRequestDTO) {
-        CustomerDTO customerDTO=customerService.saveCustomer(customerSaveRequestDTO);
-
         WebMvcLinkBuilder link=WebMvcLinkBuilder.linkTo(
-                WebMvcLinkBuilder.methodOn(this.getClass()).getCustomerById(customerDTO.getId()));
+                WebMvcLinkBuilder.methodOn(this.getClass()).deleteCustomerById(customerDTO.getId()));
 
         EntityModel entityModel=EntityModel.of(customerDTO);
 
         entityModel.add(link.withRel("getCustomerById"));
 
         MappingJacksonValue mappingJacksonValue=new MappingJacksonValue(entityModel);
-
         return ResponseEntity.ok(RestResponse.of(mappingJacksonValue));
     }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<RestResponse<Object>> deleteCustomerById(@PathVariable Long id) {
         customerService.deleteCustomerByIdWithControl(id);
