@@ -1,24 +1,30 @@
 package com.findoutmyloan.application.surety.service.impl;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
+import com.findoutmyloan.application.generic.entity.BaseAdditionalFields;
+import com.findoutmyloan.application.generic.service.BaseService;
 import com.findoutmyloan.application.surety.dto.SuretyDTO;
-import com.findoutmyloan.application.surety.entity.Surety;
 import com.findoutmyloan.application.surety.dto.SuretySaveRequestDTO;
+import com.findoutmyloan.application.surety.entity.Surety;
 import com.findoutmyloan.application.surety.mapper.SuretyMapper;
 import com.findoutmyloan.application.surety.repository.SuretyRepository;
 import com.findoutmyloan.application.surety.service.SuretyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Service
 @RequiredArgsConstructor
-public class SuretyServiceImpl implements SuretyService {
+public class SuretyServiceImpl extends BaseService<Surety> implements SuretyService {
 
     private final SuretyRepository suretyRepository;
+
     @Override
     public SuretyDTO saveSurety(SuretySaveRequestDTO suretySaveRequestDTO) {
-        Surety surety = SuretyMapper.INSTANCE.convertToSurety(suretySaveRequestDTO);
-        Surety savedSurety = suretyRepository.save(surety);
+        Surety surety=SuretyMapper.INSTANCE.convertToSurety(suretySaveRequestDTO);
+        setAdditionalFields(surety);
+        Surety savedSurety=suretyRepository.save(surety);
         return SuretyMapper.INSTANCE.convertToSuretyDto(savedSurety);
     }
 }

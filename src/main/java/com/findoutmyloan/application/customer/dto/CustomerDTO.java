@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * A DTO for the {@link Customer} entity
@@ -20,4 +21,6 @@ public class CustomerDTO extends PersonDTO implements Serializable {
     private float monthlyIncome;
     @NotNull
     private final float customerLimit;
+    private Date baseAdditionalFieldsCreatedDate;
+    private Date baseAdditionalFieldsUpdatedDate;
 }

@@ -9,7 +9,11 @@ import org.mapstruct.factory.Mappers;
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface CollateralMapper {
     CollateralMapper INSTANCE = Mappers.getMapper(CollateralMapper.class);
+    @Mapping(source = "baseAdditionalFieldsUpdatedDate", target = "baseAdditionalFields.updatedDate")
+    @Mapping(source = "baseAdditionalFieldsCreatedDate", target = "baseAdditionalFields.createdDate")
     Collateral convertToCollateral(CollateralDTO collateralDto);
     Collateral convertToCollateral(CollateralSaveRequestDTO collateralSaveRequestDTO);
+    @Mapping(source = "baseAdditionalFields.updatedDate", target = "baseAdditionalFieldsUpdatedDate")
+    @Mapping(source = "baseAdditionalFields.createdDate", target = "baseAdditionalFieldsCreatedDate")
     CollateralDTO convertToCollateralDTO(Collateral collateral);
 }
