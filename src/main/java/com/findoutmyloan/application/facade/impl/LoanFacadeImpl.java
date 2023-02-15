@@ -10,6 +10,7 @@ import com.findoutmyloan.application.customer.dto.CustomerCreditScoreRequestDTO;
 import com.findoutmyloan.application.customer.entity.Customer;
 import com.findoutmyloan.application.customer.repository.CustomerRepository;
 import com.findoutmyloan.application.customer.service.CustomerService;
+import com.findoutmyloan.application.facade.BuilderFacade;
 import com.findoutmyloan.application.facade.EntityFacade;
 import com.findoutmyloan.application.facade.LoanFacade;
 import com.findoutmyloan.application.loan.dto.LoanApplicationRequestDTO;
@@ -29,57 +30,46 @@ public class LoanFacadeImpl implements LoanFacade {
     private final LoanService loanService;
     private final CreditScoreApiService creditScoreApiService;
     private final EntityFacade entityFacade;
+    private final BuilderFacade builderFacade;
     private final CollateralService collateralService;
     private final CustomerService customerService;
     private final CustomerRepository customerRepository;
 
     @Override
     public LoanDTO applyLoan(LoanApplicationRequestDTO loanApplicationRequestDTO) {
+        builderFacade.invokeBuilder(loanApplicationRequestDTO);
 
-
-        CustomerCreditScoreRequestDTO customerCreditScoreRequestDTO = CustomerCreditScoreRequestDTO.builder()
-                .name(loanApplicationRequestDTO.getCustomerName())
-                .surname(loanApplicationRequestDTO.getCustomerSurname())
-                .birthDate(loanApplicationRequestDTO.getCustomerBirthDate())
-                .identityNo(loanApplicationRequestDTO.getCustomerIdentityNo())
-                .personType(loanApplicationRequestDTO.getCustomerPersonType())
-                .phoneNumber(loanApplicationRequestDTO.getCustomerPhoneNumber())
-                .monthlyIncome(loanApplicationRequestDTO.getCustomerMonthlyIncome())
-                .build();
-        SuretySaveRequestDTO suretySaveRequestDTO = SuretySaveRequestDTO.builder()
-                .name(loanApplicationRequestDTO.getSuretyName())
-                .surname(loanApplicationRequestDTO.getSuretySurname())
-                .birthDate(loanApplicationRequestDTO.getSuretyBirthDate())
-                .identityNo(loanApplicationRequestDTO.getSuretyIdentityNo())
-                .personType(loanApplicationRequestDTO.getSuretyPersonType())
-                .phoneNumber(loanApplicationRequestDTO.getSuretyPhoneNumber())
-                .identityNo(loanApplicationRequestDTO.getSuretyIdentityNo())
-                .toCustomerId(loanApplicationRequestDTO.getCustomerId())
-                .build();
-
-        CollateralSaveRequestDTO collateralSaveRequestDTO = CollateralSaveRequestDTO.builder()
-                .collateralType(loanApplicationRequestDTO.getCollateralType())
-                .customerId(loanApplicationRequestDTO.getCustomerId())
-                .worth(loanApplicationRequestDTO.getCollateralWorth())
-                .build();
-        CreditScoreRequestDTO creditScoreRequestDTO = CreditScoreRequestDTO.builder()
-                .customerCreditScoreRequestDTO(customerCreditScoreRequestDTO)
-                .suretySaveRequestDTO(suretySaveRequestDTO)
-                .collateralSaveRequestDTO(collateralSaveRequestDTO)
-                .customerIdentityNo(loanApplicationRequestDTO.getCustomerIdentityNo())
-                .build();
+        CustomerCreditScoreRequestDTO customerCreditScoreRequestDTO = builderFacade.getCustomerCreditScoreRequestDTO();
+        SuretySaveRequestDTO suretySaveRequestDTO = builderFacade.getSuretySaveRequestDTO();
+        CollateralSaveRequestDTO collateralSaveRequestDTO = builderFacade.getCollateralSaveRequestDTO();
+        CreditScoreRequestDTO creditScoreRequestDTO = builderFacade.getCreditScoreRequestDTO();
         CreditScoreResponseDTO creditScoreResponseDTO = creditScoreApiService.getCreditScore(creditScoreRequestDTO);
+
         entityFacade.saveEntity(suretySaveRequestDTO,collateralSaveRequestDTO);
+
         LoanSaveRequestDTO loanSaveRequestDTO=LoanMapper.INSTANCE.loanRequestFromCustomerDTOToLoanSaveRequestDTO(loanApplicationRequestDTO);
         float limitOfCustomer=loanService.calculateLimitOfCustomer(creditScoreResponseDTO.getCreditScore(), creditScoreRequestDTO.getCustomerCreditScoreRequestDTO().getMonthlyIncome());
+        limitOfCustomer=getLimitOfCustomer(creditScoreRequestDTO, creditScoreResponseDTO, limitOfCustomer);
+        LoanDTO loanDTO=setLoanDTO(creditScoreResponseDTO, loanSaveRequestDTO, limitOfCustomer);
+        Customer customer=customerService.findCustomerByIdentityNoOrThrowException(creditScoreRequestDTO.getCustomerCreditScoreRequestDTO().getIdentityNo());
+        customer.setCustomerLimit(limitOfCustomer);
+        customerRepository.save(customer);
+
+        return loanDTO;
+    }
+
+    private float getLimitOfCustomer(CreditScoreRequestDTO creditScoreRequestDTO, CreditScoreResponseDTO creditScoreResponseDTO, float limitOfCustomer) {
         if (creditScoreRequestDTO.getCollateralSaveRequestDTO()!=null) {
             limitOfCustomer=collateralService.addCollateralWorthToLoanLimit(creditScoreRequestDTO.getCollateralSaveRequestDTO().getWorth(),
                     creditScoreResponseDTO.getCreditScore(),
                     creditScoreRequestDTO.getCustomerCreditScoreRequestDTO().getMonthlyIncome(),
                     limitOfCustomer
             );
-
         }
+        return limitOfCustomer;
+    }
+
+    private LoanDTO setLoanDTO(CreditScoreResponseDTO creditScoreResponseDTO, LoanSaveRequestDTO loanSaveRequestDTO, float limitOfCustomer) {
         loanSaveRequestDTO.setAmount(limitOfCustomer);
         if (!loanService.isSuitableForCalculate(creditScoreResponseDTO.getCreditScore())) {
             loanSaveRequestDTO.setResult(LoanResult.REJECTED);
@@ -87,11 +77,6 @@ public class LoanFacadeImpl implements LoanFacade {
             loanSaveRequestDTO.setResult(LoanResult.APPROVED);
         }
         LoanDTO loanDTO=loanService.saveLoan(loanSaveRequestDTO);
-
-        Customer customer=customerService.findCustomerByIdentityNoOrThrowException(creditScoreRequestDTO.getCustomerCreditScoreRequestDTO().getIdentityNo());
-        customer.setCustomerLimit(limitOfCustomer);
-        customerRepository.save(customer);
-        System.out.println(creditScoreResponseDTO.getCreditScore());
         return loanDTO;
     }
 }
