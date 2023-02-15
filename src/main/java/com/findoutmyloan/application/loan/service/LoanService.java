@@ -3,9 +3,14 @@ package com.findoutmyloan.application.loan.service;
 
 import com.findoutmyloan.application.loan.dto.LoanDTO;
 import com.findoutmyloan.application.loan.dto.LoanSaveRequestDTO;
+import com.findoutmyloan.application.loan.entity.Loan;
+
+import java.util.Date;
+import java.util.List;
 
 public interface LoanService {
      LoanDTO saveLoan(LoanSaveRequestDTO loanSaveRequestDTO);
      boolean isSuitableForCalculate(int creditScore);
      float calculateLimitOfCustomer(int creditScore, float monthlyIncome);
+     List<Loan> findLoansByCustomerIdentityNoAndCustomerBirthDate(long identityNo, Date birthDate);
 }

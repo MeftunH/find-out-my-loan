@@ -17,6 +17,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class LoanServiceImpl extends BaseService<Loan> implements LoanService {
@@ -45,7 +48,6 @@ public class LoanServiceImpl extends BaseService<Loan> implements LoanService {
         }
         return limit;
     }
-
     @Override
     public LoanDTO saveLoan(LoanSaveRequestDTO loanSaveRequestDTO) {
         Loan loan=LoanMapper.INSTANCE.convertToLoan(loanSaveRequestDTO);
@@ -56,4 +58,9 @@ public class LoanServiceImpl extends BaseService<Loan> implements LoanService {
 
         return LoanMapper.INSTANCE.convertToLoanDto(loan);
     }
+    @Override
+    public List<Loan> findLoansByCustomerIdentityNoAndCustomerBirthDate(long identityNo, Date birthDate) {
+        return loanRepository.findLoansByCustomerIdentityNoAndCustomerBirthDate(identityNo, birthDate);
+    }
+
 }

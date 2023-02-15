@@ -24,7 +24,7 @@ public class PersonDTO implements Serializable {
     private long identityNo;
     @NotNull
     @Past
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date birthDate;
     @NotNull
     private String phoneNumber;

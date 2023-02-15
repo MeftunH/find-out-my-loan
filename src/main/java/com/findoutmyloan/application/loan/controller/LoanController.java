@@ -11,10 +11,7 @@ import com.findoutmyloan.application.loan.service.LoanService;
 import com.findoutmyloan.application.generic.dto.RestResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/loan")
@@ -33,4 +30,5 @@ public class LoanController {
         LoanDTO loanDTO= loanFacade.applyLoan(loanApplicationRequestDTO);
         return ResponseEntity.ok(RestResponse.of(loanDTO));
     }
+
 }
