@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * A DTO for the {@link Customer} entity
@@ -20,4 +21,6 @@ public class CustomerSaveRequestDTO extends PersonDTO implements Serializable {
     private float customerLimit;
     @NotNull
     private String password;
+    private Date baseAdditionalFieldsCreatedDate;
+    private Date baseAdditionalFieldsUpdatedDate;
 }

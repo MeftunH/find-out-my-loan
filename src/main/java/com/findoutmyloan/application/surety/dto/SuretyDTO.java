@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * A DTO for the {@link com.findoutmyloan.application.surety.entity.Surety} entity
@@ -19,4 +20,6 @@ public class SuretyDTO extends PersonDTO implements Serializable {
     private Long id;
     private SuretyType suretyType;
     private Long toCustomerId;
+    private Date baseAdditionalFieldsCreatedDate;
+    private Date baseAdditionalFieldsUpdatedDate;
 }

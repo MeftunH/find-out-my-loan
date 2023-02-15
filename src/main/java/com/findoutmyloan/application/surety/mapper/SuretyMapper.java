@@ -12,5 +12,7 @@ public interface SuretyMapper {
 
     Surety convertToSurety(SuretySaveRequestDTO suretySaveRequestDTO);
 
+    @Mapping(source = "baseAdditionalFields.updatedDate", target = "baseAdditionalFieldsUpdatedDate")
+    @Mapping(source = "baseAdditionalFields.createdDate", target = "baseAdditionalFieldsCreatedDate")
     SuretyDTO convertToSuretyDto(Surety savedSurety);
 }

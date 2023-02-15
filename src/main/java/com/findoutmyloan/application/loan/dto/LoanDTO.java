@@ -6,6 +6,7 @@ import com.findoutmyloan.application.loan.enums.PaybackGuaranteeType;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * A DTO for the {@link Loan} entity
@@ -16,4 +17,6 @@ public class LoanDTO implements Serializable {
     private final PaybackGuaranteeType paybackGuaranteeType;
     private float amount;
     private final LoanResult result;
+    private Date baseAdditionalFieldsCreatedDate;
+    private Date baseAdditionalFieldsUpdatedDate;
 }

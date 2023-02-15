@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Data
 public class LoanSaveRequestDTO implements Serializable {
@@ -20,4 +21,6 @@ public class LoanSaveRequestDTO implements Serializable {
     private LoanResult result;
 
     private int creditScore;
+    private Date baseAdditionalFieldsCreatedDate;
+    private Date baseAdditionalFieldsUpdatedDate;
 }
