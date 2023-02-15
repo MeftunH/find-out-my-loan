@@ -1,14 +1,11 @@
 package com.findoutmyloan.application.collateral.entity;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
-import com.findoutmyloan.application.collateral.CollateralType;
+import com.findoutmyloan.application.collateral.enums.CollateralType;
 import com.findoutmyloan.application.generic.entity.BaseEntity;
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.io.Serializable;
 
 @Entity
 @Getter

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * A DTO for the {@link com.findoutmyloan.application.customer.entity.Customer} entity
@@ -18,4 +19,6 @@ public class CustomerUpdateRequestDTO extends PersonDTO implements Serializable 
     @NotNull
     private float customerLimit;
     private String password;
+    private Date baseAdditionalFieldsCreatedDate;
+    private Date baseAdditionalFieldsUpdatedDate;
 }

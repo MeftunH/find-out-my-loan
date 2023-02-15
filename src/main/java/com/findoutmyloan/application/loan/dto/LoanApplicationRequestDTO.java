@@ -2,7 +2,7 @@ package com.findoutmyloan.application.loan.dto;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.findoutmyloan.application.collateral.CollateralType;
+import com.findoutmyloan.application.collateral.enums.CollateralType;
 import com.findoutmyloan.application.loan.enums.PaybackGuaranteeType;
 import com.findoutmyloan.application.person.enums.PersonType;
 import jakarta.validation.constraints.NotNull;
