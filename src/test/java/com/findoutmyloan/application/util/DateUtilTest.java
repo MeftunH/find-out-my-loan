@@ -1,6 +1,7 @@
 package com.findoutmyloan.application.util;
 
 import com.findoutmyloan.application.general.exception.GeneralBusinessException;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -22,12 +23,9 @@ class DateUtilTest {
         SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
     }
 
-    @Test
-    void shouldConvertToDateTime() throws ParseException {
-
-        Date date=formatterDate.parse("2023-01-01");
-        LocalDateTime localDateTime=DateUtil.convertToDateTime(date).atStartOfDay();
-        assertEquals(localDateTime, LocalDateTime.of(2023, 1, 1, 0, 0, 0));
+   @AfterAll
+    public static void tearDown() {
+        formatterDate=null;
     }
     @Test
     void shouldIgnoreTimeInformationWhenConvertToDateTime() {
@@ -44,6 +42,15 @@ class DateUtilTest {
         LocalDate expected=date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate result=DateUtil.convertToDateTime(date);
         assertEquals(expected, result);
+    }
+
+    @Test
+    void shouldConvertToLocalDateTimeWhenTimeIsMidnight() {
+        Calendar calendar=Calendar.getInstance();
+        calendar.set(2023, Calendar.FEBRUARY, 16, 23, 59, 59);
+        Date date=calendar.getTime();
+        LocalDateTime result=DateUtil.convertToDateTime(date).atTime(23, 59, 59);
+        assertEquals(LocalDateTime.of(2023, 2, 16, 23, 59, 59), result);
     }
 
     @Test
