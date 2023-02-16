@@ -2,7 +2,7 @@ package com.findoutmyloan.application.customer.controller;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
 
-import com.findoutmyloan.application.customer.dto.CustomerResultDTO;
+import com.findoutmyloan.application.customer.dto.CustomerResponseDTO;
 import com.findoutmyloan.application.customer.dto.CustomerUpdateRequestDTO;
 import com.findoutmyloan.application.customer.service.CustomerService;
 import com.findoutmyloan.application.generic.dto.RestResponse;
@@ -29,11 +29,11 @@ public class CustomerController {
 
     @GetMapping
     public ResponseEntity<RestResponse<MappingJacksonValue>> getMyAccountInformation() {
-        CustomerResultDTO customerResultDTO=customerService.getByIdWithControl(authenticationService.getCurrentCustomer().getId());
+        CustomerResponseDTO customerResponseDTO=customerService.getByIdWithControl(authenticationService.getCurrentCustomer().getId());
         WebMvcLinkBuilder link=WebMvcLinkBuilder.linkTo(
                 WebMvcLinkBuilder.methodOn(this.getClass()).deleteAccount());
 
-        EntityModel entityModel=EntityModel.of(customerResultDTO);
+        EntityModel entityModel=EntityModel.of(customerResponseDTO);
 
         entityModel.add(link.withRel("deleteCustomerById"));
 
@@ -47,9 +47,9 @@ public class CustomerController {
     }
 
     @PutMapping
-    public ResponseEntity<RestResponse<CustomerResultDTO>> updateAccount(@RequestBody CustomerUpdateRequestDTO customerUpdateRequestDTO) {
-        CustomerResultDTO customerResultDTO=customerService.updateCustomer(customerUpdateRequestDTO);
-        return ResponseEntity.ok(RestResponse.of(customerResultDTO));
+    public ResponseEntity<RestResponse<CustomerResponseDTO>> updateAccount(@RequestBody CustomerUpdateRequestDTO customerUpdateRequestDTO) {
+        CustomerResponseDTO customerResponseDTO=customerService.updateCustomer(customerUpdateRequestDTO);
+        return ResponseEntity.ok(RestResponse.of(customerResponseDTO));
     }
 
     @GetMapping("/{identityNo}/{birthday}/find-loans")

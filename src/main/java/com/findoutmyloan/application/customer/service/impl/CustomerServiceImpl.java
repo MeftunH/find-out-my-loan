@@ -2,7 +2,7 @@ package com.findoutmyloan.application.customer.service.impl;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
 import com.findoutmyloan.application.customer.dto.CustomerDTO;
-import com.findoutmyloan.application.customer.dto.CustomerResultDTO;
+import com.findoutmyloan.application.customer.dto.CustomerResponseDTO;
 import com.findoutmyloan.application.customer.dto.CustomerSaveRequestDTO;
 import com.findoutmyloan.application.customer.dto.CustomerUpdateRequestDTO;
 import com.findoutmyloan.application.customer.entity.Customer;
@@ -62,7 +62,7 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
     }
 
     @Override
-    public CustomerResultDTO saveCustomer(CustomerSaveRequestDTO customerSaveRequestDTO) {
+    public CustomerResponseDTO saveCustomer(CustomerSaveRequestDTO customerSaveRequestDTO) {
         Customer customer=CustomerMapper.INSTANCE.convertToCustomer(customerSaveRequestDTO);
         setAdditionalFields(customer);
 
@@ -115,7 +115,7 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
 
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     @Override
-    public CustomerResultDTO getByIdWithControl(Long id) {
+    public CustomerResponseDTO getByIdWithControl(Long id) {
         Customer customer=findCustomerByIdOrThrowException(id);
         return CustomerMapper.INSTANCE.convertToCustomerResultDTO(customer);
     }
@@ -132,7 +132,7 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
     }
 
     @Override
-    public CustomerResultDTO updateCustomer(CustomerUpdateRequestDTO customerUpdateRequestDTO) {
+    public CustomerResponseDTO updateCustomer(CustomerUpdateRequestDTO customerUpdateRequestDTO) {
         Customer customer=CustomerMapper.INSTANCE.convertToCustomer(customerUpdateRequestDTO);
         Customer customerToUpdate=findCustomerByIdentityNoOrThrowException(customer.getIdentityNo());
         setAdditionalFields(customerToUpdate);

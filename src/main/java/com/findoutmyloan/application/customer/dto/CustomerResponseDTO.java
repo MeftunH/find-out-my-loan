@@ -16,7 +16,7 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @SuperBuilder
-public class CustomerResultDTO extends PersonDTO implements Serializable {
+public class CustomerResponseDTO extends PersonDTO implements Serializable {
     @NotNull
     private float monthlyIncome;
     @NotNull

@@ -1,7 +1,7 @@
 package com.findoutmyloan.application.customer.mapper;
 
 import com.findoutmyloan.application.customer.dto.CustomerDTO;
-import com.findoutmyloan.application.customer.dto.CustomerResultDTO;
+import com.findoutmyloan.application.customer.dto.CustomerResponseDTO;
 import com.findoutmyloan.application.customer.dto.CustomerUpdateRequestDTO;
 import com.findoutmyloan.application.customer.entity.Customer;
 import com.findoutmyloan.application.customer.dto.CustomerSaveRequestDTO;
@@ -14,10 +14,10 @@ public interface CustomerMapper {
     Customer convertToCustomer(CustomerSaveRequestDTO customerSaveRequestDTO);
     @Mapping(source = "baseAdditionalFields.updatedDate", target = "baseAdditionalFieldsUpdatedDate")
     @Mapping(source = "baseAdditionalFields.createdDate", target = "baseAdditionalFieldsCreatedDate")
-    CustomerResultDTO convertToCustomerResultDTO(Customer customer);
+    CustomerResponseDTO convertToCustomerResultDTO(Customer customer);
 
     Customer convertToCustomer(CustomerUpdateRequestDTO customerUpdateRequestDTO);
-    Customer convertToCustomer(CustomerResultDTO customerResultDTO);
+    Customer convertToCustomer(CustomerResponseDTO customerResponseDTO);
     CustomerDTO convertToCustomerDTO(Customer customer);
 
     Customer convertToCustomer(CustomerDTO customerDTO);
