@@ -34,7 +34,7 @@ public class CustomerController {
 
         EntityModel entityModel=EntityModel.of(customerDTO);
 
-        entityModel.add(link.withRel("getCustomerById"));
+        entityModel.add(link.withRel("deleteCustomerById"));
 
         MappingJacksonValue mappingJacksonValue=new MappingJacksonValue(entityModel);
         return ResponseEntity.ok(RestResponse.of(mappingJacksonValue));
