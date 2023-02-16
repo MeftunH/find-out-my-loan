@@ -57,7 +57,6 @@ public class LoanFacadeImpl implements LoanFacade {
         LoanDTO loanDTO=setLoanDTO(creditScoreResponseDTO, loanSaveRequestDTO, limitOfLoan);
         return getCustomerLoanResponseDTO(loanApplicationRequestDTO, limitOfLoan, loanDTO);
     }
-
     private CustomerLoanResponseDTO getCustomerLoanResponseDTO(LoanApplicationRequestDTO loanApplicationRequestDTO, float limitOfLoan, LoanDTO loanDTO) {
         float limitOfCustomer=customerService.getLimitOfCustomer(loanApplicationRequestDTO, limitOfLoan);
 
@@ -66,14 +65,13 @@ public class LoanFacadeImpl implements LoanFacade {
         customerLoanResponseDTO.setAmount(limitOfLoan);
         return customerLoanResponseDTO;
     }
-
     private float getTotalLimitOfLoan(CreditScoreRequestDTO creditScoreRequestDTO, CreditScoreResponseDTO creditScoreResponseDTO) {
         float limitOfLoan=loanService.calculateLimitOfLoan(creditScoreResponseDTO.getCreditScore(), creditScoreRequestDTO.getCustomerCreditScoreRequestDTO().getMonthlyIncome());
-        limitOfLoan=addCollateralWorthToLoanLimit(creditScoreRequestDTO, creditScoreResponseDTO, limitOfLoan);
+       if (creditScoreRequestDTO.getCollateralSaveRequestDTO().getCollateralType()!=null) {
+           limitOfLoan=addCollateralWorthToLoanLimit(creditScoreRequestDTO, creditScoreResponseDTO, limitOfLoan);
+       }
         return limitOfLoan;
     }
-
-
     private float addCollateralWorthToLoanLimit(CreditScoreRequestDTO creditScoreRequestDTO, CreditScoreResponseDTO creditScoreResponseDTO, float limitOfLoan) {
         if (creditScoreRequestDTO.getCollateralSaveRequestDTO()!=null) {
             limitOfLoan=collateralService.addCollateralWorthToLoanLimit(creditScoreRequestDTO.getCollateralSaveRequestDTO().getWorth(),
