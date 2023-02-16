@@ -1,4 +1,4 @@
-package com.example.findoutmycreditscore;
+package com.findoutmyloan;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
