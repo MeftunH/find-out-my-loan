@@ -12,7 +12,6 @@ import java.util.Date;
 @Builder
 public class CollateralSaveRequestDTO implements Serializable {
     private CollateralType collateralType;
-    private long customerId;
     private float worth;
     private Date baseAdditionalFieldsCreatedDate;
     private Date baseAdditionalFieldsUpdatedDate;

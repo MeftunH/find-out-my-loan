@@ -55,12 +55,10 @@ public class BuilderFacadeImpl implements BuilderFacade {
                 .personType(loanApplicationRequestDTO.getSuretyPersonType())
                 .phoneNumber(loanApplicationRequestDTO.getSuretyPhoneNumber())
                 .identityNo(loanApplicationRequestDTO.getSuretyIdentityNo())
-                .toCustomerId(loanApplicationRequestDTO.getCustomerId())
                 .build();
 
         collateralSaveRequestDTO=CollateralSaveRequestDTO.builder()
                 .collateralType(loanApplicationRequestDTO.getCollateralType())
-                .customerId(loanApplicationRequestDTO.getCustomerId())
                 .worth(loanApplicationRequestDTO.getCollateralWorth())
                 .build();
         creditScoreRequestDTO=CreditScoreRequestDTO.builder()

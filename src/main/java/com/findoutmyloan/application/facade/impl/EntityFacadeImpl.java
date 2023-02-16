@@ -21,11 +21,11 @@ public class EntityFacadeImpl implements EntityFacade {
 
     @Override
     public void saveEntity(SuretySaveRequestDTO suretySaveRequestDTO, CollateralSaveRequestDTO collateralSaveRequestDTO) {
-        if (suretySaveRequestDTO!=null) {
+        if (suretySaveRequestDTO.getSuretyType()!=null) {
             suretyService.saveSurety(suretySaveRequestDTO);
         }
 
-        if (collateralSaveRequestDTO!=null) {
+        if (collateralSaveRequestDTO.getCollateralType()!=null) {
             collateralService.saveCollateral(collateralSaveRequestDTO);
         }
     }

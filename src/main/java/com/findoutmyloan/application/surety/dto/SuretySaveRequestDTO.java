@@ -19,7 +19,6 @@ import java.util.Date;
 @SuperBuilder
 public class SuretySaveRequestDTO extends PersonDTO implements Serializable {
     private SuretyType suretyType;
-    private Long toCustomerId;
     private Date baseAdditionalFieldsCreatedDate;
     private Date baseAdditionalFieldsUpdatedDate;
 }
