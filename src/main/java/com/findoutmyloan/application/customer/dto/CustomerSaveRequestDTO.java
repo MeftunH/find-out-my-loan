@@ -18,8 +18,6 @@ public class CustomerSaveRequestDTO extends PersonDTO implements Serializable {
     @NotNull
     private float monthlyIncome;
     @NotNull
-    private float customerLimit;
-    @NotNull
     private String password;
     private Date baseAdditionalFieldsCreatedDate;
     private Date baseAdditionalFieldsUpdatedDate;

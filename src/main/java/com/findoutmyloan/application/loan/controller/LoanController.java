@@ -2,6 +2,7 @@ package com.findoutmyloan.application.loan.controller;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
 import com.findoutmyloan.application.facade.LoanFacade;
+import com.findoutmyloan.application.loan.dto.CustomerLoanResponseDTO;
 import com.findoutmyloan.application.loan.dto.LoanApplicationRequestDTO;
 import com.findoutmyloan.application.loan.dto.LoanDTO;
 import com.findoutmyloan.application.loan.dto.LoanSaveRequestDTO;
@@ -24,8 +25,8 @@ public class LoanController {
     }
 
     @PostMapping("/apply")
-    public ResponseEntity<RestResponse<LoanDTO>> applyLoan(@RequestBody LoanApplicationRequestDTO loanApplicationRequestDTO) {
-        LoanDTO loanDTO= loanFacade.applyLoan(loanApplicationRequestDTO);
+    public ResponseEntity<RestResponse<CustomerLoanResponseDTO>> applyLoan(@RequestBody LoanApplicationRequestDTO loanApplicationRequestDTO) {
+        CustomerLoanResponseDTO loanDTO= loanFacade.applyLoan(loanApplicationRequestDTO);
         return ResponseEntity.ok(RestResponse.of(loanDTO));
     }
 

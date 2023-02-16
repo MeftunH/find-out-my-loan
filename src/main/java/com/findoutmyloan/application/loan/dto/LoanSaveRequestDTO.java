@@ -12,8 +12,6 @@ import java.util.Date;
 @Data
 public class LoanSaveRequestDTO implements Serializable {
     @NotNull
-    private Long customerId;
-    @NotNull
     private PaybackGuaranteeType paybackGuaranteeType;
     @NotNull
     private float amount;

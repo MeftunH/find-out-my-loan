@@ -22,7 +22,7 @@ public class CreditScoreApiServiceImpl implements CreditScoreApiService {
         this.httpHeaders=httpHeaders;
     }
 
-    @Value("${app.CREDIT_SCORE_ENDPOINT_URL}")
+    @Value("${application.CREDIT_SCORE_ENDPOINT_URL}")
     private String CREDIT_SCORE_ENDPOINT_URL;
 
     @Override

@@ -2,6 +2,7 @@ package com.findoutmyloan.application.customer.service.impl;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
 import com.findoutmyloan.application.customer.dto.CustomerDTO;
+import com.findoutmyloan.application.customer.dto.CustomerResponseDTO;
 import com.findoutmyloan.application.customer.dto.CustomerSaveRequestDTO;
 import com.findoutmyloan.application.customer.dto.CustomerUpdateRequestDTO;
 import com.findoutmyloan.application.customer.entity.Customer;
@@ -13,6 +14,7 @@ import com.findoutmyloan.application.customer.service.CustomerService;
 import com.findoutmyloan.application.customer.service.CustomerValidationService;
 import com.findoutmyloan.application.general.exception.ItemNotFoundException;
 import com.findoutmyloan.application.generic.service.BaseService;
+import com.findoutmyloan.application.loan.dto.LoanApplicationRequestDTO;
 import com.findoutmyloan.application.loan.dto.LoanDTO;
 import com.findoutmyloan.application.loan.entity.Loan;
 import com.findoutmyloan.application.loan.mapper.LoanMapper;
@@ -20,6 +22,7 @@ import com.findoutmyloan.application.loan.service.LoanService;
 import com.findoutmyloan.application.person.enums.PersonType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,21 +37,40 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
     private CustomerRepository customerRepository;
     private CustomerValidationService customerValidationService;
     private LoanService loanService;
+    private PasswordEncoder passwordEncoder;
 
     //fixed: @Lazy annotation is used to avoid circular dependency
     @Autowired
-    public CustomerServiceImpl(CustomerRepository customerRepository, CustomerValidationService customerValidationService, @Lazy LoanService loanService) {
+    public CustomerServiceImpl(CustomerRepository customerRepository, CustomerValidationService customerValidationService, @Lazy LoanService loanService, PasswordEncoder passwordEncoder) {
         this.customerRepository=customerRepository;
         this.customerValidationService=customerValidationService;
         this.loanService=loanService;
+        this.passwordEncoder=passwordEncoder;
     }
 
     @Override
-    public CustomerDTO saveCustomer(CustomerSaveRequestDTO customerSaveRequestDTO) {
+    public float getLimitOfCustomer(LoanApplicationRequestDTO loanApplicationRequestDTO, float limitOfLoan) {
+        Customer customer=findCustomerByIdentityNoOrThrowException(loanApplicationRequestDTO.getCustomerIdentityNo());
+        float limitOfCustomer=customer.getCustomerLimit()+limitOfLoan;
+        updateCustomerLimit(customer, limitOfCustomer);
+        return limitOfCustomer;
+    }
+
+    private void updateCustomerLimit(Customer customer, float limitOfCustomer) {
+        customer.setCustomerLimit(limitOfCustomer);
+        customerRepository.save(customer);
+    }
+
+    @Override
+    public CustomerResponseDTO saveCustomer(CustomerSaveRequestDTO customerSaveRequestDTO) {
         Customer customer=CustomerMapper.INSTANCE.convertToCustomer(customerSaveRequestDTO);
         setAdditionalFields(customer);
+
+        String password=passwordEncoder.encode(customer.getPassword());
+        customer.setPassword(password);
+
         Customer savedCustomer=customerRepository.save(customer);
-        return CustomerMapper.INSTANCE.convertToCustomerDTO(savedCustomer);
+        return CustomerMapper.INSTANCE.convertToCustomerResultDTO(savedCustomer);
     }
 
     public CustomerTypeAccordingToMonthlyIncome getCustomerTypeAccordingToMonthlyIncome(float monthlyIncome) {
@@ -78,31 +100,39 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
     }
 
     private Customer findCustomerByIdOrThrowException(Long id) {
-        Customer customer = (Customer) customerRepository.findById(id).orElseThrow(() -> new ItemNotFoundException(CustomerErrorMessage.CUSTOMER_NOT_FOUND));
-        if (customer.getPersonType()== PersonType.CUSTOMER)
+        Customer customer=(Customer) customerRepository.findById(id).orElseThrow(()->new ItemNotFoundException(CustomerErrorMessage.CUSTOMER_NOT_FOUND));
+        if (customer.getPersonType()==PersonType.CUSTOMER)
             return customer;
         else
             throw new ItemNotFoundException(CustomerErrorMessage.CUSTOMER_NOT_FOUND);
     }
 
-    public Customer findCustomerByIdentityNoOrThrowException(Long id) {
-        return (Customer) customerRepository.findByIdentityNo(id).orElseThrow(()->new ItemNotFoundException(CustomerErrorMessage.CUSTOMER_NOT_FOUND));
+    public Customer findCustomerByIdentityNoOrThrowException(Long identityNo) {
+
+        return customerRepository.findByIdentityNo(identityNo).orElseThrow(()->new ItemNotFoundException(CustomerErrorMessage.CUSTOMER_NOT_FOUND));
+
     }
 
-    @Transactional(propagation= Propagation.NOT_SUPPORTED)
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     @Override
-    public CustomerDTO getByIdWithControl(Long id) {
+    public CustomerResponseDTO getByIdWithControl(Long id) {
+        Customer customer=findCustomerByIdOrThrowException(id);
+        return CustomerMapper.INSTANCE.convertToCustomerResultDTO(customer);
+    }
+
+    @Override
+    public CustomerDTO getByIdWithControlWithIdData(Long id) {
         Customer customer=findCustomerByIdOrThrowException(id);
         return CustomerMapper.INSTANCE.convertToCustomerDTO(customer);
     }
 
-    public void deleteCustomerByIdWithControl(Long id) {
+    public void deleteAccountByIdControl(Long id) {
         Customer customer=findCustomerByIdOrThrowException(id);
         customerRepository.delete(customer);
     }
 
     @Override
-    public CustomerDTO updateCustomer(CustomerUpdateRequestDTO customerUpdateRequestDTO) {
+    public CustomerResponseDTO updateCustomer(CustomerUpdateRequestDTO customerUpdateRequestDTO) {
         Customer customer=CustomerMapper.INSTANCE.convertToCustomer(customerUpdateRequestDTO);
         Customer customerToUpdate=findCustomerByIdentityNoOrThrowException(customer.getIdentityNo());
         setAdditionalFields(customerToUpdate);
@@ -114,7 +144,7 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
         customerToUpdate.setBirthDate(customer.getBirthDate());
         customerRepository.save(customerToUpdate);
 
-        return CustomerMapper.INSTANCE.convertToCustomerDTO(customer);
+        return CustomerMapper.INSTANCE.convertToCustomerResultDTO(customer);
     }
 
     @Override

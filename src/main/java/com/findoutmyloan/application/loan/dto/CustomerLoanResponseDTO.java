@@ -1,21 +1,18 @@
 package com.findoutmyloan.application.loan.dto;
+/* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
-import com.findoutmyloan.application.loan.entity.Loan;
 import com.findoutmyloan.application.loan.enums.LoanResult;
 import com.findoutmyloan.application.loan.enums.PaybackGuaranteeType;
 import lombok.Data;
 
-import java.io.Serializable;
 import java.util.Date;
 
-/**
- * A DTO for the {@link Loan} entity
- */
 @Data
-public class LoanDTO implements Serializable {
-    private final PaybackGuaranteeType paybackGuaranteeType;
+public class CustomerLoanResponseDTO {
+    private PaybackGuaranteeType paybackGuaranteeType;
     private float amount;
-    private final LoanResult result;
+    private LoanResult result;
+    private float customerLimit;
     private Date baseAdditionalFieldsCreatedDate;
     private Date baseAdditionalFieldsUpdatedDate;
 }
