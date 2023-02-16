@@ -2,12 +2,12 @@ package com.findoutmyloan.application.customer.controller;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
 
-import com.findoutmyloan.application.customer.dto.CustomerDTO;
-import com.findoutmyloan.application.customer.dto.CustomerSaveRequestDTO;
+import com.findoutmyloan.application.customer.dto.CustomerResultDTO;
 import com.findoutmyloan.application.customer.dto.CustomerUpdateRequestDTO;
 import com.findoutmyloan.application.customer.service.CustomerService;
 import com.findoutmyloan.application.generic.dto.RestResponse;
 import com.findoutmyloan.application.loan.dto.LoanDTO;
+import com.findoutmyloan.application.security.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.hateoas.EntityModel;
@@ -25,30 +25,31 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CustomerController {
     private final CustomerService customerService;
+    private final AuthenticationService authenticationService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<RestResponse<MappingJacksonValue>> getCustomerById(@PathVariable Long id) {
-        CustomerDTO customerDTO=customerService.getByIdWithControl(id);
+    @GetMapping
+    public ResponseEntity<RestResponse<MappingJacksonValue>> getMyAccountInformation() {
+        CustomerResultDTO customerResultDTO=customerService.getByIdWithControl(authenticationService.getCurrentCustomer().getId());
         WebMvcLinkBuilder link=WebMvcLinkBuilder.linkTo(
-                WebMvcLinkBuilder.methodOn(this.getClass()).deleteCustomerById(customerDTO.getId()));
+                WebMvcLinkBuilder.methodOn(this.getClass()).deleteAccount());
 
-        EntityModel entityModel=EntityModel.of(customerDTO);
+        EntityModel entityModel=EntityModel.of(customerResultDTO);
 
         entityModel.add(link.withRel("deleteCustomerById"));
 
         MappingJacksonValue mappingJacksonValue=new MappingJacksonValue(entityModel);
         return ResponseEntity.ok(RestResponse.of(mappingJacksonValue));
     }
-    @DeleteMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> deleteCustomerById(@PathVariable Long id) {
-        customerService.deleteCustomerByIdWithControl(id);
+    @DeleteMapping()
+    public ResponseEntity<RestResponse<Object>> deleteAccount() {
+        customerService.deleteAccountByIdControl(authenticationService.getCurrentCustomer().getId());
         return ResponseEntity.ok(RestResponse.empty());
     }
 
     @PutMapping
-    public ResponseEntity<RestResponse<CustomerDTO>> updateCustomer(@RequestBody CustomerUpdateRequestDTO customerUpdateRequestDTO) {
-        CustomerDTO customerDTO=customerService.updateCustomer(customerUpdateRequestDTO);
-        return ResponseEntity.ok(RestResponse.of(customerDTO));
+    public ResponseEntity<RestResponse<CustomerResultDTO>> updateAccount(@RequestBody CustomerUpdateRequestDTO customerUpdateRequestDTO) {
+        CustomerResultDTO customerResultDTO=customerService.updateCustomer(customerUpdateRequestDTO);
+        return ResponseEntity.ok(RestResponse.of(customerResultDTO));
     }
 
     @GetMapping("/{identityNo}/{birthday}/find-loans")

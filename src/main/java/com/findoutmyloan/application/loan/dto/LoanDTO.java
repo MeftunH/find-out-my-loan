@@ -13,7 +13,6 @@ import java.util.Date;
  */
 @Data
 public class LoanDTO implements Serializable {
-    private final Long customerId;
     private final PaybackGuaranteeType paybackGuaranteeType;
     private float amount;
     private final LoanResult result;

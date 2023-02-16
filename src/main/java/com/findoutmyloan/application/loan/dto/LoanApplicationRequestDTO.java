@@ -15,8 +15,6 @@ import java.util.Date;
 @Data
 public class LoanApplicationRequestDTO implements Serializable {
     @NotNull
-    private long customerId;
-    @NotNull
     private String customerName;
     @NotNull
     private String customerSurname;
@@ -42,6 +40,5 @@ public class LoanApplicationRequestDTO implements Serializable {
     private PersonType suretyPersonType;
     private CollateralType collateralType;
     private float collateralWorth;
-    private long toCustomerId;
     private PaybackGuaranteeType paybackGuaranteeType;
 }

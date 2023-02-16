@@ -5,7 +5,6 @@ import com.findoutmyloan.application.customer.dto.CustomerDTO;
 import com.findoutmyloan.application.customer.entity.Customer;
 import com.findoutmyloan.application.customer.mapper.CustomerMapper;
 import com.findoutmyloan.application.customer.service.CustomerService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -28,7 +27,7 @@ public class JwtUserDetailsService implements UserDetailsService {
     }
 
     public UserDetails loadUserByUsername(Long id) {
-        CustomerDTO customerDTO=customerService.getByIdWithControl(id);
+        CustomerDTO customerDTO=customerService.getByIdWithControlWithIdData(id);
         Customer customer=CustomerMapper.INSTANCE.convertToCustomer(customerDTO);
         return JwtUserDetails.create(customer);
     }

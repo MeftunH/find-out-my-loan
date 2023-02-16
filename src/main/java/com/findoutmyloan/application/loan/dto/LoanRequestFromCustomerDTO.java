@@ -5,10 +5,10 @@ import com.findoutmyloan.application.loan.enums.PaybackGuaranteeType;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class LoanRequestFromCustomerDTO {
-    @NotNull
-    private final Long customerId;
+public class LoanRequestFromCustomerDTO implements Serializable {
     @NotNull
     private final PaybackGuaranteeType paybackGuaranteeType;
 }

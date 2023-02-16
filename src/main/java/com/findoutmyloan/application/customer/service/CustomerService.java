@@ -2,6 +2,7 @@ package com.findoutmyloan.application.customer.service;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
 import com.findoutmyloan.application.customer.dto.CustomerDTO;
+import com.findoutmyloan.application.customer.dto.CustomerResultDTO;
 import com.findoutmyloan.application.customer.dto.CustomerSaveRequestDTO;
 import com.findoutmyloan.application.customer.dto.CustomerUpdateRequestDTO;
 import com.findoutmyloan.application.customer.entity.Customer;
@@ -14,13 +15,14 @@ import java.util.Date;
 import java.util.List;
 
 public interface CustomerService {
-    CustomerDTO saveCustomer(CustomerSaveRequestDTO customerSaveRequestDTO);
+    CustomerResultDTO saveCustomer(CustomerSaveRequestDTO customerSaveRequestDTO);
 
-    CustomerDTO getByIdWithControl(Long id);
+    CustomerResultDTO getByIdWithControl(Long id);
+    CustomerDTO getByIdWithControlWithIdData(Long id);
     Customer findCustomerByIdentityNoOrThrowException(Long identityNo);
-    void deleteCustomerByIdWithControl(Long id);
+    void deleteAccountByIdControl(Long id);
     CustomerTypeAccordingToMonthlyIncome getCustomerTypeAccordingToMonthlyIncome(float monthlyIncome);
-    CustomerDTO updateCustomer(CustomerUpdateRequestDTO customerUpdateRequestDTO);
+    CustomerResultDTO updateCustomer(CustomerUpdateRequestDTO customerUpdateRequestDTO);
     List<LoanDTO> findLoansByCustomerIdentityNoAndCustomerBirthDate(long identityNo, Date birthDate) throws GeneralSecurityException;
     float getLimitOfCustomer(LoanApplicationRequestDTO loanApplicationRequestDTO, float limitOfLoan);
 }

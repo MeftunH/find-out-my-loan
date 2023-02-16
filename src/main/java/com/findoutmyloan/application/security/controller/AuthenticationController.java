@@ -1,7 +1,7 @@
 package com.findoutmyloan.application.security.controller;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
-import com.findoutmyloan.application.customer.dto.CustomerDTO;
+import com.findoutmyloan.application.customer.dto.CustomerResultDTO;
 import com.findoutmyloan.application.customer.dto.CustomerSaveRequestDTO;
 import com.findoutmyloan.application.generic.dto.RestResponse;
 import com.findoutmyloan.application.security.dto.SecurityLoginRequestDTO;
@@ -26,8 +26,8 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<RestResponse<CustomerDTO>> register(@RequestBody CustomerSaveRequestDTO customerSaveRequestDTO) {
-        CustomerDTO customerDTO=authenticationService.register(customerSaveRequestDTO);
-        return ResponseEntity.ok(RestResponse.of(customerDTO));
+    public ResponseEntity<RestResponse<CustomerResultDTO>> register(@RequestBody CustomerSaveRequestDTO customerSaveRequestDTO) {
+        CustomerResultDTO customerResultDTO=authenticationService.register(customerSaveRequestDTO);
+        return ResponseEntity.ok(RestResponse.of(customerResultDTO));
     }
 }

@@ -2,6 +2,7 @@ package com.findoutmyloan.application.customer.service.impl;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
 import com.findoutmyloan.application.customer.dto.CustomerDTO;
+import com.findoutmyloan.application.customer.dto.CustomerResultDTO;
 import com.findoutmyloan.application.customer.dto.CustomerSaveRequestDTO;
 import com.findoutmyloan.application.customer.dto.CustomerUpdateRequestDTO;
 import com.findoutmyloan.application.customer.entity.Customer;
@@ -18,7 +19,6 @@ import com.findoutmyloan.application.loan.dto.LoanDTO;
 import com.findoutmyloan.application.loan.entity.Loan;
 import com.findoutmyloan.application.loan.mapper.LoanMapper;
 import com.findoutmyloan.application.loan.service.LoanService;
-import com.findoutmyloan.application.person.entity.Person;
 import com.findoutmyloan.application.person.enums.PersonType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -62,7 +62,7 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
     }
 
     @Override
-    public CustomerDTO saveCustomer(CustomerSaveRequestDTO customerSaveRequestDTO) {
+    public CustomerResultDTO saveCustomer(CustomerSaveRequestDTO customerSaveRequestDTO) {
         Customer customer=CustomerMapper.INSTANCE.convertToCustomer(customerSaveRequestDTO);
         setAdditionalFields(customer);
 
@@ -70,7 +70,7 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
         customer.setPassword(password);
 
         Customer savedCustomer=customerRepository.save(customer);
-        return CustomerMapper.INSTANCE.convertToCustomerDTO(savedCustomer);
+        return CustomerMapper.INSTANCE.convertToCustomerResultDTO(savedCustomer);
     }
 
     public CustomerTypeAccordingToMonthlyIncome getCustomerTypeAccordingToMonthlyIncome(float monthlyIncome) {
@@ -115,18 +115,24 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
 
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     @Override
-    public CustomerDTO getByIdWithControl(Long id) {
+    public CustomerResultDTO getByIdWithControl(Long id) {
+        Customer customer=findCustomerByIdOrThrowException(id);
+        return CustomerMapper.INSTANCE.convertToCustomerResultDTO(customer);
+    }
+
+    @Override
+    public CustomerDTO getByIdWithControlWithIdData(Long id) {
         Customer customer=findCustomerByIdOrThrowException(id);
         return CustomerMapper.INSTANCE.convertToCustomerDTO(customer);
     }
 
-    public void deleteCustomerByIdWithControl(Long id) {
+    public void deleteAccountByIdControl(Long id) {
         Customer customer=findCustomerByIdOrThrowException(id);
         customerRepository.delete(customer);
     }
 
     @Override
-    public CustomerDTO updateCustomer(CustomerUpdateRequestDTO customerUpdateRequestDTO) {
+    public CustomerResultDTO updateCustomer(CustomerUpdateRequestDTO customerUpdateRequestDTO) {
         Customer customer=CustomerMapper.INSTANCE.convertToCustomer(customerUpdateRequestDTO);
         Customer customerToUpdate=findCustomerByIdentityNoOrThrowException(customer.getIdentityNo());
         setAdditionalFields(customerToUpdate);
@@ -138,7 +144,7 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
         customerToUpdate.setBirthDate(customer.getBirthDate());
         customerRepository.save(customerToUpdate);
 
-        return CustomerMapper.INSTANCE.convertToCustomerDTO(customer);
+        return CustomerMapper.INSTANCE.convertToCustomerResultDTO(customer);
     }
 
     @Override
