@@ -30,7 +30,7 @@ public abstract class BaseService<E extends BaseEntity> {
         }
         baseAdditionalFields.setUpdatedDate(new Date());
     }
-    private Long getCurrentCustomerId() {
+    public Long getCurrentCustomerId() {
         return authenticationService.getCurrentCustomer().getId();
     }
 }

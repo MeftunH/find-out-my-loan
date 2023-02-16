@@ -27,6 +27,7 @@ public class SuretyServiceImpl extends BaseService<Surety> implements SuretyServ
     public SuretyDTO saveSurety(SuretySaveRequestDTO suretySaveRequestDTO) {
         Surety surety=SuretyMapper.INSTANCE.convertToSurety(suretySaveRequestDTO);
         setAdditionalFields(surety);
+        surety.setToCustomerId(getCurrentCustomerId());
         Surety savedSurety=suretyRepository.save(surety);
         return SuretyMapper.INSTANCE.convertToSuretyDto(savedSurety);
     }

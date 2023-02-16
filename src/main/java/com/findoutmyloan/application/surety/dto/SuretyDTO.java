@@ -19,7 +19,6 @@ import java.util.Date;
 public class SuretyDTO extends PersonDTO implements Serializable {
     private Long id;
     private SuretyType suretyType;
-    private Long toCustomerId;
     private Date baseAdditionalFieldsCreatedDate;
     private Date baseAdditionalFieldsUpdatedDate;
 }

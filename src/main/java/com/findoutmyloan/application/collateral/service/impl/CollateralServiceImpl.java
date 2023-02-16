@@ -26,6 +26,7 @@ public class CollateralServiceImpl extends BaseService<Collateral> implements Co
     public CollateralDTO saveCollateral(CollateralSaveRequestDTO collateralSaveRequestDTO) {
         Collateral collateral=CollateralMapper.INSTANCE.convertToCollateral(collateralSaveRequestDTO);
         setAdditionalFields(collateral);
+        collateral.setCustomerId(getCurrentCustomerId());
         Collateral savedCollateral=collateralRepository.save(collateral);
         return CollateralMapper.INSTANCE.convertToCollateralDTO(savedCollateral);
     }
