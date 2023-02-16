@@ -5,6 +5,7 @@ import com.findoutmyloan.application.collateral.dto.CollateralDTO;
 import com.findoutmyloan.application.collateral.dto.CollateralSaveRequestDTO;
 import com.findoutmyloan.application.collateral.service.CollateralService;
 import com.findoutmyloan.application.generic.dto.RestResponse;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class CollateralController
 {
     private final CollateralService collateralService;
+    @Operation(tags="Collateral", summary = "Save Collateral")
     @PostMapping
     public ResponseEntity<RestResponse<CollateralDTO>> saveCollateral(@RequestBody CollateralSaveRequestDTO collateralSaveRequestDTO)
     {

@@ -133,18 +133,16 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
 
     @Override
     public CustomerResponseDTO updateCustomer(CustomerUpdateRequestDTO customerUpdateRequestDTO) {
-        Customer customer=CustomerMapper.INSTANCE.convertToCustomer(customerUpdateRequestDTO);
-        Customer customerToUpdate=findCustomerByIdentityNoOrThrowException(customer.getIdentityNo());
+        Customer customerToUpdate=findCustomerByIdentityNoOrThrowException(customerUpdateRequestDTO.getIdentityNo());
         setAdditionalFields(customerToUpdate);
-        customerToUpdate.setName(customer.getName());
-        customerToUpdate.setSurname(customer.getSurname());
-        customerToUpdate.setCustomerLimit(customer.getCustomerLimit());
-        customerToUpdate.setMonthlyIncome(customer.getMonthlyIncome());
-        customerToUpdate.setPhoneNumber(customer.getPhoneNumber());
-        customerToUpdate.setBirthDate(customer.getBirthDate());
+        customerToUpdate.setName(customerUpdateRequestDTO.getName());
+        customerToUpdate.setSurname(customerUpdateRequestDTO.getSurname());
+        customerToUpdate.setMonthlyIncome(customerUpdateRequestDTO.getMonthlyIncome());
+        customerToUpdate.setPhoneNumber(customerUpdateRequestDTO.getPhoneNumber());
+        customerToUpdate.setBirthDate(customerUpdateRequestDTO.getBirthDate());
         customerRepository.save(customerToUpdate);
 
-        return CustomerMapper.INSTANCE.convertToCustomerResultDTO(customer);
+        return CustomerMapper.INSTANCE.convertToCustomerResultDTO(customerToUpdate);
     }
 
     @Override
