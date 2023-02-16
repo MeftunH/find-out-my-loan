@@ -13,10 +13,12 @@ import com.findoutmyloan.application.customer.service.CustomerService;
 import com.findoutmyloan.application.customer.service.CustomerValidationService;
 import com.findoutmyloan.application.general.exception.ItemNotFoundException;
 import com.findoutmyloan.application.generic.service.BaseService;
+import com.findoutmyloan.application.loan.dto.LoanApplicationRequestDTO;
 import com.findoutmyloan.application.loan.dto.LoanDTO;
 import com.findoutmyloan.application.loan.entity.Loan;
 import com.findoutmyloan.application.loan.mapper.LoanMapper;
 import com.findoutmyloan.application.loan.service.LoanService;
+import com.findoutmyloan.application.person.entity.Person;
 import com.findoutmyloan.application.person.enums.PersonType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -44,6 +46,19 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
         this.customerValidationService=customerValidationService;
         this.loanService=loanService;
         this.passwordEncoder=passwordEncoder;
+    }
+
+    @Override
+    public float getLimitOfCustomer(LoanApplicationRequestDTO loanApplicationRequestDTO, float limitOfLoan) {
+        Customer customer=findCustomerByIdentityNoOrThrowException(loanApplicationRequestDTO.getCustomerIdentityNo());
+        float limitOfCustomer=customer.getCustomerLimit()+limitOfLoan;
+        updateCustomerLimit(customer, limitOfCustomer);
+        return limitOfCustomer;
+    }
+
+    private void updateCustomerLimit(Customer customer, float limitOfCustomer) {
+        customer.setCustomerLimit(limitOfCustomer);
+        customerRepository.save(customer);
     }
 
     @Override
@@ -93,7 +108,9 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
     }
 
     public Customer findCustomerByIdentityNoOrThrowException(Long identityNo) {
-        return (Customer) customerRepository.findByIdentityNo(identityNo).orElseThrow(()->new ItemNotFoundException(CustomerErrorMessage.CUSTOMER_NOT_FOUND));
+
+        return customerRepository.findByIdentityNo(identityNo).orElseThrow(()->new ItemNotFoundException(CustomerErrorMessage.CUSTOMER_NOT_FOUND));
+
     }
 
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
