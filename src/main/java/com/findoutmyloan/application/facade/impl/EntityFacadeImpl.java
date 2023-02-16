@@ -25,7 +25,7 @@ public class EntityFacadeImpl implements EntityFacade {
             suretyService.saveSurety(suretySaveRequestDTO);
         }
 
-        if (collateralSaveRequestDTO!=null) {
+        if (collateralSaveRequestDTO.getCollateralType()!=null) {
             collateralService.saveCollateral(collateralSaveRequestDTO);
         }
     }
