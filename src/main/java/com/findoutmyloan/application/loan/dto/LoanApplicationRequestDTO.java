@@ -24,7 +24,7 @@ public class LoanApplicationRequestDTO implements Serializable {
     private long customerIdentityNo;
     @NotNull
     @Past
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date customerBirthDate;
     @NotNull
     private String customerPhoneNumber;
@@ -36,7 +36,7 @@ public class LoanApplicationRequestDTO implements Serializable {
     private String suretySurname;
     private long suretyIdentityNo;
     @Past
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date suretyBirthDate;
     private String suretyPhoneNumber;
     private PersonType suretyPersonType;

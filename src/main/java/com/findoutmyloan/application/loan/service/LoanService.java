@@ -11,6 +11,6 @@ import java.util.List;
 public interface LoanService {
      LoanDTO saveLoan(LoanSaveRequestDTO loanSaveRequestDTO);
      boolean isSuitableForCalculate(int creditScore);
-     float calculateLimitOfCustomer(int creditScore, float monthlyIncome);
+     float calculateLimitOfLoan(int creditScore, float monthlyIncome);
      List<Loan> findLoansByCustomerIdentityNoAndCustomerBirthDate(long identityNo, Date birthDate);
 }

@@ -18,10 +18,10 @@ import java.util.Date;
 @SuperBuilder
 public class CustomerDTO extends PersonDTO implements Serializable {
    private long id;
-   @NotNull
+    @NotNull
     private float monthlyIncome;
     @NotNull
-    private final float customerLimit;
+    private float customerLimit;
     private Date baseAdditionalFieldsCreatedDate;
     private Date baseAdditionalFieldsUpdatedDate;
 }

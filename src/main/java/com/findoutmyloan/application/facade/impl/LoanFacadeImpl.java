@@ -7,19 +7,21 @@ import com.findoutmyloan.application.creditscore.dto.CreditScoreRequestDTO;
 import com.findoutmyloan.application.creditscore.dto.CreditScoreResponseDTO;
 import com.findoutmyloan.application.creditscore.service.CreditScoreApiService;
 import com.findoutmyloan.application.customer.dto.CustomerCreditScoreRequestDTO;
+import com.findoutmyloan.application.customer.dto.CustomerDTO;
 import com.findoutmyloan.application.customer.entity.Customer;
+import com.findoutmyloan.application.customer.mapper.CustomerMapper;
 import com.findoutmyloan.application.customer.repository.CustomerRepository;
 import com.findoutmyloan.application.customer.service.CustomerService;
 import com.findoutmyloan.application.facade.BuilderFacade;
 import com.findoutmyloan.application.facade.EntityFacade;
 import com.findoutmyloan.application.facade.LoanFacade;
+import com.findoutmyloan.application.loan.dto.CustomerLoanResponseDTO;
 import com.findoutmyloan.application.loan.dto.LoanApplicationRequestDTO;
 import com.findoutmyloan.application.loan.dto.LoanDTO;
 import com.findoutmyloan.application.loan.dto.LoanSaveRequestDTO;
 import com.findoutmyloan.application.loan.enums.LoanResult;
 import com.findoutmyloan.application.loan.mapper.LoanMapper;
 import com.findoutmyloan.application.loan.service.LoanService;
-import com.findoutmyloan.application.person.dto.PersonDTO;
 import com.findoutmyloan.application.surety.dto.SuretySaveRequestDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -39,7 +41,7 @@ public class LoanFacadeImpl implements LoanFacade {
     private final CustomerRepository customerRepository;
 
     @Override
-    public LoanDTO applyLoan(LoanApplicationRequestDTO loanApplicationRequestDTO) {
+    public CustomerLoanResponseDTO applyLoan(LoanApplicationRequestDTO loanApplicationRequestDTO) {
         builderFacade.invokeBuilder(loanApplicationRequestDTO);
 
         CustomerCreditScoreRequestDTO customerCreditScoreRequestDTO = builderFacade.getCustomerCreditScoreRequestDTO();
@@ -51,29 +53,40 @@ public class LoanFacadeImpl implements LoanFacade {
         entityFacade.saveEntity(suretySaveRequestDTO,collateralSaveRequestDTO);
 
         LoanSaveRequestDTO loanSaveRequestDTO=LoanMapper.INSTANCE.loanRequestFromCustomerDTOToLoanSaveRequestDTO(loanApplicationRequestDTO);
-        float limitOfCustomer=loanService.calculateLimitOfCustomer(creditScoreResponseDTO.getCreditScore(), creditScoreRequestDTO.getCustomerCreditScoreRequestDTO().getMonthlyIncome());
-        limitOfCustomer=getLimitOfCustomer(creditScoreRequestDTO, creditScoreResponseDTO, limitOfCustomer);
-        LoanDTO loanDTO=setLoanDTO(creditScoreResponseDTO, loanSaveRequestDTO, limitOfCustomer);
-        Customer customer=customerService.findCustomerByIdentityNoOrThrowException(creditScoreRequestDTO.getCustomerCreditScoreRequestDTO().getIdentityNo());
-        customer.setCustomerLimit(limitOfCustomer);
-        customerRepository.save(customer);
-
-        return loanDTO;
+        float limitOfLoan=getTotalLimitOfLoan(creditScoreRequestDTO, creditScoreResponseDTO);
+        LoanDTO loanDTO=setLoanDTO(creditScoreResponseDTO, loanSaveRequestDTO, limitOfLoan);
+        return getCustomerLoanResponseDTO(loanApplicationRequestDTO, limitOfLoan, loanDTO);
     }
 
-    private float getLimitOfCustomer(CreditScoreRequestDTO creditScoreRequestDTO, CreditScoreResponseDTO creditScoreResponseDTO, float limitOfCustomer) {
+    private CustomerLoanResponseDTO getCustomerLoanResponseDTO(LoanApplicationRequestDTO loanApplicationRequestDTO, float limitOfLoan, LoanDTO loanDTO) {
+        float limitOfCustomer=customerService.getLimitOfCustomer(loanApplicationRequestDTO, limitOfLoan);
+
+        CustomerLoanResponseDTO customerLoanResponseDTO=LoanMapper.INSTANCE.convertLoanDTOToCustomerLoanResponseDTO(loanDTO);
+        customerLoanResponseDTO.setCustomerLimit(limitOfCustomer);
+        customerLoanResponseDTO.setAmount(limitOfLoan);
+        return customerLoanResponseDTO;
+    }
+
+    private float getTotalLimitOfLoan(CreditScoreRequestDTO creditScoreRequestDTO, CreditScoreResponseDTO creditScoreResponseDTO) {
+        float limitOfLoan=loanService.calculateLimitOfLoan(creditScoreResponseDTO.getCreditScore(), creditScoreRequestDTO.getCustomerCreditScoreRequestDTO().getMonthlyIncome());
+        limitOfLoan=addCollateralWorthToLoanLimit(creditScoreRequestDTO, creditScoreResponseDTO, limitOfLoan);
+        return limitOfLoan;
+    }
+
+
+    private float addCollateralWorthToLoanLimit(CreditScoreRequestDTO creditScoreRequestDTO, CreditScoreResponseDTO creditScoreResponseDTO, float limitOfLoan) {
         if (creditScoreRequestDTO.getCollateralSaveRequestDTO()!=null) {
-            limitOfCustomer=collateralService.addCollateralWorthToLoanLimit(creditScoreRequestDTO.getCollateralSaveRequestDTO().getWorth(),
+            limitOfLoan=collateralService.addCollateralWorthToLoanLimit(creditScoreRequestDTO.getCollateralSaveRequestDTO().getWorth(),
                     creditScoreResponseDTO.getCreditScore(),
                     creditScoreRequestDTO.getCustomerCreditScoreRequestDTO().getMonthlyIncome(),
-                    limitOfCustomer
+                    limitOfLoan
             );
         }
-        return limitOfCustomer;
+        return limitOfLoan;
     }
 
-    private LoanDTO setLoanDTO(CreditScoreResponseDTO creditScoreResponseDTO, LoanSaveRequestDTO loanSaveRequestDTO, float limitOfCustomer) {
-        loanSaveRequestDTO.setAmount(limitOfCustomer);
+    private LoanDTO setLoanDTO(CreditScoreResponseDTO creditScoreResponseDTO, LoanSaveRequestDTO loanSaveRequestDTO, float limitOfLoan) {
+        loanSaveRequestDTO.setAmount(limitOfLoan);
         if (!loanService.isSuitableForCalculate(creditScoreResponseDTO.getCreditScore())) {
             loanSaveRequestDTO.setResult(LoanResult.REJECTED);
         } else {

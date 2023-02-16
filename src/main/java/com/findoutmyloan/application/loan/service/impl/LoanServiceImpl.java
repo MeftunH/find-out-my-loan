@@ -37,7 +37,7 @@ public class LoanServiceImpl extends BaseService<Loan> implements LoanService {
     }
 
     @Override
-    public float calculateLimitOfCustomer(int creditScore, float monthlyIncome) {
+    public float calculateLimitOfLoan(int creditScore, float monthlyIncome) {
         float limit=0;
         final float bronzeCustomerLimit=10000.0f;
         final float silverCustomerLimit=20000.0f;
