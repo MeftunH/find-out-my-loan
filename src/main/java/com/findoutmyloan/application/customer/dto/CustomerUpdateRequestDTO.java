@@ -16,7 +16,6 @@ import java.util.Date;
 public class CustomerUpdateRequestDTO extends PersonDTO implements Serializable {
     @NotNull
     private float monthlyIncome;
-    private String password;
     private Date baseAdditionalFieldsCreatedDate;
     private Date baseAdditionalFieldsUpdatedDate;
 }

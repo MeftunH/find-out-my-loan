@@ -9,6 +9,7 @@ import com.findoutmyloan.application.generic.dto.RestResponse;
 import com.findoutmyloan.application.loan.dto.LoanDTO;
 import com.findoutmyloan.application.security.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -55,23 +56,11 @@ public class CustomerController {
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody
                     (
                             content = @io.swagger.v3.oas.annotations.media.
-                            Content(
+                                    Content(
                                     mediaType = "application/json",
                                     schema = @io.swagger.v3.oas.annotations.media.
-                            Schema(implementation = CustomerUpdateRequestDTO.class),
-                             examples={
-                                     @ExampleObject(
-                                                name="CustomerUpdateRequestDTO",
-                                                value="{\n" +
-                                                        "  \"name\": Updated John 65,\n" +
-                                                        "  \"surname\": \"Doe\",\n" +
-                                                        "  \"identityNo\": \"123456787\",\n" +
-                                                        "  \"birthDate\": 1999-01-01,\n" +
-                                                        "  \"phoneNumber\": \"5555555555\",\n" +
-                                                        "  \"monthlyIncome\": \"5000.0\",\n"
-                                     )
-                             }
-                    ))
+                                            Schema(implementation = CustomerUpdateRequestDTO.class)
+                            ))
     )
     @PutMapping
     public ResponseEntity<RestResponse<CustomerResponseDTO>> updateAccount(@RequestBody CustomerUpdateRequestDTO customerUpdateRequestDTO) {
@@ -81,8 +70,8 @@ public class CustomerController {
 
     @Operation(tags = "Customer", summary = "Find loans by customer identity number and customer birth date", description = "Find loans by customer identity number and customer birth date")
     @GetMapping("/{identityNo}/{birthday}/find-loans")
-    public ResponseEntity<RestResponse<List<LoanDTO>>> findLoansByCustomerIdentityNoAndCustomerBirthDate(@PathVariable long identityNo,
-                                                                                                         @PathVariable("birthday") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date birthDate) throws GeneralSecurityException {
+    public ResponseEntity<RestResponse<List<LoanDTO>>> findLoansByCustomerIdentityNoAndCustomerBirthDate(@Parameter(description = "70632842798") @PathVariable long identityNo,
+                                                                                                         @Parameter(description = "01-01-1980") @PathVariable("birthday") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date birthDate) throws GeneralSecurityException {
         return ResponseEntity.ok(RestResponse.of(customerService.findLoansByCustomerIdentityNoAndCustomerBirthDate(identityNo, birthDate)));
     }
 }
