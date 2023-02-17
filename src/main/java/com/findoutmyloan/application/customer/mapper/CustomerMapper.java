@@ -14,7 +14,7 @@ public interface CustomerMapper {
     Customer convertToCustomer(CustomerSaveRequestDTO customerSaveRequestDTO);
     @Mapping(source = "baseAdditionalFields.updatedDate", target = "baseAdditionalFieldsUpdatedDate")
     @Mapping(source = "baseAdditionalFields.createdDate", target = "baseAdditionalFieldsCreatedDate")
-    CustomerResponseDTO convertToCustomerResultDTO(Customer customer);
+    CustomerResponseDTO convertToCustomerResponseDTO(Customer customer);
 
     Customer convertToCustomer(CustomerUpdateRequestDTO customerUpdateRequestDTO);
     Customer convertToCustomer(CustomerResponseDTO customerResponseDTO);
