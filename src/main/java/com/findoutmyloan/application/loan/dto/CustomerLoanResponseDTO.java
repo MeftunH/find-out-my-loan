@@ -3,11 +3,13 @@ package com.findoutmyloan.application.loan.dto;
 
 import com.findoutmyloan.application.loan.enums.LoanResult;
 import com.findoutmyloan.application.loan.enums.PaybackGuaranteeType;
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
+@Builder
 public class CustomerLoanResponseDTO {
     private PaybackGuaranteeType paybackGuaranteeType;
     private float amount;

@@ -5,6 +5,7 @@ package com.findoutmyloan.application.customer.controller;
 import com.findoutmyloan.application.customer.dto.CustomerResponseDTO;
 import com.findoutmyloan.application.customer.dto.CustomerUpdateRequestDTO;
 import com.findoutmyloan.application.customer.service.CustomerService;
+import com.findoutmyloan.application.general.exception.GeneralBusinessException;
 import com.findoutmyloan.application.generic.dto.RestResponse;
 import com.findoutmyloan.application.loan.dto.LoanDTO;
 import com.findoutmyloan.application.security.service.AuthenticationService;
@@ -70,7 +71,7 @@ public class CustomerController {
     @Operation(tags = "Customer", summary = "Find loans by customer identity number and customer birth date", description = "Find loans by customer identity number and customer birth date")
     @GetMapping("/{identityNo}/{birthday}/find-loans")
     public ResponseEntity<RestResponse<List<LoanDTO>>> findLoansByCustomerIdentityNoAndCustomerBirthDate(@Parameter(description = "70632842798") @PathVariable long identityNo,
-                                                                                                         @Parameter(description = "01-01-1980") @PathVariable("birthday") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date birthDate) throws GeneralSecurityException {
+                                                                                                         @Parameter(description = "01-01-1980") @PathVariable("birthday") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date birthDate) {
         return ResponseEntity.ok(RestResponse.of(customerService.findLoansByCustomerIdentityNoAndCustomerBirthDate(identityNo, birthDate)));
     }
 }

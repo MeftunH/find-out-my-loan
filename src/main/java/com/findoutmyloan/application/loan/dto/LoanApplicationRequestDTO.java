@@ -7,12 +7,14 @@ import com.findoutmyloan.application.loan.enums.PaybackGuaranteeType;
 import com.findoutmyloan.application.person.enums.PersonType;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
+import lombok.Builder;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
 
 @Data
+@Builder
 public class LoanApplicationRequestDTO implements Serializable {
     @NotNull
     private String customerName;
