@@ -10,6 +10,7 @@ import com.findoutmyloan.application.person.validation.PersonValidationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -67,6 +68,15 @@ public class PersonValidationServiceImpl implements PersonValidationService {
         }
         if (Character.getNumericValue(strNumber.charAt(10))!=(controlDigit+evenSum+oddSum)%10) {
             throw new IllegalFieldException(PersonErrorMessage.IDENTITY_NO_INVALID);
+        }
+    }
+
+    @Override
+    public void validateBirthDate(Date birthDate) {
+        validateFieldNotNull(String.valueOf(birthDate));
+
+        if (!birthDate.before(new Date())) {
+            throw new IllegalFieldException(PersonErrorMessage.BIRTH_DATE_INVALID);
         }
     }
 

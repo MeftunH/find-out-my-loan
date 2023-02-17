@@ -8,7 +8,9 @@ public enum PersonErrorMessage implements BaseErrorMessage {
     PHONE_NUMBER_INVALID(  "Phone Number Invalid!","Please check the phone number." ),
     PHONE_NUMBER_MUST_BE_UNIQUE("Phone Number Must Be Unique!","Please check the phone number."),
     FIELD_CANNOT_BE_NULL("Field Cannot Be Null!","Please check the field."),
-    IDENTITY_NO_INVALID("Identity No Invalid!","Please check the identity no.");
+    IDENTITY_NO_INVALID("Identity No Invalid!","Please check the identity no."),
+    BIRTH_DATE_INVALID("Birth Date Invalid!","Please check the birth date.")
+    ;
 
     private  final String message;
     private  final String detailMessage;
