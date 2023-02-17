@@ -10,7 +10,6 @@ import com.findoutmyloan.application.loan.dto.LoanDTO;
 import com.findoutmyloan.application.security.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.hateoas.EntityModel;
@@ -37,7 +36,7 @@ public class CustomerController {
         WebMvcLinkBuilder link=WebMvcLinkBuilder.linkTo(
                 WebMvcLinkBuilder.methodOn(this.getClass()).deleteAccount());
 
-        EntityModel entityModel=EntityModel.of(customerResponseDTO);
+        EntityModel<CustomerResponseDTO> entityModel=EntityModel.of(customerResponseDTO);
 
         entityModel.add(link.withRel("deleteCustomerById"));
 
