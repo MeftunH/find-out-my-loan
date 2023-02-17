@@ -70,7 +70,7 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
         customer.setPassword(password);
 
         Customer savedCustomer=customerRepository.save(customer);
-        return CustomerMapper.INSTANCE.convertToCustomerResultDTO(savedCustomer);
+        return CustomerMapper.INSTANCE.convertToCustomerResponseDTO(savedCustomer);
     }
 
     public CustomerTypeAccordingToMonthlyIncome getCustomerTypeAccordingToMonthlyIncome(float monthlyIncome) {
@@ -117,7 +117,7 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
     @Override
     public CustomerResponseDTO getByIdWithControl(Long id) {
         Customer customer=findCustomerByIdOrThrowException(id);
-        return CustomerMapper.INSTANCE.convertToCustomerResultDTO(customer);
+        return CustomerMapper.INSTANCE.convertToCustomerResponseDTO(customer);
     }
 
     @Override
@@ -142,7 +142,7 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
         customerToUpdate.setBirthDate(customerUpdateRequestDTO.getBirthDate());
         customerRepository.save(customerToUpdate);
 
-        return CustomerMapper.INSTANCE.convertToCustomerResultDTO(customerToUpdate);
+        return CustomerMapper.INSTANCE.convertToCustomerResponseDTO(customerToUpdate);
     }
 
     @Override
