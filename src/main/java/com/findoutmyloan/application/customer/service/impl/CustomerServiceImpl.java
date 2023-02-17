@@ -78,12 +78,14 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
 
     private void validateCustomer(Customer customer) {
         customerValidationService.validateAreFieldsNonNull(customer);
+        customerValidationService.validateIsPersonTypeCustomer(customer);
         customerValidationService.validateMonthlyIncome(customer.getMonthlyIncome());
         customerValidationService.validateCustomerPasswordIsMinimumThreeCharacters(customer.getPassword());
         personValidationService.validateTurkishIdentityNo(customer.getIdentityNo());
         personValidationService.validateIsIdentityNoUnique(customer);
         personValidationService.validatePhoneNumber(customer.getPhoneNumber());
         personValidationService.validateIsPhoneNoUnique(customer);
+        personValidationService.validateBirthDate(customer.getBirthDate());
     }
 
     public CustomerTypeAccordingToMonthlyIncome getCustomerTypeAccordingToMonthlyIncome(float monthlyIncome) {

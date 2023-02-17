@@ -11,4 +11,5 @@ public interface CustomerValidationService{
     void validateAreFieldsNonNull(Customer customer);
     void validateMonthlyIncome(float monthlyIncome);
     void validateCustomerPasswordIsMinimumThreeCharacters(String password);
+    void validateIsPersonTypeCustomer(Customer customer);
 }

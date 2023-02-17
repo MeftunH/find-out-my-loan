@@ -6,6 +6,7 @@ import com.findoutmyloan.application.customer.repository.CustomerRepository;
 import com.findoutmyloan.application.customer.validation.CustomerValidationService;
 import com.findoutmyloan.application.general.exception.GeneralBusinessException;
 import com.findoutmyloan.application.general.exception.IllegalFieldException;
+import com.findoutmyloan.application.person.enums.PersonType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +36,13 @@ public class CustomerValidationServiceImpl implements CustomerValidationService 
         boolean hasNullField=customer.getName().isBlank()||customer.getSurname().isBlank()||customer.getBirthDate()==null||customer.getPhoneNumber().isBlank()||String.valueOf(customer.getMonthlyIncome())==null||String.valueOf(customer.getCustomerLimit())==null||String.valueOf(customer.getPersonType())==null||String.valueOf(customer.getIdentityNo())==null||customer.getPassword().isBlank();
         if (hasNullField) {
             throw new IllegalFieldException(FIELD_CANNOT_BE_NULL);
+        }
+    }
+
+    @Override
+    public void validateIsPersonTypeCustomer(Customer customer) {
+        if (!customer.getPersonType().equals(PersonType.CUSTOMER)) {
+            throw new IllegalFieldException(PERSON_TYPE_MUST_BE_CUSTOMER);
         }
     }
 
