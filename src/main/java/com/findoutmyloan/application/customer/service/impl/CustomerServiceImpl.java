@@ -11,7 +11,7 @@ import com.findoutmyloan.application.customer.enums.CustomerTypeAccordingToMonth
 import com.findoutmyloan.application.customer.mapper.CustomerMapper;
 import com.findoutmyloan.application.customer.repository.CustomerRepository;
 import com.findoutmyloan.application.customer.service.CustomerService;
-import com.findoutmyloan.application.customer.service.CustomerValidationService;
+import com.findoutmyloan.application.customer.validation.CustomerValidationService;
 import com.findoutmyloan.application.general.exception.ItemNotFoundException;
 import com.findoutmyloan.application.generic.service.BaseService;
 import com.findoutmyloan.application.loan.dto.LoanApplicationRequestDTO;
@@ -20,6 +20,7 @@ import com.findoutmyloan.application.loan.entity.Loan;
 import com.findoutmyloan.application.loan.mapper.LoanMapper;
 import com.findoutmyloan.application.loan.service.LoanService;
 import com.findoutmyloan.application.person.enums.PersonType;
+import com.findoutmyloan.application.person.validation.PersonValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,25 +28,26 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.security.GeneralSecurityException;
 import java.util.Date;
 import java.util.List;
 
 @Service
 @Transactional(propagation = Propagation.REQUIRED)
 public class CustomerServiceImpl extends BaseService<Customer> implements CustomerService {
-    private CustomerRepository customerRepository;
-    private CustomerValidationService customerValidationService;
-    private LoanService loanService;
-    private PasswordEncoder passwordEncoder;
+    private final CustomerRepository customerRepository;
+    private final CustomerValidationService customerValidationService;
+    private final LoanService loanService;
+    private final PasswordEncoder passwordEncoder;
+    private final PersonValidationService personValidationService;
 
     //fixed: @Lazy annotation is used to avoid circular dependency
     @Autowired
-    public CustomerServiceImpl(CustomerRepository customerRepository, CustomerValidationService customerValidationService, @Lazy LoanService loanService, PasswordEncoder passwordEncoder) {
+    public CustomerServiceImpl(CustomerRepository customerRepository, CustomerValidationService customerValidationService, @Lazy LoanService loanService, PasswordEncoder passwordEncoder, PersonValidationService personValidationService) {
         this.customerRepository=customerRepository;
         this.customerValidationService=customerValidationService;
         this.loanService=loanService;
         this.passwordEncoder=passwordEncoder;
+        this.personValidationService=personValidationService;
     }
 
     @Override
@@ -66,11 +68,22 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
         Customer customer=CustomerMapper.INSTANCE.convertToCustomer(customerSaveRequestDTO);
         setAdditionalFields(customer);
 
+        validateCustomer(customer);
         String password=passwordEncoder.encode(customer.getPassword());
         customer.setPassword(password);
 
         Customer savedCustomer=customerRepository.save(customer);
         return CustomerMapper.INSTANCE.convertToCustomerResponseDTO(savedCustomer);
+    }
+
+    private void validateCustomer(Customer customer) {
+        customerValidationService.validateAreFieldsNonNull(customer);
+        customerValidationService.validateMonthlyIncome(customer.getMonthlyIncome());
+        customerValidationService.validateCustomerPasswordIsMinimumThreeCharacters(customer.getPassword());
+        personValidationService.validateTurkishIdentityNo(customer.getIdentityNo());
+        personValidationService.validateIsIdentityNoUnique(customer);
+        personValidationService.validatePhoneNumber(customer.getPhoneNumber());
+        personValidationService.validateIsPhoneNoUnique(customer);
     }
 
     public CustomerTypeAccordingToMonthlyIncome getCustomerTypeAccordingToMonthlyIncome(float monthlyIncome) {
@@ -146,7 +159,7 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
     }
 
     @Override
-    public List<LoanDTO> findLoansByCustomerIdentityNoAndCustomerBirthDate(long identityNo, Date birthDate) throws GeneralSecurityException {
+    public List<LoanDTO> findLoansByCustomerIdentityNoAndCustomerBirthDate(long identityNo, Date birthDate) {
         customerValidationService.validateCustomerByIdentityNoAndBirthDate(identityNo, birthDate);
 
         List<Loan> loans=loanService.findLoansByCustomerIdentityNoAndCustomerBirthDate(identityNo, birthDate);
