@@ -4,6 +4,7 @@ package com.findoutmyloan.application.surety.controller;
 import com.findoutmyloan.application.surety.dto.SuretyDTO;
 import com.findoutmyloan.application.surety.dto.SuretySaveRequestDTO;
 import com.findoutmyloan.application.surety.service.SuretyService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class SuretyController {
    private final SuretyService suretyService;
-    @PostMapping("/save")
+   @Operation(tags="Surety", summary = "Save Surety")
+   @PostMapping("/save")
     public ResponseEntity<SuretyDTO> saveSurety(@RequestBody SuretySaveRequestDTO suretySaveRequestDTO) {
         SuretyDTO suretyDTO = suretyService.saveSurety(suretySaveRequestDTO);
          return ResponseEntity.ok(suretyDTO);

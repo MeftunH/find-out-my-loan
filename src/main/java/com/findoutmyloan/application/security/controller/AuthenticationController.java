@@ -6,6 +6,7 @@ import com.findoutmyloan.application.customer.dto.CustomerSaveRequestDTO;
 import com.findoutmyloan.application.generic.dto.RestResponse;
 import com.findoutmyloan.application.security.dto.SecurityLoginRequestDTO;
 import com.findoutmyloan.application.security.service.AuthenticationService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,12 +20,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
+    @Operation(tags="Authentication", summary = "Login", description = "Login with identity no and password")
     @PostMapping("/login")
     public ResponseEntity<RestResponse<String>> login(@RequestBody SecurityLoginRequestDTO securityLoginRequestDTO) {
         String token=authenticationService.login(securityLoginRequestDTO);
         return ResponseEntity.ok(RestResponse.of(token));
     }
 
+    @Operation(tags="Authentication", summary = "Register", description = "Register")
     @PostMapping("/register")
     public ResponseEntity<RestResponse<CustomerResponseDTO>> register(@RequestBody CustomerSaveRequestDTO customerSaveRequestDTO) {
         CustomerResponseDTO customerResponseDTO=authenticationService.register(customerSaveRequestDTO);
