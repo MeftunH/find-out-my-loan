@@ -19,44 +19,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
-@Transactional
-@RequiredArgsConstructor
-public class AuthenticationService {
-    private final CustomerService customerService;
-    private final AuthenticationManager authenticationManager;
-    private final JwtTokenGenerator jwtTokenGenerator;
-
-    private static JwtUserDetails getCurrentJwtUserDetails(Authentication authentication) {
-        JwtUserDetails jwtUserDetails=null;
-        if (authentication!=null) {
-            jwtUserDetails=(JwtUserDetails) authentication.getPrincipal();
-        }
-        return jwtUserDetails;
-    }
-
-    public CustomerResponseDTO register(CustomerSaveRequestDTO customerSaveRequestDTO) {
-        return customerService.saveCustomer(customerSaveRequestDTO);
-    }
-
-    public String login(SecurityLoginRequestDTO securityLoginRequestDTO) {
-        UsernamePasswordAuthenticationToken authenticationToken=new UsernamePasswordAuthenticationToken(securityLoginRequestDTO.getIdentityNo().toString(), securityLoginRequestDTO.getPassword());
-        Authentication authentication=authenticationManager.authenticate(authenticationToken);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String token=jwtTokenGenerator.generateJwtToken(authentication);
-        return JwtConstant.BEARER.getConstant()+token;
-    }
-
-
-
-    public Customer getCurrentCustomer() {
-        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        CustomerDTO customerDTO=null;
-        JwtUserDetails jwtUserDetails=jwtUserDetails=getCurrentJwtUserDetails(authentication);
-        if (jwtUserDetails!=null) {
-            customerDTO=customerService.getByIdWithControlWithIdData(jwtUserDetails.getId());
-        }
-
-        return CustomerMapper.INSTANCE.convertToCustomer(customerDTO);
-    }
+public interface AuthenticationService {
+     CustomerResponseDTO register(CustomerSaveRequestDTO customerSaveRequestDTO);
+     String login(SecurityLoginRequestDTO securityLoginRequestDTO);
+     Customer getCurrentCustomer();
 }
