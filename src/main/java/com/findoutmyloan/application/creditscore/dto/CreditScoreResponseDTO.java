@@ -6,5 +6,6 @@ import lombok.Data;
 @Data
 public class CreditScoreResponseDTO {
     private int creditScore;
+    private long customerIdentityNo;
 
 }
