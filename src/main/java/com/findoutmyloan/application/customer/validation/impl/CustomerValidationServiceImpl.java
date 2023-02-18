@@ -46,11 +46,11 @@ public class CustomerValidationServiceImpl implements CustomerValidationService 
         validateIsPersonTypeCustomer(customer);
         validateMonthlyIncome(customer.getMonthlyIncome());
         validateCustomerPasswordIsMinimumThreeCharacters(customer.getPassword());
-        personValidationService.validateTurkishIdentityNo(customer.getIdentityNo());
-        personValidationService.validateIsIdentityNoUnique(customer);
-        personValidationService.validatePhoneNumber(customer.getPhoneNumber());
-        personValidationService.validateIsPhoneNoUnique(customer);
-        personValidationService.validateBirthDate(customer.getBirthDate());
+        personValidationService.validateTurkishIdentityNo(customer.getIdentityNo(), CUSTOMER_IDENTITY_NO_INVALID);
+        personValidationService.validateIsIdentityNoUnique(customer,CUSTOMER_IDENTITY_NO_MUST_BE_UNIQUE);
+        personValidationService.validatePhoneNumber(customer.getPhoneNumber(),CUSTOMER_PHONE_NUMBER_INVALID);
+        personValidationService.validateIsPhoneNoUnique(customer,CUSTOMER_PHONE_NUMBER_MUST_BE_UNIQUE);
+        personValidationService.validateBirthDate(customer.getBirthDate(),CUSTOMER_BIRTH_DATE_INVALID);
     }
 
     @Override
