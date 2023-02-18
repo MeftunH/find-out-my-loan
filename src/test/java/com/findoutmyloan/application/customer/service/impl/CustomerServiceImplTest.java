@@ -4,6 +4,7 @@ import com.findoutmyloan.application.customer.dto.CustomerResponseDTO;
 import com.findoutmyloan.application.customer.dto.CustomerSaveRequestDTO;
 import com.findoutmyloan.application.customer.entity.Customer;
 import com.findoutmyloan.application.customer.repository.CustomerRepository;
+import com.findoutmyloan.application.customer.validation.CustomerValidationService;
 import com.findoutmyloan.application.general.exception.ItemNotFoundException;
 import com.findoutmyloan.application.person.enums.PersonType;
 import org.junit.jupiter.api.Test;
@@ -28,6 +29,8 @@ class CustomerServiceImplTest {
     private PasswordEncoder passwordEncoder;
 
     @Mock
+    CustomerValidationService customerValidationService;
+    @Mock
     private CustomerRepository customerRepository;
     @InjectMocks
     private CustomerServiceImpl customerService;
@@ -41,6 +44,7 @@ class CustomerServiceImplTest {
     void shouldSaveCustomer() {
         when(passwordEncoder.encode(anyString())).thenReturn("123");
         CustomerSaveRequestDTO customerSaveRequestDTO=mock(CustomerSaveRequestDTO.class);
+
         when(customerSaveRequestDTO.getPassword()).thenReturn("123");
         when(customerSaveRequestDTO.getIdentityNo()).thenReturn(81655500404L);
 
@@ -53,7 +57,6 @@ class CustomerServiceImplTest {
 
         assertEquals(customer.getIdentityNo(), result.getIdentityNo());
     }
-
     @Test
     void shouldThrowNullPointerExceptionWhenParameterIsNull() {
         assertThrows(NullPointerException.class, ()->customerService.saveCustomer(null));

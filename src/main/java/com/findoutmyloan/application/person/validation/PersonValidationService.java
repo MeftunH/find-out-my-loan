@@ -1,15 +1,15 @@
 package com.findoutmyloan.application.person.validation;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
-import com.findoutmyloan.application.customer.entity.Customer;
-import com.findoutmyloan.application.general.exception.GeneralBusinessException;
+import com.findoutmyloan.application.general.errorMessage.BaseErrorMessage;
 import com.findoutmyloan.application.person.entity.Person;
 
-import java.security.GeneralSecurityException;
+import java.util.Date;
 
 public interface PersonValidationService {
-    void validatePhoneNumber(String phoneNumber);
-    void validateIsIdentityNoUnique(Person person);
-    void validateIsPhoneNoUnique(Person person);
-    void validateTurkishIdentityNo(long identityNo);
+    void validatePhoneNumber(String phoneNumber, BaseErrorMessage baseErrorMessage);
+    void validateIsIdentityNoUnique(Person person, BaseErrorMessage baseErrorMessage);
+    void validateIsPhoneNoUnique(Person person, BaseErrorMessage baseErrorMessage);
+    void validateTurkishIdentityNo(long identityNo, BaseErrorMessage baseErrorMessage);
+    void validateBirthDate(Date birthDate, BaseErrorMessage baseErrorMessage);
 }
