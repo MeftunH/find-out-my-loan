@@ -126,7 +126,6 @@ class LoanFacadeImplTest {
 
         CreditScoreRequestDTO creditScoreRequestDTO=CreditScoreRequestDTO.builder().customerIdentityNo(123456789).customerCreditScoreRequestDTO(CustomerCreditScoreRequestDTO.builder().name("customerName").surname("customerSurname").identityNo(123456789).birthDate(new Date()).phoneNumber("customerPhoneNumber").personType(PersonType.CUSTOMER).monthlyIncome(1000).build()).suretySaveRequestDTO(SuretySaveRequestDTO.builder().name("suretyName").surname("suretySurname").identityNo(123456789).birthDate(new Date()).phoneNumber("suretyPhoneNumber").personType(PersonType.SURETY).build()).collateralSaveRequestDTO(CollateralSaveRequestDTO.builder().collateralType(CollateralType.CAR).worth(0).build()).paybackGuaranteeType(PaybackGuaranteeType.SURETY).build();
 
-        CreditScoreResponseDTO creditScoreResponseDTO=CreditScoreResponseDTO.builder().creditScore(100).build();
 
         LoanSaveRequestDTO loanSaveRequestDTO=LoanSaveRequestDTO.builder().paybackGuaranteeType(PaybackGuaranteeType.SURETY).amount(1000).result(LoanResult.APPROVED).creditScore(100).build();
 
@@ -135,9 +134,6 @@ class LoanFacadeImplTest {
         CustomerLoanResponseDTO customerLoanResponseDTO=CustomerLoanResponseDTO.builder().paybackGuaranteeType(PaybackGuaranteeType.SURETY).amount(1000).result(LoanResult.APPROVED).customerLimit(1000).build();
 
         doNothing().when(builderFacade).invokeBuilder(loanApplicationRequestDTO);
-        when(creditScoreApiService.getCreditScore(creditScoreRequestDTO)).thenReturn(creditScoreResponseDTO);
-        when(loanService.calculateLimitOfLoan(creditScoreResponseDTO.getCreditScore(), creditScoreRequestDTO.getCustomerCreditScoreRequestDTO().getMonthlyIncome())).thenReturn(1000f);
-        when(loanService.isSuitableForCalculate(creditScoreResponseDTO.getCreditScore())).thenReturn(true);
         when(loanService.saveLoan(loanSaveRequestDTO)).thenReturn(loanDTO);
         when(customerService.getLimitOfCustomer(loanApplicationRequestDTO, 1000)).thenReturn(1000f);
 
@@ -167,20 +163,13 @@ class LoanFacadeImplTest {
 
         CreditScoreRequestDTO creditScoreRequestDTO=CreditScoreRequestDTO.builder().customerIdentityNo(123456789).customerCreditScoreRequestDTO(CustomerCreditScoreRequestDTO.builder().name("customerName").surname("customerSurname").identityNo(123456789).birthDate(new Date()).phoneNumber("customerPhoneNumber").personType(PersonType.CUSTOMER).monthlyIncome(1000).build()).suretySaveRequestDTO(SuretySaveRequestDTO.builder().name("suretyName").surname("suretySurname").identityNo(123456789).birthDate(new Date()).phoneNumber("suretyPhoneNumber").personType(PersonType.SURETY).build()).collateralSaveRequestDTO(CollateralSaveRequestDTO.builder().collateralType(CollateralType.CAR).worth(1000).build()).paybackGuaranteeType(PaybackGuaranteeType.COLLATERAL).build();
 
-        CreditScoreResponseDTO creditScoreResponseDTO=CreditScoreResponseDTO.builder().creditScore(100).build();
 
         LoanSaveRequestDTO loanSaveRequestDTO=LoanSaveRequestDTO.builder().paybackGuaranteeType(PaybackGuaranteeType.COLLATERAL).amount(1000).result(LoanResult.APPROVED).creditScore(100).build();
 
-        LoanDTO loanDTO=LoanDTO.builder().paybackGuaranteeType(PaybackGuaranteeType.COLLATERAL).amount(1000).result(LoanResult.APPROVED).build();
 
         CustomerLoanResponseDTO customerLoanResponseDTO=CustomerLoanResponseDTO.builder().paybackGuaranteeType(PaybackGuaranteeType.COLLATERAL).amount(1000).result(LoanResult.APPROVED).customerLimit(1000).build();
 
         doNothing().when(builderFacade).invokeBuilder(loanApplicationRequestDTO);
-        when(creditScoreApiService.getCreditScore(creditScoreRequestDTO)).thenReturn(creditScoreResponseDTO);
-        when(loanService.calculateLimitOfLoan(creditScoreResponseDTO.getCreditScore(), creditScoreRequestDTO.getCustomerCreditScoreRequestDTO().getMonthlyIncome())).thenReturn(1000f);
-        when(collateralService.addCollateralWorthToLoanLimit(creditScoreRequestDTO.getCollateralSaveRequestDTO().getWorth(), creditScoreResponseDTO.getCreditScore(), creditScoreRequestDTO.getCustomerCreditScoreRequestDTO().getMonthlyIncome(), 1000)).thenReturn(1000f);
-        when(loanService.isSuitableForCalculate(creditScoreResponseDTO.getCreditScore())).thenReturn(true);
-        when(loanService.saveLoan(loanSaveRequestDTO)).thenReturn(loanDTO);
         when(customerService.getLimitOfCustomer(loanApplicationRequestDTO, 1000)).thenReturn(1000f);
 
         CustomerLoanResponseDTO result=loanFacade.applyLoan(loanApplicationRequestDTO);

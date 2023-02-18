@@ -52,6 +52,7 @@ public class BuilderFacadeImpl implements BuilderFacade {
                 .birthDate(loanApplicationRequestDTO.getSuretyBirthDate())
                 .identityNo(loanApplicationRequestDTO.getSuretyIdentityNo())
                 .personType(loanApplicationRequestDTO.getSuretyPersonType())
+                .suretyType(loanApplicationRequestDTO.getSuretyType())
                 .phoneNumber(loanApplicationRequestDTO.getSuretyPhoneNumber())
                 .identityNo(loanApplicationRequestDTO.getSuretyIdentityNo())
                 .build();

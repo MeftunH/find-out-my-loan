@@ -4,7 +4,9 @@ package com.findoutmyloan.application.surety.enums;
 import com.findoutmyloan.application.general.errorMessage.BaseErrorMessage;
 
 public enum SuretyErrorMessage implements BaseErrorMessage {
-    PERSON_TYPE_MUST_BE_SURETY("Person type must be surety", "Please check person type");
+    SURETY_ERROR_MESSAGE("Surety error message", "Please check surety's fields"),
+    PERSON_TYPE_MUST_BE_SURETY("Person type must be surety", "Please check person type"),
+    SURETY_TYPE_MUST_NOT_BE_NULL("Surety type must not be null", "Please check surety type");
     private  final String message;
     private  final String detailMessage;
 

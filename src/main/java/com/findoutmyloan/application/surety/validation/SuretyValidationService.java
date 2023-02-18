@@ -6,5 +6,5 @@ import com.findoutmyloan.application.surety.entity.Surety;
 public interface SuretyValidationService {
     void validateIsPersonTypeSurety(Surety surety);
     void validateSuretyType(Surety surety);
-    void validateAreFieldsNull(String suretyType);
+    void validateSurety(Surety surety);
 }
