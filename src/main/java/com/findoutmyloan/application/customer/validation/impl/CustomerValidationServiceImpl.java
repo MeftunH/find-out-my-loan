@@ -6,10 +6,11 @@ import com.findoutmyloan.application.customer.repository.CustomerRepository;
 import com.findoutmyloan.application.customer.validation.CustomerValidationService;
 import com.findoutmyloan.application.general.exception.GeneralBusinessException;
 import com.findoutmyloan.application.general.exception.IllegalFieldException;
+import com.findoutmyloan.application.person.enums.PersonType;
+import com.findoutmyloan.application.person.validation.PersonValidationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.security.GeneralSecurityException;
 import java.util.Date;
 import java.util.Optional;
 
@@ -19,6 +20,7 @@ import static com.findoutmyloan.application.customer.enums.CustomerErrorMessage.
 @RequiredArgsConstructor
 public class CustomerValidationServiceImpl implements CustomerValidationService {
     private final CustomerRepository customerRepository;
+    private final PersonValidationService personValidationService;
 
     @Override
     public void validateCustomerByIdentityNoAndBirthDate(Long identityNo, Date birthDate) {
@@ -35,6 +37,26 @@ public class CustomerValidationServiceImpl implements CustomerValidationService 
         boolean hasNullField=customer.getName().isBlank()||customer.getSurname().isBlank()||customer.getBirthDate()==null||customer.getPhoneNumber().isBlank()||String.valueOf(customer.getMonthlyIncome())==null||String.valueOf(customer.getCustomerLimit())==null||String.valueOf(customer.getPersonType())==null||String.valueOf(customer.getIdentityNo())==null||customer.getPassword().isBlank();
         if (hasNullField) {
             throw new IllegalFieldException(FIELD_CANNOT_BE_NULL);
+        }
+    }
+
+    @Override
+    public void validateCustomer(Customer customer) {
+        validateAreFieldsNonNull(customer);
+        validateIsPersonTypeCustomer(customer);
+        validateMonthlyIncome(customer.getMonthlyIncome());
+        validateCustomerPasswordIsMinimumThreeCharacters(customer.getPassword());
+        personValidationService.validateTurkishIdentityNo(customer.getIdentityNo(), CUSTOMER_IDENTITY_NO_INVALID);
+        personValidationService.validateIsIdentityNoUnique(customer,CUSTOMER_IDENTITY_NO_MUST_BE_UNIQUE);
+        personValidationService.validatePhoneNumber(customer.getPhoneNumber(),CUSTOMER_PHONE_NUMBER_INVALID);
+        personValidationService.validateIsPhoneNoUnique(customer,CUSTOMER_PHONE_NUMBER_MUST_BE_UNIQUE);
+        personValidationService.validateBirthDate(customer.getBirthDate(),CUSTOMER_BIRTH_DATE_INVALID);
+    }
+
+    @Override
+    public void validateIsPersonTypeCustomer(Customer customer) {
+        if (!customer.getPersonType().equals(PersonType.CUSTOMER)) {
+            throw new IllegalFieldException(PERSON_TYPE_MUST_BE_CUSTOMER);
         }
     }
 
