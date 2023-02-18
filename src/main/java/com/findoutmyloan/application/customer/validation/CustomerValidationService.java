@@ -12,4 +12,5 @@ public interface CustomerValidationService{
     void validateMonthlyIncome(float monthlyIncome);
     void validateCustomerPasswordIsMinimumThreeCharacters(String password);
     void validateIsPersonTypeCustomer(Customer customer);
+    void validateCustomer(Customer customer);
 }

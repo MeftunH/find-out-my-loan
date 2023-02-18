@@ -7,6 +7,7 @@ import com.findoutmyloan.application.customer.validation.CustomerValidationServi
 import com.findoutmyloan.application.general.exception.GeneralBusinessException;
 import com.findoutmyloan.application.general.exception.IllegalFieldException;
 import com.findoutmyloan.application.person.enums.PersonType;
+import com.findoutmyloan.application.person.validation.PersonValidationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ import static com.findoutmyloan.application.customer.enums.CustomerErrorMessage.
 @RequiredArgsConstructor
 public class CustomerValidationServiceImpl implements CustomerValidationService {
     private final CustomerRepository customerRepository;
+    private final PersonValidationService personValidationService;
 
     @Override
     public void validateCustomerByIdentityNoAndBirthDate(Long identityNo, Date birthDate) {
@@ -36,6 +38,19 @@ public class CustomerValidationServiceImpl implements CustomerValidationService 
         if (hasNullField) {
             throw new IllegalFieldException(FIELD_CANNOT_BE_NULL);
         }
+    }
+
+    @Override
+    public void validateCustomer(Customer customer) {
+        validateAreFieldsNonNull(customer);
+        validateIsPersonTypeCustomer(customer);
+        validateMonthlyIncome(customer.getMonthlyIncome());
+        validateCustomerPasswordIsMinimumThreeCharacters(customer.getPassword());
+        personValidationService.validateTurkishIdentityNo(customer.getIdentityNo());
+        personValidationService.validateIsIdentityNoUnique(customer);
+        personValidationService.validatePhoneNumber(customer.getPhoneNumber());
+        personValidationService.validateIsPhoneNoUnique(customer);
+        personValidationService.validateBirthDate(customer.getBirthDate());
     }
 
     @Override

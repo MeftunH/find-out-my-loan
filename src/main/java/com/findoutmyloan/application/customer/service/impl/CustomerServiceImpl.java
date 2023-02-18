@@ -20,7 +20,6 @@ import com.findoutmyloan.application.loan.entity.Loan;
 import com.findoutmyloan.application.loan.mapper.LoanMapper;
 import com.findoutmyloan.application.loan.service.LoanService;
 import com.findoutmyloan.application.person.enums.PersonType;
-import com.findoutmyloan.application.person.validation.PersonValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,16 +37,14 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
     private final CustomerValidationService customerValidationService;
     private final LoanService loanService;
     private final PasswordEncoder passwordEncoder;
-    private final PersonValidationService personValidationService;
 
     //fixed: @Lazy annotation is used to avoid circular dependency
     @Autowired
-    public CustomerServiceImpl(CustomerRepository customerRepository, CustomerValidationService customerValidationService, @Lazy LoanService loanService, PasswordEncoder passwordEncoder, PersonValidationService personValidationService) {
+    public CustomerServiceImpl(CustomerRepository customerRepository, CustomerValidationService customerValidationService, @Lazy LoanService loanService, PasswordEncoder passwordEncoder) {
         this.customerRepository=customerRepository;
         this.customerValidationService=customerValidationService;
         this.loanService=loanService;
         this.passwordEncoder=passwordEncoder;
-        this.personValidationService=personValidationService;
     }
 
     @Override
@@ -66,9 +63,10 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
     @Override
     public CustomerResponseDTO saveCustomer(CustomerSaveRequestDTO customerSaveRequestDTO) {
         Customer customer=CustomerMapper.INSTANCE.convertToCustomer(customerSaveRequestDTO);
+
         setAdditionalFields(customer);
 
-        validateCustomer(customer);
+        customerValidationService.validateCustomer(customer);
         String password=passwordEncoder.encode(customer.getPassword());
         customer.setPassword(password);
 
@@ -76,17 +74,6 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
         return CustomerMapper.INSTANCE.convertToCustomerResponseDTO(savedCustomer);
     }
 
-    private void validateCustomer(Customer customer) {
-        customerValidationService.validateAreFieldsNonNull(customer);
-        customerValidationService.validateIsPersonTypeCustomer(customer);
-        customerValidationService.validateMonthlyIncome(customer.getMonthlyIncome());
-        customerValidationService.validateCustomerPasswordIsMinimumThreeCharacters(customer.getPassword());
-        personValidationService.validateTurkishIdentityNo(customer.getIdentityNo());
-        personValidationService.validateIsIdentityNoUnique(customer);
-        personValidationService.validatePhoneNumber(customer.getPhoneNumber());
-        personValidationService.validateIsPhoneNoUnique(customer);
-        personValidationService.validateBirthDate(customer.getBirthDate());
-    }
 
     public CustomerTypeAccordingToMonthlyIncome getCustomerTypeAccordingToMonthlyIncome(float monthlyIncome) {
         if (isMonthlyIncomeInLowRange(monthlyIncome)) {
