@@ -10,7 +10,6 @@ import com.findoutmyloan.application.person.enums.PersonType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.security.GeneralSecurityException;
 import java.util.Date;
 import java.util.Optional;
 
