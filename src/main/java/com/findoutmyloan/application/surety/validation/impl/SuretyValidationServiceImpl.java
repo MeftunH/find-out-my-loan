@@ -10,6 +10,7 @@ import com.findoutmyloan.application.surety.validation.SuretyValidationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+
 @Service
 @RequiredArgsConstructor
 public class SuretyValidationServiceImpl implements SuretyValidationService {
@@ -27,10 +28,10 @@ public class SuretyValidationServiceImpl implements SuretyValidationService {
 
     @Override
     public void validateSurety(Surety surety) {
-        personValidationService.validateIsPhoneNoUnique(surety);
-        personValidationService.validateBirthDate(surety.getBirthDate());
-        personValidationService.validateTurkishIdentityNo(surety.getIdentityNo());
-        personValidationService.validateIsIdentityNoUnique(surety);
+        personValidationService.validateIsPhoneNoUnique(surety, SuretyErrorMessage.SURETY_PHONE_NUMBER_MUST_BE_UNIQUE);
+        personValidationService.validateBirthDate(surety.getBirthDate(), SuretyErrorMessage.SURETY_BIRTH_DATE_INVALID);
+        personValidationService.validateTurkishIdentityNo(surety.getIdentityNo(), SuretyErrorMessage.SURETY_IDENTITY_NO_INVALID);
+        personValidationService.validateIsIdentityNoUnique(surety, SuretyErrorMessage.SURETY_IDENTITY_NO_MUST_BE_UNIQUE);
         validateIsPersonTypeSurety(surety);
         validateSuretyType(surety);
     }
