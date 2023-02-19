@@ -1,4 +1,4 @@
-package com.findoutmyloan.application.collateral.validation;
+package com.findoutmyloan.application.collateral.validation.service;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
 import com.findoutmyloan.application.collateral.entity.Collateral;

@@ -3,6 +3,7 @@ package com.findoutmyloan.application.collateral.mapper;
 import com.findoutmyloan.application.collateral.dto.CollateralDTO;
 import com.findoutmyloan.application.collateral.dto.CollateralSaveRequestDTO;
 import com.findoutmyloan.application.collateral.entity.Collateral;
+import com.findoutmyloan.application.facade.dto.LoanApplicationRequestDTO;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
@@ -16,4 +17,8 @@ public interface CollateralMapper {
     @Mapping(source = "baseAdditionalFields.updatedDate", target = "baseAdditionalFieldsUpdatedDate")
     @Mapping(source = "baseAdditionalFields.createdDate", target = "baseAdditionalFieldsCreatedDate")
     CollateralDTO convertToCollateralDTO(Collateral collateral);
+
+    @Mapping(source="collateralType",target="collateralType")
+    @Mapping(source="collateralWorth",target="worth")
+    Collateral convertLoanApplicationRequestToCollateral(LoanApplicationRequestDTO loanApplicationRequestDTO);
 }

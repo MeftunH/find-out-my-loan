@@ -1,5 +1,6 @@
 package com.findoutmyloan.application.surety.mapper;
 
+import com.findoutmyloan.application.facade.dto.LoanApplicationRequestDTO;
 import com.findoutmyloan.application.surety.dto.SuretyDTO;
 import com.findoutmyloan.application.surety.entity.Surety;
 import com.findoutmyloan.application.surety.dto.SuretySaveRequestDTO;
@@ -15,4 +16,13 @@ public interface SuretyMapper {
     @Mapping(source = "baseAdditionalFields.updatedDate", target = "baseAdditionalFieldsUpdatedDate")
     @Mapping(source = "baseAdditionalFields.createdDate", target = "baseAdditionalFieldsCreatedDate")
     SuretyDTO convertToSuretyDto(Surety savedSurety);
+
+    @Mapping(source="suretyName",target="name")
+    @Mapping(source="suretySurname",target="surname")
+    @Mapping(source="suretyIdentityNo",target="identityNo")
+    @Mapping(source="suretyBirthDate",target="birthDate")
+    @Mapping(source="suretyPhoneNumber",target="phoneNumber")
+    @Mapping(source="suretyPersonType",target="personType")
+    @Mapping(source="suretyType",target="suretyType")
+    Surety convertLoanApplicationRequestToSurety(LoanApplicationRequestDTO loanApplicationRequestDTO);
 }
