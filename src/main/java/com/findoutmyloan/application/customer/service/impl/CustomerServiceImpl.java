@@ -14,7 +14,7 @@ import com.findoutmyloan.application.customer.service.CustomerService;
 import com.findoutmyloan.application.customer.validation.CustomerValidationService;
 import com.findoutmyloan.application.general.exception.ItemNotFoundException;
 import com.findoutmyloan.application.generic.service.BaseService;
-import com.findoutmyloan.application.loan.dto.LoanApplicationRequestDTO;
+import com.findoutmyloan.application.facade.dto.LoanApplicationRequestDTO;
 import com.findoutmyloan.application.loan.dto.LoanDTO;
 import com.findoutmyloan.application.loan.entity.Loan;
 import com.findoutmyloan.application.loan.mapper.LoanMapper;

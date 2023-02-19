@@ -1,4 +1,4 @@
-package com.findoutmyloan.application.loan.dto;
+package com.findoutmyloan.application.facade.dto;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
 import com.fasterxml.jackson.annotation.JsonFormat;

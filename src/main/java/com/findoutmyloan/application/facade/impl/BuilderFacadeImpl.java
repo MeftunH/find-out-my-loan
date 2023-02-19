@@ -5,7 +5,7 @@ import com.findoutmyloan.application.collateral.dto.CollateralSaveRequestDTO;
 import com.findoutmyloan.application.creditscore.dto.CreditScoreRequestDTO;
 import com.findoutmyloan.application.customer.dto.CustomerCreditScoreRequestDTO;
 import com.findoutmyloan.application.facade.BuilderFacade;
-import com.findoutmyloan.application.loan.dto.LoanApplicationRequestDTO;
+import com.findoutmyloan.application.facade.dto.LoanApplicationRequestDTO;
 import com.findoutmyloan.application.surety.dto.SuretySaveRequestDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
