@@ -1,7 +1,7 @@
 package com.findoutmyloan.application.loan.mapper;
 
-import com.findoutmyloan.application.loan.dto.CustomerLoanResponseDTO;
-import com.findoutmyloan.application.loan.dto.LoanApplicationRequestDTO;
+import com.findoutmyloan.application.facade.dto.CustomerLoanResponseDTO;
+import com.findoutmyloan.application.facade.dto.LoanApplicationRequestDTO;
 import com.findoutmyloan.application.loan.dto.LoanSaveRequestDTO;
 import com.findoutmyloan.application.loan.dto.LoanDTO;
 import com.findoutmyloan.application.loan.entity.Loan;
