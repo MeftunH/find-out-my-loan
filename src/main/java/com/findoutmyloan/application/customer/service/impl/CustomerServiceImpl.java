@@ -70,6 +70,7 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
         setAdditionalFields(customer);
 
         customerValidationService.validateCustomer(customer);
+
         String password=passwordEncoder.encode(customer.getPassword());
         customer.setPassword(password);
 
