@@ -20,6 +20,7 @@ import com.findoutmyloan.application.loan.entity.Loan;
 import com.findoutmyloan.application.loan.mapper.LoanMapper;
 import com.findoutmyloan.application.loan.service.LoanService;
 import com.findoutmyloan.application.person.enums.PersonType;
+import com.findoutmyloan.application.security.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,19 +38,21 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
     private final CustomerValidationService customerValidationService;
     private final LoanService loanService;
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticationService authenticationService;
 
     //fixed: @Lazy annotation is used to avoid circular dependency
     @Autowired
-    public CustomerServiceImpl(CustomerRepository customerRepository, CustomerValidationService customerValidationService, @Lazy LoanService loanService, PasswordEncoder passwordEncoder) {
+    public CustomerServiceImpl(CustomerRepository customerRepository, CustomerValidationService customerValidationService, @Lazy LoanService loanService, PasswordEncoder passwordEncoder,@Lazy AuthenticationService authenticationService) {
         this.customerRepository=customerRepository;
         this.customerValidationService=customerValidationService;
         this.loanService=loanService;
         this.passwordEncoder=passwordEncoder;
+        this.authenticationService=authenticationService;
     }
 
     @Override
-    public float getLimitOfCustomer(LoanApplicationRequestDTO loanApplicationRequestDTO, float limitOfLoan) {
-        Customer customer=findCustomerByIdentityNoOrThrowException(loanApplicationRequestDTO.getCustomerIdentityNo());
+    public float getLimitOfCustomer(float limitOfLoan) {
+        Customer customer=findCustomerByIdentityNoOrThrowException(authenticationService.getCurrentCustomer().getIdentityNo());
         float limitOfCustomer=customer.getCustomerLimit()+limitOfLoan;
         updateCustomerLimit(customer, limitOfCustomer);
         return limitOfCustomer;

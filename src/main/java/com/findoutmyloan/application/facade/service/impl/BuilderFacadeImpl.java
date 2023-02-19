@@ -6,8 +6,10 @@ import com.findoutmyloan.application.creditscore.dto.CreditScoreRequestDTO;
 import com.findoutmyloan.application.customer.dto.CustomerCreditScoreRequestDTO;
 import com.findoutmyloan.application.facade.service.BuilderFacade;
 import com.findoutmyloan.application.facade.dto.LoanApplicationRequestDTO;
+import com.findoutmyloan.application.security.service.AuthenticationService;
 import com.findoutmyloan.application.surety.dto.SuretySaveRequestDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 
@@ -19,6 +21,8 @@ public class BuilderFacadeImpl implements BuilderFacade {
     public SuretySaveRequestDTO suretySaveRequestDTO;
     public CollateralSaveRequestDTO collateralSaveRequestDTO;
     public CreditScoreRequestDTO creditScoreRequestDTO;
+
+    private final AuthenticationService authenticationService;
 
     public CustomerCreditScoreRequestDTO getCustomerCreditScoreRequestDTO() {
         return customerCreditScoreRequestDTO;
@@ -38,13 +42,13 @@ public class BuilderFacadeImpl implements BuilderFacade {
 
     public void invokeBuilder(LoanApplicationRequestDTO loanApplicationRequestDTO) {
         customerCreditScoreRequestDTO=CustomerCreditScoreRequestDTO.builder()
-                .name(loanApplicationRequestDTO.getCustomerName())
-                .surname(loanApplicationRequestDTO.getCustomerSurname())
-                .birthDate(loanApplicationRequestDTO.getCustomerBirthDate())
-                .identityNo(loanApplicationRequestDTO.getCustomerIdentityNo())
-                .personType(loanApplicationRequestDTO.getCustomerPersonType())
-                .phoneNumber(loanApplicationRequestDTO.getCustomerPhoneNumber())
-                .monthlyIncome(loanApplicationRequestDTO.getCustomerMonthlyIncome())
+                .name(authenticationService.getCurrentCustomer().getName())
+                .surname(authenticationService.getCurrentCustomer().getSurname())
+                .birthDate(authenticationService.getCurrentCustomer().getBirthDate())
+                .identityNo(authenticationService.getCurrentCustomer().getIdentityNo())
+                .personType(authenticationService.getCurrentCustomer().getPersonType())
+                .phoneNumber(authenticationService.getCurrentCustomer().getPhoneNumber())
+                .monthlyIncome(authenticationService.getCurrentCustomer().getMonthlyIncome())
                 .build();
         suretySaveRequestDTO=SuretySaveRequestDTO.builder()
                 .name(loanApplicationRequestDTO.getSuretyName())
@@ -65,7 +69,7 @@ public class BuilderFacadeImpl implements BuilderFacade {
                 .customerCreditScoreRequestDTO(customerCreditScoreRequestDTO)
                 .suretySaveRequestDTO(suretySaveRequestDTO)
                 .collateralSaveRequestDTO(collateralSaveRequestDTO)
-                .customerIdentityNo(loanApplicationRequestDTO.getCustomerIdentityNo())
+                .customerIdentityNo(authenticationService.getCurrentCustomer().getIdentityNo())
                 .build();
     }
 }
