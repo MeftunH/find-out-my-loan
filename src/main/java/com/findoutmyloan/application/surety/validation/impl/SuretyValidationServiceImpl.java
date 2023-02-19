@@ -27,7 +27,16 @@ public class SuretyValidationServiceImpl implements SuretyValidationService {
     }
 
     @Override
+    public void validateFieldsAreNotNull(Surety surety) {
+        boolean hasNullField = surety.getName().isBlank() || surety.getSurname().isBlank() || surety.getBirthDate() == null || surety.getPhoneNumber().isBlank() || String.valueOf(surety.getPersonType()) == null || String.valueOf(surety.getIdentityNo()) == null;
+        if (hasNullField) {
+            throw new IllegalFieldException(SuretyErrorMessage.SURETY_FIELD_CANNOT_BE_NULL);
+        }
+    }
+
+    @Override
     public void validateSurety(Surety surety) {
+        validateFieldsAreNotNull(surety);
         personValidationService.validateIsPhoneNoUnique(surety, SuretyErrorMessage.SURETY_PHONE_NUMBER_MUST_BE_UNIQUE);
         personValidationService.validateBirthDate(surety.getBirthDate(), SuretyErrorMessage.SURETY_BIRTH_DATE_INVALID);
         personValidationService.validateTurkishIdentityNo(surety.getIdentityNo(), SuretyErrorMessage.SURETY_IDENTITY_NO_INVALID);

@@ -3,14 +3,13 @@ package com.findoutmyloan.application.loan.controller;
 
 import com.findoutmyloan.application.customer.dto.CustomerUpdateRequestDTO;
 import com.findoutmyloan.application.facade.LoanFacade;
-import com.findoutmyloan.application.loan.dto.CustomerLoanResponseDTO;
-import com.findoutmyloan.application.loan.dto.LoanApplicationRequestDTO;
+import com.findoutmyloan.application.facade.dto.CustomerLoanResponseDTO;
+import com.findoutmyloan.application.facade.dto.LoanApplicationRequestDTO;
 import com.findoutmyloan.application.loan.dto.LoanDTO;
 import com.findoutmyloan.application.loan.dto.LoanSaveRequestDTO;
 import com.findoutmyloan.application.loan.service.LoanService;
 import com.findoutmyloan.application.generic.dto.RestResponse;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

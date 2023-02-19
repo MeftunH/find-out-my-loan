@@ -2,7 +2,7 @@ package com.findoutmyloan.application.facade.impl;
 
 import com.findoutmyloan.application.collateral.enums.CollateralType;
 import com.findoutmyloan.application.customer.dto.CustomerCreditScoreRequestDTO;
-import com.findoutmyloan.application.loan.dto.LoanApplicationRequestDTO;
+import com.findoutmyloan.application.facade.dto.LoanApplicationRequestDTO;
 import com.findoutmyloan.application.loan.enums.PaybackGuaranteeType;
 import com.findoutmyloan.application.person.enums.PersonType;
 import org.junit.jupiter.api.DisplayName;
