@@ -5,7 +5,7 @@ import com.findoutmyloan.application.general.errorMessage.BaseErrorMessage;
 
 public enum PersonErrorMessage implements BaseErrorMessage {
 
-    FIELD_CANNOT_BE_NULL("Field Cannot Be Null!","Please check the field.");
+    FIELD_CANNOT_BE_NULL("Person Fields Cannot Be Null!","Please check the field.");
 
 
     private  final String message;
