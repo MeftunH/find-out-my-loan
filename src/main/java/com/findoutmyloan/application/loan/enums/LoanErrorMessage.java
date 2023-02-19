@@ -1,15 +1,17 @@
-package com.findoutmyloan.application.collateral.enums;
+package com.findoutmyloan.application.loan.enums;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
 import com.findoutmyloan.application.general.errorMessage.BaseErrorMessage;
 
-public enum CollateralErrorMessage implements BaseErrorMessage {
-    WORT_MUST_BE_POSITIVE("Worth must be positive", "Please enter a positive value for worth"),
-    FIELD_CANNOT_BE_NULL("Collateral Fields cannot be null", "Please check the fields");
-   private final String message;
+public enum LoanErrorMessage implements BaseErrorMessage {
+
+    AMOUNT_MUST_BE_POSITIVE("Amount must be positive", "Please check the amount,"),
+    FIELD_CANNOT_BE_NULL("Loan Fields cannot be null", "Please check the fields");
+
+    private final String message;
     private final String detailMessage;
 
-    CollateralErrorMessage(String message, String detailMessage) {
+    LoanErrorMessage(String message, String detailMessage) {
         this.message=message;
         this.detailMessage=detailMessage;
     }

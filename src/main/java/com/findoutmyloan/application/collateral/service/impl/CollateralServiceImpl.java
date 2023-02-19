@@ -1,14 +1,17 @@
 package com.findoutmyloan.application.collateral.service.impl;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
+import com.findoutmyloan.application.collateral.calculationStrategy.CollateralCalculationStrategy;
+import com.findoutmyloan.application.collateral.calculationStrategy.impl.*;
 import com.findoutmyloan.application.collateral.dto.CollateralDTO;
 import com.findoutmyloan.application.collateral.dto.CollateralSaveRequestDTO;
 import com.findoutmyloan.application.collateral.entity.Collateral;
-import com.findoutmyloan.application.collateral.enums.CollateralWorthPercentageToBeAddToTheLoanLimit;
 import com.findoutmyloan.application.collateral.mapper.CollateralMapper;
 import com.findoutmyloan.application.collateral.repository.CollateralRepository;
 import com.findoutmyloan.application.collateral.service.CollateralService;
-import com.findoutmyloan.application.collateral.validation.CollateralValidationService;
+import com.findoutmyloan.application.collateral.validation.service.CollateralValidationService;
+import com.findoutmyloan.application.customer.enums.CustomerErrorMessage;
+import com.findoutmyloan.application.customer.enums.CustomerProfiler;
 import com.findoutmyloan.application.customer.service.CustomerProfilerService;
 import com.findoutmyloan.application.generic.service.BaseService;
 import lombok.RequiredArgsConstructor;
@@ -38,16 +41,17 @@ public class CollateralServiceImpl extends BaseService<Collateral> implements Co
 
     public float addCollateralWorthToLoanLimit(float collateralWorth, int creditScore, float monthlyIncome, float amount) {
 
-        switch (customerProfilerService.getCustomerProfile(creditScore, monthlyIncome)) {
-            case BRONZE ->
-                    amount+=collateralWorth*CollateralWorthPercentageToBeAddToTheLoanLimit.LOW_PERCENTAGE.getWorthPercentage();
-            case SILVER ->
-                    amount+=collateralWorth*CollateralWorthPercentageToBeAddToTheLoanLimit.MEDIUM_PERCENTAGE.getWorthPercentage();
-            case GOLD ->
-                    amount+=collateralWorth*CollateralWorthPercentageToBeAddToTheLoanLimit.HIGH_PERCENTAGE.getWorthPercentage();
-            case PLATINUM ->
-                    amount+=collateralWorth*CollateralWorthPercentageToBeAddToTheLoanLimit.VERY_HIGH_PERCENTAGE.getWorthPercentage();
+        CustomerProfiler customerProfile=customerProfilerService.getCustomerProfile(creditScore, monthlyIncome);
+        CollateralCalculationStrategy strategy;
+
+        switch (customerProfile) {
+            case BRONZE -> strategy=new BronzeCollateralCalculationStrategy();
+            case SILVER -> strategy=new SilverCollateralCalculationStrategy();
+            case GOLD -> strategy=new GoldCollateralCalculationStrategy();
+            case PLATINUM -> strategy=new PlatinumCollateralCalculationStrategy();
+            default -> strategy=new WoodCollateralCalculationStrategy();
         }
+        amount=strategy.calculateLoanAmount(collateralWorth, amount);
         return amount;
     }
 }

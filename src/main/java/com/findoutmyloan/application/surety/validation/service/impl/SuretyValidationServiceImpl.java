@@ -1,4 +1,4 @@
-package com.findoutmyloan.application.surety.validation.impl;
+package com.findoutmyloan.application.surety.validation.service.impl;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
 import com.findoutmyloan.application.general.exception.IllegalFieldException;
@@ -6,7 +6,7 @@ import com.findoutmyloan.application.person.enums.PersonType;
 import com.findoutmyloan.application.person.validation.PersonValidationService;
 import com.findoutmyloan.application.surety.entity.Surety;
 import com.findoutmyloan.application.surety.enums.SuretyErrorMessage;
-import com.findoutmyloan.application.surety.validation.SuretyValidationService;
+import com.findoutmyloan.application.surety.validation.service.SuretyValidationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +28,7 @@ public class SuretyValidationServiceImpl implements SuretyValidationService {
 
     @Override
     public void validateFieldsAreNotNull(Surety surety) {
-        boolean hasNullField = surety.getName().isBlank() || surety.getSurname().isBlank() || surety.getBirthDate() == null || surety.getPhoneNumber().isBlank() || String.valueOf(surety.getPersonType()) == null || String.valueOf(surety.getIdentityNo()) == null;
+        boolean hasNullField = surety.getName()==null || surety.getSurname()==null || surety.getBirthDate() == null || surety.getPhoneNumber()==null || String.valueOf(surety.getPersonType()) == null || String.valueOf(surety.getIdentityNo())==null;
         if (hasNullField) {
             throw new IllegalFieldException(SuretyErrorMessage.SURETY_FIELD_CANNOT_BE_NULL);
         }

@@ -12,6 +12,7 @@ import com.findoutmyloan.application.loan.entity.Loan;
 import com.findoutmyloan.application.loan.mapper.LoanMapper;
 import com.findoutmyloan.application.loan.repository.LoanRepository;
 import com.findoutmyloan.application.loan.service.LoanService;
+import com.findoutmyloan.application.loan.validation.LoanValidationService;
 import com.findoutmyloan.application.notification.event.CustomerLoanApplicationEvent;
 import com.findoutmyloan.application.person.entity.Person;
 import com.findoutmyloan.application.security.service.AuthenticationService;
@@ -33,6 +34,7 @@ public class LoanServiceImpl extends BaseService<Loan> implements LoanService {
     private final CustomerProfilerService customerProfilerService;
     private final ApplicationEventPublisher applicationEventPublisher;
     private final CustomerRepository customerRepository;
+    private final LoanValidationService loanValidationService;
 
     @Override
     public boolean isSuitableForCalculate(int creditScore) {
@@ -60,6 +62,9 @@ public class LoanServiceImpl extends BaseService<Loan> implements LoanService {
         Loan loan=LoanMapper.INSTANCE.convertToLoan(loanSaveRequestDTO);
         Customer customer =(Customer) customerRepository.getReferenceById(getCurrentCustomerId());
         setAdditionalFields(loan);
+
+        loanValidationService.validateLoan(loan);
+
         loan.setCustomerId(getCurrentCustomerId());
         loanRepository.save(loan);
         applicationEventPublisher.publishEvent(new CustomerLoanApplicationEvent(this,

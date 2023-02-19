@@ -1,7 +1,6 @@
-package com.findoutmyloan.application.surety.validation;
+package com.findoutmyloan.application.surety.validation.service;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
-import com.findoutmyloan.application.surety.dto.SuretySaveRequestDTO;
 import com.findoutmyloan.application.surety.entity.Surety;
 
 public interface SuretyValidationService {

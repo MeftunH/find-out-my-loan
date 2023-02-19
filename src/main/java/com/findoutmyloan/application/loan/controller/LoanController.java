@@ -2,7 +2,7 @@ package com.findoutmyloan.application.loan.controller;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
 import com.findoutmyloan.application.customer.dto.CustomerUpdateRequestDTO;
-import com.findoutmyloan.application.facade.LoanFacade;
+import com.findoutmyloan.application.facade.service.LoanFacade;
 import com.findoutmyloan.application.facade.dto.CustomerLoanResponseDTO;
 import com.findoutmyloan.application.facade.dto.LoanApplicationRequestDTO;
 import com.findoutmyloan.application.loan.dto.LoanDTO;

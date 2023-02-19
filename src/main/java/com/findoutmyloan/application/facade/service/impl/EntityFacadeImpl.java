@@ -1,9 +1,9 @@
-package com.findoutmyloan.application.facade.impl;
+package com.findoutmyloan.application.facade.service.impl;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
 import com.findoutmyloan.application.collateral.dto.CollateralSaveRequestDTO;
 import com.findoutmyloan.application.collateral.service.CollateralService;
-import com.findoutmyloan.application.facade.EntityFacade;
+import com.findoutmyloan.application.facade.service.EntityFacade;
 import com.findoutmyloan.application.surety.dto.SuretySaveRequestDTO;
 import com.findoutmyloan.application.surety.service.SuretyService;
 import lombok.RequiredArgsConstructor;

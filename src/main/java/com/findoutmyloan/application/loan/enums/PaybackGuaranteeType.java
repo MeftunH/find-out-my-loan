@@ -4,5 +4,5 @@ package com.findoutmyloan.application.loan.enums;
 public enum PaybackGuaranteeType {
     SURETY,
     COLLATERAL,
-    SURETY_AND_COLLATERAL
+    ALL_OF_THEM
 }

@@ -19,8 +19,7 @@ public class LoanSaveRequestDTO implements Serializable {
     private float amount;
     @NotNull
     private LoanResult result;
-
-    private int creditScore;
+    
     private Date baseAdditionalFieldsCreatedDate;
     private Date baseAdditionalFieldsUpdatedDate;
 }

@@ -1,10 +1,10 @@
-package com.findoutmyloan.application.collateral.validation.impl;
+package com.findoutmyloan.application.collateral.validation.service.impl;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
 
 import com.findoutmyloan.application.collateral.entity.Collateral;
 import com.findoutmyloan.application.collateral.enums.CollateralErrorMessage;
-import com.findoutmyloan.application.collateral.validation.CollateralValidationService;
+import com.findoutmyloan.application.collateral.validation.service.CollateralValidationService;
 import com.findoutmyloan.application.general.exception.IllegalFieldException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

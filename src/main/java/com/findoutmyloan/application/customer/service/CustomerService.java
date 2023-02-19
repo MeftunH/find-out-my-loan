@@ -23,5 +23,5 @@ public interface CustomerService {
     CustomerTypeAccordingToMonthlyIncome getCustomerTypeAccordingToMonthlyIncome(float monthlyIncome);
     CustomerResponseDTO updateCustomer(CustomerUpdateRequestDTO customerUpdateRequestDTO);
     List<LoanDTO> findLoansByCustomerIdentityNoAndCustomerBirthDate(long identityNo, Date birthDate);
-    float getLimitOfCustomer(LoanApplicationRequestDTO loanApplicationRequestDTO, float limitOfLoan);
+    float getLimitOfCustomer(float limitOfLoan);
 }
