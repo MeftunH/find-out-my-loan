@@ -1,10 +1,10 @@
-package com.findoutmyloan.application.facade.impl;
+package com.findoutmyloan.application.facade.service.impl;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
 import com.findoutmyloan.application.collateral.dto.CollateralSaveRequestDTO;
 import com.findoutmyloan.application.creditscore.dto.CreditScoreRequestDTO;
 import com.findoutmyloan.application.customer.dto.CustomerCreditScoreRequestDTO;
-import com.findoutmyloan.application.facade.BuilderFacade;
+import com.findoutmyloan.application.facade.service.BuilderFacade;
 import com.findoutmyloan.application.facade.dto.LoanApplicationRequestDTO;
 import com.findoutmyloan.application.surety.dto.SuretySaveRequestDTO;
 import lombok.RequiredArgsConstructor;
