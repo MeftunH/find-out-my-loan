@@ -5,7 +5,6 @@ package com.findoutmyloan.application.customer.controller;
 import com.findoutmyloan.application.customer.dto.CustomerResponseDTO;
 import com.findoutmyloan.application.customer.dto.CustomerUpdateRequestDTO;
 import com.findoutmyloan.application.customer.service.CustomerService;
-import com.findoutmyloan.application.general.exception.GeneralBusinessException;
 import com.findoutmyloan.application.generic.dto.RestResponse;
 import com.findoutmyloan.application.loan.dto.LoanDTO;
 import com.findoutmyloan.application.security.service.AuthenticationService;
@@ -19,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.GeneralSecurityException;
 import java.util.Date;
 import java.util.List;
 
@@ -64,7 +62,7 @@ public class CustomerController {
     )
     @PutMapping
     public ResponseEntity<RestResponse<CustomerResponseDTO>> updateAccount(@RequestBody CustomerUpdateRequestDTO customerUpdateRequestDTO) {
-        CustomerResponseDTO customerResponseDTO=customerService.updateCustomer(customerUpdateRequestDTO);
+        CustomerResponseDTO customerResponseDTO=customerService.updateAccount(customerUpdateRequestDTO);
         return ResponseEntity.ok(RestResponse.of(customerResponseDTO));
     }
 

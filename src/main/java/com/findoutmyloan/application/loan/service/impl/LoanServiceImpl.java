@@ -3,8 +3,8 @@ package com.findoutmyloan.application.loan.service.impl;
 
 import com.findoutmyloan.application.creditscore.enums.CreditScoreType;
 import com.findoutmyloan.application.customer.entity.Customer;
+import com.findoutmyloan.application.customer.profiler.service.CustomerProfilerService;
 import com.findoutmyloan.application.customer.repository.CustomerRepository;
-import com.findoutmyloan.application.customer.service.CustomerProfilerService;
 import com.findoutmyloan.application.generic.service.BaseService;
 import com.findoutmyloan.application.loan.dto.LoanDTO;
 import com.findoutmyloan.application.loan.dto.LoanSaveRequestDTO;
@@ -14,8 +14,6 @@ import com.findoutmyloan.application.loan.repository.LoanRepository;
 import com.findoutmyloan.application.loan.service.LoanService;
 import com.findoutmyloan.application.loan.validation.LoanValidationService;
 import com.findoutmyloan.application.notification.event.CustomerLoanApplicationEvent;
-import com.findoutmyloan.application.person.entity.Person;
-import com.findoutmyloan.application.security.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -24,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
