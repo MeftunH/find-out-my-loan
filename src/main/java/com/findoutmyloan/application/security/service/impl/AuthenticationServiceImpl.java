@@ -13,6 +13,7 @@ import com.findoutmyloan.application.security.jwt.JwtTokenGenerator;
 import com.findoutmyloan.application.security.jwt.JwtUserDetails;
 import com.findoutmyloan.application.security.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,11 +23,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
-    private final CustomerService customerService;
-    private final AuthenticationManager authenticationManager;
-    private final JwtTokenGenerator jwtTokenGenerator;
+    private  CustomerService customerService;
+    private  AuthenticationManager authenticationManager;
+    private  JwtTokenGenerator jwtTokenGenerator;
+
+
+    public AuthenticationServiceImpl(@Lazy CustomerService customerService, AuthenticationManager authenticationManager, JwtTokenGenerator jwtTokenGenerator) {
+        this.customerService=customerService;
+        this.authenticationManager=authenticationManager;
+        this.jwtTokenGenerator=jwtTokenGenerator;
+    }
+
 
     private static JwtUserDetails getCurrentJwtUserDetails(Authentication authentication) {
         JwtUserDetails jwtUserDetails=null;
