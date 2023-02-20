@@ -21,6 +21,7 @@ import com.findoutmyloan.application.loan.mapper.LoanMapper;
 import com.findoutmyloan.application.loan.service.LoanService;
 import com.findoutmyloan.application.surety.dto.SuretySaveRequestDTO;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,6 +56,7 @@ public class LoanFacadeImpl implements LoanFacade {
         LoanSaveRequestDTO loanSaveRequestDTO=LoanMapper.INSTANCE.loanRequestFromCustomerDTOToLoanSaveRequestDTO(loanApplicationRequestDTO);
         float limitOfLoan=getTotalLimitOfLoan(creditScoreRequestDTO, creditScoreResponseDTO);
         LoanDTO loanDTO=setLoanDTO(creditScoreResponseDTO, loanSaveRequestDTO, limitOfLoan);
+        System.out.println(creditScoreResponseDTO.getCreditScore());
         return getCustomerLoanResponseDTO(loanApplicationRequestDTO, limitOfLoan, loanDTO);
     }
 
