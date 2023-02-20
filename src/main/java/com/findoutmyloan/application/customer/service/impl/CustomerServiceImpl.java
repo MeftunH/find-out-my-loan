@@ -42,7 +42,7 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
 
     //fixed: @Lazy annotation is used to avoid circular dependency
     @Autowired
-    public CustomerServiceImpl(CustomerRepository customerRepository, CustomerValidationService customerValidationService, @Lazy LoanService loanService, PasswordEncoder passwordEncoder,@Lazy AuthenticationService authenticationService) {
+    public CustomerServiceImpl(CustomerRepository customerRepository, CustomerValidationService customerValidationService, @Lazy LoanService loanService, PasswordEncoder passwordEncoder,AuthenticationService authenticationService) {
         this.customerRepository=customerRepository;
         this.customerValidationService=customerValidationService;
         this.loanService=loanService;
@@ -146,6 +146,9 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
         customerToUpdate.setMonthlyIncome(customerUpdateRequestDTO.getMonthlyIncome());
         customerToUpdate.setPhoneNumber(customerUpdateRequestDTO.getPhoneNumber());
         customerToUpdate.setBirthDate(customerUpdateRequestDTO.getBirthDate());
+
+        customerValidationService.validateCustomer(customerToUpdate);
+
         customerRepository.save(customerToUpdate);
 
         return CustomerMapper.INSTANCE.convertToCustomerResponseDTO(customerToUpdate);
