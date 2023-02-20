@@ -7,7 +7,6 @@ import com.findoutmyloan.application.creditscore.dto.CreditScoreRequestDTO;
 import com.findoutmyloan.application.creditscore.dto.CreditScoreResponseDTO;
 import com.findoutmyloan.application.creditscore.service.CreditScoreApiService;
 import com.findoutmyloan.application.customer.dto.CustomerCreditScoreRequestDTO;
-import com.findoutmyloan.application.customer.repository.CustomerRepository;
 import com.findoutmyloan.application.customer.service.CustomerService;
 import com.findoutmyloan.application.facade.dto.CustomerLoanResponseDTO;
 import com.findoutmyloan.application.facade.dto.LoanApplicationRequestDTO;
@@ -22,8 +21,6 @@ import com.findoutmyloan.application.loan.mapper.LoanMapper;
 import com.findoutmyloan.application.loan.service.LoanService;
 import com.findoutmyloan.application.surety.dto.SuretySaveRequestDTO;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,7 +59,7 @@ public class LoanFacadeImpl implements LoanFacade {
     }
 
     private CustomerLoanResponseDTO getCustomerLoanResponseDTO(LoanApplicationRequestDTO loanApplicationRequestDTO, float limitOfLoan, LoanDTO loanDTO) {
-        float limitOfCustomer=customerService.getLimitOfCustomer(limitOfLoan);
+        float limitOfCustomer=customerService.getUpdatedLimitOfCustomer(limitOfLoan);
 
         CustomerLoanResponseDTO customerLoanResponseDTO=LoanMapper.INSTANCE.convertLoanDTOToCustomerLoanResponseDTO(loanDTO);
         customerLoanResponseDTO.setCustomerLimit(limitOfCustomer);

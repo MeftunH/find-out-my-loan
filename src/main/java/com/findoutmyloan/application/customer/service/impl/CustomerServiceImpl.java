@@ -7,14 +7,12 @@ import com.findoutmyloan.application.customer.dto.CustomerSaveRequestDTO;
 import com.findoutmyloan.application.customer.dto.CustomerUpdateRequestDTO;
 import com.findoutmyloan.application.customer.entity.Customer;
 import com.findoutmyloan.application.customer.enums.CustomerErrorMessage;
-import com.findoutmyloan.application.customer.enums.CustomerTypeAccordingToMonthlyIncome;
 import com.findoutmyloan.application.customer.mapper.CustomerMapper;
 import com.findoutmyloan.application.customer.repository.CustomerRepository;
 import com.findoutmyloan.application.customer.service.CustomerService;
 import com.findoutmyloan.application.customer.validation.CustomerValidationService;
 import com.findoutmyloan.application.general.exception.ItemNotFoundException;
 import com.findoutmyloan.application.generic.service.BaseService;
-import com.findoutmyloan.application.facade.dto.LoanApplicationRequestDTO;
 import com.findoutmyloan.application.loan.dto.LoanDTO;
 import com.findoutmyloan.application.loan.entity.Loan;
 import com.findoutmyloan.application.loan.mapper.LoanMapper;
@@ -30,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(propagation = Propagation.REQUIRED)
@@ -42,7 +41,7 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
 
     //fixed: @Lazy annotation is used to avoid circular dependency
     @Autowired
-    public CustomerServiceImpl(CustomerRepository customerRepository, CustomerValidationService customerValidationService, @Lazy LoanService loanService, PasswordEncoder passwordEncoder,AuthenticationService authenticationService) {
+    public CustomerServiceImpl(CustomerRepository customerRepository, CustomerValidationService customerValidationService, @Lazy LoanService loanService, PasswordEncoder passwordEncoder, AuthenticationService authenticationService) {
         this.customerRepository=customerRepository;
         this.customerValidationService=customerValidationService;
         this.loanService=loanService;
@@ -50,8 +49,7 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
         this.authenticationService=authenticationService;
     }
 
-    @Override
-    public float getLimitOfCustomer(float limitOfLoan) {
+    public float getUpdatedLimitOfCustomer(float limitOfLoan) {
         Customer customer=findCustomerByIdentityNoOrThrowException(authenticationService.getCurrentCustomer().getIdentityNo());
         float limitOfCustomer=customer.getCustomerLimit()+limitOfLoan;
         updateCustomerLimit(customer, limitOfCustomer);
@@ -76,33 +74,6 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
 
         Customer savedCustomer=customerRepository.save(customer);
         return CustomerMapper.INSTANCE.convertToCustomerResponseDTO(savedCustomer);
-    }
-
-
-    public CustomerTypeAccordingToMonthlyIncome getCustomerTypeAccordingToMonthlyIncome(float monthlyIncome) {
-        if (isMonthlyIncomeInLowRange(monthlyIncome)) {
-            return CustomerTypeAccordingToMonthlyIncome.LOW_INCOME;
-        } else if (isMonthlyIncomeInMediumRange(monthlyIncome)) {
-            return CustomerTypeAccordingToMonthlyIncome.MEDIUM_INCOME;
-        } else if (isMonthlyIncomeInHighRange(monthlyIncome)) {
-            return CustomerTypeAccordingToMonthlyIncome.HIGH_INCOME;
-        }
-        return null;
-    }
-
-    private boolean isMonthlyIncomeInLowRange(float monthlyIncome) {
-        return monthlyIncome>=CustomerTypeAccordingToMonthlyIncome.LOW_INCOME.getMinimumMonthlyIncome()&&
-                monthlyIncome<=CustomerTypeAccordingToMonthlyIncome.LOW_INCOME.getMaximumMonthlyIncome();
-    }
-
-    private boolean isMonthlyIncomeInMediumRange(float monthlyIncome) {
-        return monthlyIncome>=CustomerTypeAccordingToMonthlyIncome.MEDIUM_INCOME.getMinimumMonthlyIncome()&&
-                monthlyIncome<=CustomerTypeAccordingToMonthlyIncome.MEDIUM_INCOME.getMaximumMonthlyIncome();
-    }
-
-    private boolean isMonthlyIncomeInHighRange(float monthlyIncome) {
-        return monthlyIncome>=CustomerTypeAccordingToMonthlyIncome.HIGH_INCOME.getMinimumMonthlyIncome()&&monthlyIncome<=
-                CustomerTypeAccordingToMonthlyIncome.HIGH_INCOME.getMaximumMonthlyIncome();
     }
 
     private Customer findCustomerByIdOrThrowException(Long id) {

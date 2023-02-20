@@ -6,8 +6,6 @@ import com.findoutmyloan.application.customer.dto.CustomerResponseDTO;
 import com.findoutmyloan.application.customer.dto.CustomerSaveRequestDTO;
 import com.findoutmyloan.application.customer.dto.CustomerUpdateRequestDTO;
 import com.findoutmyloan.application.customer.entity.Customer;
-import com.findoutmyloan.application.customer.enums.CustomerTypeAccordingToMonthlyIncome;
-import com.findoutmyloan.application.facade.dto.LoanApplicationRequestDTO;
 import com.findoutmyloan.application.loan.dto.LoanDTO;
 
 import java.util.Date;
@@ -20,8 +18,8 @@ public interface CustomerService {
     CustomerDTO getByIdWithControlWithIdData(Long id);
     Customer findCustomerByIdentityNoOrThrowException(Long identityNo);
     void deleteAccountByIdControl(Long id);
-    CustomerTypeAccordingToMonthlyIncome getCustomerTypeAccordingToMonthlyIncome(float monthlyIncome);
+
     CustomerResponseDTO updateCustomer(CustomerUpdateRequestDTO customerUpdateRequestDTO);
     List<LoanDTO> findLoansByCustomerIdentityNoAndCustomerBirthDate(long identityNo, Date birthDate);
-    float getLimitOfCustomer(float limitOfLoan);
+    float getUpdatedLimitOfCustomer(float limitOfLoan);
 }
