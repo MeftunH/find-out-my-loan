@@ -19,7 +19,7 @@ public interface CustomerService {
     Customer findCustomerByIdentityNoOrThrowException(Long identityNo);
     void deleteAccountByIdControl(Long id);
 
-    CustomerResponseDTO updateCustomer(CustomerUpdateRequestDTO customerUpdateRequestDTO);
+    CustomerResponseDTO updateAccount(CustomerUpdateRequestDTO customerUpdateRequestDTO);
     List<LoanDTO> findLoansByCustomerIdentityNoAndCustomerBirthDate(long identityNo, Date birthDate);
     float getUpdatedLimitOfCustomer(float limitOfLoan);
 }

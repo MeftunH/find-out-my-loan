@@ -37,6 +37,8 @@ class CustomerServiceImplTest {
     @Mock
     Customer customer;
     @Mock
+    CustomerValidationService customerValidationService;
+    @Mock
     private AuthenticationService authenticationService;
     @InjectMocks
     private CustomerServiceImpl customerService;
@@ -46,8 +48,6 @@ class CustomerServiceImplTest {
     private CustomerRepository customerRepository;
     @Mock
     private LoanService loanService;
-@Mock
-CustomerValidationService customerValidationService;
 
     @Test
     void shouldGetUpdatedLimitOfCustomer() {
@@ -71,7 +71,6 @@ CustomerValidationService customerValidationService;
     @Test
     void shouldSaveCustomer() {
         long identityNo=81655500404L;
-        when(passwordEncoder.encode(anyString())).thenReturn("123");
         CustomerSaveRequestDTO customerSaveRequestDTO=mock(CustomerSaveRequestDTO.class);
 
         when(customerSaveRequestDTO.getPassword()).thenReturn("123");
@@ -81,9 +80,11 @@ CustomerValidationService customerValidationService;
         when(customer.getIdentityNo()).thenReturn(identityNo);
         when(customerSaveRequestDTO.getPassword()).thenReturn("123");
 
+        when(passwordEncoder.encode(anyString())).thenReturn("123");
         when(customerRepository.save(any())).thenReturn(customer);
         CustomerResponseDTO result=customerService.saveCustomer(customerSaveRequestDTO);
 
+        verify(customerRepository, times(1)).save(any());
         assertEquals(customer.getIdentityNo(), result.getIdentityNo());
     }
 
@@ -189,13 +190,13 @@ CustomerValidationService customerValidationService;
         when(customerRepository.findByIdentityNo(anyLong())).thenReturn(Optional.of(mockCustomer));
         when(customerRepository.save(any())).thenReturn(mockCustomer);
 
-        CustomerResponseDTO result=customerService.updateCustomer(customerUpdateRequestDTO);
+        CustomerResponseDTO result=customerService.updateAccount(customerUpdateRequestDTO);
         assertEquals(mockCustomer.getIdentityNo(), result.getIdentityNo());
     }
 
     @Test
     void shouldNotUpdateCustomerWhenCustomerDoesNotExists() {
-        assertThrows(NullPointerException.class, ()->customerService.updateCustomer(null));
+        assertThrows(NullPointerException.class, ()->customerService.updateAccount(null));
     }
 
     //TODO: should add shouldFindLoansByCustomerIdentityNoAndCustomerBirthDate

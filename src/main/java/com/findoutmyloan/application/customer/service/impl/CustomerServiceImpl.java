@@ -109,7 +109,7 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
     }
 
     @Override
-    public CustomerResponseDTO updateCustomer(CustomerUpdateRequestDTO customerUpdateRequestDTO) {
+    public CustomerResponseDTO updateAccount(CustomerUpdateRequestDTO customerUpdateRequestDTO) {
         Customer customerToUpdate=findCustomerByIdentityNoOrThrowException(customerUpdateRequestDTO.getIdentityNo());
         setAdditionalFields(customerToUpdate);
         customerToUpdate.setName(customerUpdateRequestDTO.getName());
