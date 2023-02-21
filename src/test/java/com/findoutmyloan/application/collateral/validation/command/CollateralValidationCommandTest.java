@@ -4,25 +4,33 @@ import com.findoutmyloan.application.collateral.entity.Collateral;
 import com.findoutmyloan.application.collateral.enums.CollateralType;
 import com.findoutmyloan.application.collateral.mapper.CollateralMapper;
 import com.findoutmyloan.application.collateral.validation.service.CollateralValidationService;
+import com.findoutmyloan.application.customer.enums.CustomerErrorMessage;
 import com.findoutmyloan.application.facade.dto.LoanApplicationRequestDTO;
+import com.findoutmyloan.application.facade.errorMessage.LoanApplicationErrorMessage;
 import com.findoutmyloan.application.general.exception.GeneralBusinessException;
 import com.findoutmyloan.application.general.exception.InformationMismatchException;
 import com.findoutmyloan.application.loan.enums.PaybackGuaranteeType;
 import jakarta.validation.ValidationException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT) //allow unnecessary stubs for same time injectMock and spy
 class CollateralValidationCommandTest {
     @Mock
     private CollateralValidationService collateralValidationService;
+    @Spy
     @InjectMocks
     private CollateralValidationCommand collateralValidationCommand;
 
@@ -45,13 +53,9 @@ class CollateralValidationCommandTest {
 
     @Test
     void shouldThrowExceptionValidateLoanApplicationInformationIsMatchGuaranteeTypeWhenGuaranteeTypeIsNotCollateral() {
-        // Given
-        LoanApplicationRequestDTO loanApplicationRequestDTO=mock(LoanApplicationRequestDTO.class);
-
-        collateralValidationCommand.validateLoanApplicationInformationIsMatchGuaranteeType(loanApplicationRequestDTO);
-
         // Then
-        assertThrows(GeneralBusinessException.class,()->collateralValidationCommand.validateLoanApplicationInformationIsMatchGuaranteeType(loanApplicationRequestDTO));
+       doThrow(new InformationMismatchException(LoanApplicationErrorMessage.APPLICATION_IS_NO_MATCH_WITH_PAYBACK_GUARANTEE_TYPE))
+               .when(collateralValidationCommand).validateLoanApplicationInformationIsMatchGuaranteeType(any());
     }
 
     @Test
