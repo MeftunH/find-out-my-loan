@@ -29,7 +29,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private  JwtTokenGenerator jwtTokenGenerator;
 
 
-    public AuthenticationServiceImpl(@Lazy CustomerService customerService, AuthenticationManager authenticationManager, JwtTokenGenerator jwtTokenGenerator) {
+    public AuthenticationServiceImpl(CustomerService customerService, AuthenticationManager authenticationManager, JwtTokenGenerator jwtTokenGenerator) {
         this.customerService=customerService;
         this.authenticationManager=authenticationManager;
         this.jwtTokenGenerator=jwtTokenGenerator;

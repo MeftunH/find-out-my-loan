@@ -4,12 +4,13 @@ package com.findoutmyloan.application.facade.service.impl;
 import com.findoutmyloan.application.collateral.dto.CollateralSaveRequestDTO;
 import com.findoutmyloan.application.creditscore.dto.CreditScoreRequestDTO;
 import com.findoutmyloan.application.customer.dto.CustomerCreditScoreRequestDTO;
-import com.findoutmyloan.application.facade.service.BuilderFacade;
+import com.findoutmyloan.application.customer.enums.CustomerErrorMessage;
 import com.findoutmyloan.application.facade.dto.LoanApplicationRequestDTO;
+import com.findoutmyloan.application.facade.service.BuilderFacade;
+import com.findoutmyloan.application.general.exception.GeneralBusinessException;
 import com.findoutmyloan.application.security.service.AuthenticationService;
 import com.findoutmyloan.application.surety.dto.SuretySaveRequestDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 
@@ -17,12 +18,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class BuilderFacadeImpl implements BuilderFacade {
 
-    public CustomerCreditScoreRequestDTO customerCreditScoreRequestDTO;
-    public SuretySaveRequestDTO suretySaveRequestDTO;
-    public CollateralSaveRequestDTO collateralSaveRequestDTO;
-    public CreditScoreRequestDTO creditScoreRequestDTO;
-
     private final AuthenticationService authenticationService;
+    private CustomerCreditScoreRequestDTO customerCreditScoreRequestDTO;
+    private SuretySaveRequestDTO suretySaveRequestDTO;
+    private CollateralSaveRequestDTO collateralSaveRequestDTO;
+    private CreditScoreRequestDTO creditScoreRequestDTO;
 
     public CustomerCreditScoreRequestDTO getCustomerCreditScoreRequestDTO() {
         return customerCreditScoreRequestDTO;
@@ -41,6 +41,9 @@ public class BuilderFacadeImpl implements BuilderFacade {
     }
 
     public void invokeBuilder(LoanApplicationRequestDTO loanApplicationRequestDTO) {
+        if (authenticationService.getCurrentCustomer()==null)
+            throw new GeneralBusinessException(CustomerErrorMessage.CUSTOMER_NOT_FOUND);
+
         customerCreditScoreRequestDTO=CustomerCreditScoreRequestDTO.builder()
                 .name(authenticationService.getCurrentCustomer().getName())
                 .surname(authenticationService.getCurrentCustomer().getSurname())
