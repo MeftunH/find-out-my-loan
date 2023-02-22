@@ -11,6 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@PrimaryKeyJoinColumn(name = "notification_id")
 public class Sms extends Notification {
     private String phoneNumber;
 }

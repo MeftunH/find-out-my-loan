@@ -2,7 +2,7 @@ package com.findoutmyloan.application.notification.sms.enums;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
 public enum SmsMessageTemplate {
-    LOAN_APPLICATION_SUBMITTED("Your loan application has been submitted.")
+    LOAN_APPLICATION_SUBMITTED("Your loan application has been submit.")
     ;
 
     private final String message;

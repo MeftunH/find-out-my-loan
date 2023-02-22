@@ -12,10 +12,14 @@ import com.findoutmyloan.application.notification.sms.entity.Sms;
 import com.findoutmyloan.application.notification.sms.mapper.SmsMapper;
 import com.findoutmyloan.application.notification.sms.repository.SmsRepository;
 import com.findoutmyloan.application.person.entity.Person;
+import com.findoutmyloan.application.util.DateUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.util.Date;
 
 @Component
 @RequiredArgsConstructor
@@ -29,10 +33,13 @@ public class SmsNotificationFactory extends BaseService<Sms> implements Notifica
             SmsDto smsDto = SmsDto.builder()
                     .message(message)
                     .phoneNumber(recipient.getPhoneNumber())
+                    .personId(recipient.getId())
+                    .type(notificationType)
+                    .baseAdditionalFieldsCreatedDate(DateUtil.convertToDate(LocalDate.now()))
                     .build();
             Sms sms=SmsMapper.INSTANCE.toEntity(smsDto);
             setAdditionalFields(sms);
-            smsRepository.save(sms);
+            Sms saved=smsRepository.save(sms);
             return sms;
         } else {
             throw new GeneralBusinessException(NotificationErrorMessage.NOTIFICATION_TYPE_NOT_SUPPORTED);

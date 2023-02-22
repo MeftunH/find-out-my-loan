@@ -11,8 +11,6 @@ public class SmsNotificationObserver implements NotificationObserver {
     @Override
     public void onNotify(Notification notification) {
         Logger logger=org.slf4j.LoggerFactory.getLogger(SmsNotificationObserver.class);
-        logger.info("SMS notification sent to "+notification.getRecipientName()
-                +notification.getRecipientSurname()
-                +" with message: "+notification.getMessage());
+        logger.info("SMS notification sent with message: "+notification.getMessage());
     }
 }
