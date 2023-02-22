@@ -1,6 +1,6 @@
-package com.findoutmyloan.application.notification.dto;
+package com.findoutmyloan.application.notification.sms.dto;
 
-import com.findoutmyloan.application.notification.entity.Sms;
+import com.findoutmyloan.application.notification.sms.entity.Sms;
 import lombok.Builder;
 import lombok.Data;
 
