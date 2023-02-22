@@ -15,6 +15,7 @@ import com.findoutmyloan.application.loan.service.LoanService;
 import com.findoutmyloan.application.loan.validation.LoanValidationService;
 import com.findoutmyloan.application.notification.event.CustomerLoanApplicationEvent;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.lang.annotation.Before;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -40,6 +41,8 @@ public class LoanServiceImpl extends BaseService<Loan> implements LoanService {
 
     @Override
     public float calculateLimitOfLoan(int creditScore, float monthlyIncome) {
+        loanValidationService.validateCreditScore(creditScore);
+        loanValidationService.validateCustomerProfile(customerProfilerService.getCustomerProfile(creditScore, monthlyIncome));
         float limit=0;
         final float bronzeCustomerLimit=10000.0f;
         final float silverCustomerLimit=20000.0f;
@@ -57,7 +60,8 @@ public class LoanServiceImpl extends BaseService<Loan> implements LoanService {
     @Override
     public LoanDTO saveLoan(LoanSaveRequestDTO loanSaveRequestDTO) {
         Loan loan=LoanMapper.INSTANCE.convertToLoan(loanSaveRequestDTO);
-        Customer customer =(Customer) customerRepository.getReferenceById(getCurrentCustomerId());
+        long currentCustomerId=getCurrentCustomerId();
+        Customer customer =(Customer) customerRepository.getReferenceById(currentCustomerId);
         setAdditionalFields(loan);
 
         loanValidationService.validateLoan(loan);
