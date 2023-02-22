@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "notification")
 @Entity
 @Getter
@@ -14,14 +15,12 @@ import lombok.Setter;
 public class Notification extends BaseEntity {
     @Id
     @SequenceGenerator(name = "notificationSeq", sequenceName = "notification_id_seq")
-    @GeneratedValue(generator="notificationSeq")
+    @GeneratedValue(generator = "notificationSeq")
     private Long id;
     @Enumerated(EnumType.STRING)
     private NotificationType type;
-    @Column(name = "recipient_name", nullable = false)
-   private String recipientName;
-   @Column(name = "recipient_surname", nullable = false)
-   private String recipientSurname;
-   @Column(name = "message", nullable = false)
-   private String message;
+    @Column(name = "person_id", nullable = false)
+    private Long personId;
+    @Column(name = "message", nullable = false)
+    private String message;
 }

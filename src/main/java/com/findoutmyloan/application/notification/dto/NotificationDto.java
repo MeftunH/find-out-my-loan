@@ -12,11 +12,10 @@ import java.util.Date;
  */
 @Data
 public class NotificationDto implements Serializable {
-    private final Date baseAdditionalFieldsCreatedDate;
-    private final Date baseAdditionalFieldsUpdatedDate;
-    private final Long id;
-    private final NotificationType type;
-    private final String recipientName;
-    private final String recipientSurname;
-    private final String message;
+    private Date baseAdditionalFieldsCreatedDate;
+    private Date baseAdditionalFieldsUpdatedDate;
+    private  Long id;
+    private NotificationType type;
+    private Long personId;
+    private String message;
 }
