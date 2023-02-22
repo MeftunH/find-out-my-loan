@@ -13,10 +13,10 @@ import com.findoutmyloan.application.loan.mapper.LoanMapper;
 import com.findoutmyloan.application.loan.repository.LoanRepository;
 import com.findoutmyloan.application.loan.service.LoanService;
 import com.findoutmyloan.application.loan.validation.LoanValidationService;
-import com.findoutmyloan.application.notification.event.CustomerLoanApplicationEvent;
+import com.findoutmyloan.application.notification.enums.NotificationType;
+import com.findoutmyloan.application.notification.service.NotificationService;
+import com.findoutmyloan.application.notification.sms.enums.SmsMessageTemplate;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.lang.annotation.Before;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +30,7 @@ import java.util.List;
 public class LoanServiceImpl extends BaseService<Loan> implements LoanService {
     private final LoanRepository loanRepository;
     private final CustomerProfilerService customerProfilerService;
-    private final ApplicationEventPublisher applicationEventPublisher;
+    private final NotificationService notificationService;
     private final CustomerRepository customerRepository;
     private final LoanValidationService loanValidationService;
 
@@ -61,15 +61,16 @@ public class LoanServiceImpl extends BaseService<Loan> implements LoanService {
     public LoanDTO saveLoan(LoanSaveRequestDTO loanSaveRequestDTO) {
         Loan loan=LoanMapper.INSTANCE.convertToLoan(loanSaveRequestDTO);
         long currentCustomerId=getCurrentCustomerId();
-        Customer customer =(Customer) customerRepository.getReferenceById(currentCustomerId);
+        Customer customer=(Customer) customerRepository.getReferenceById(currentCustomerId);
         setAdditionalFields(loan);
 
         loanValidationService.validateLoan(loan);
 
         loan.setCustomerId(getCurrentCustomerId());
         loanRepository.save(loan);
-        applicationEventPublisher.publishEvent(new CustomerLoanApplicationEvent(this,
-                customer));
+        notificationService.notify(NotificationType.SMS,
+                SmsMessageTemplate.LOAN_APPLICATION_SUBMITTED.getMessage(),
+                customer);
 
         return LoanMapper.INSTANCE.convertToLoanDto(loan);
     }

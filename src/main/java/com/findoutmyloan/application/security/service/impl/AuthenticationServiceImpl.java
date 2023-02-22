@@ -56,8 +56,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return JwtConstant.BEARER.getConstant()+token;
     }
 
-
-
     public Customer getCurrentCustomer() {
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
         CustomerDTO customerDTO=null;

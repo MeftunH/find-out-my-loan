@@ -1,7 +1,7 @@
-package com.findoutmyloan.application.notification.mapper;
+package com.findoutmyloan.application.notification.sms.mapper;
 
-import com.findoutmyloan.application.notification.entity.Sms;
-import com.findoutmyloan.application.notification.dto.SmsDto;
+import com.findoutmyloan.application.notification.sms.entity.Sms;
+import com.findoutmyloan.application.notification.sms.dto.SmsDto;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
