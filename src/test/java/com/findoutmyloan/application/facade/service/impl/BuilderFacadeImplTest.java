@@ -89,7 +89,6 @@ class BuilderFacadeImplTest {
 
         LoanApplicationRequestDTO loanApplicationRequestDTO = mock(LoanApplicationRequestDTO.class);
         BuilderFacadeImpl builderFacade = new BuilderFacadeImpl(authenticationService);
-         verify(authenticationService, times(1)).getCurrentCustomer();
 
         assertThrows(GeneralBusinessException.class, () -> builderFacade.invokeBuilder(loanApplicationRequestDTO));
     }

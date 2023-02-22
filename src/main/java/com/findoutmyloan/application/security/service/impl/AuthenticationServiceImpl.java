@@ -24,12 +24,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class AuthenticationServiceImpl implements AuthenticationService {
-    private  CustomerService customerService;
-    private  AuthenticationManager authenticationManager;
-    private  JwtTokenGenerator jwtTokenGenerator;
+    private final CustomerService customerService;
+    private final AuthenticationManager authenticationManager;
+    private final JwtTokenGenerator jwtTokenGenerator;
 
 
-    public AuthenticationServiceImpl(CustomerService customerService, AuthenticationManager authenticationManager, JwtTokenGenerator jwtTokenGenerator) {
+    public AuthenticationServiceImpl(@Lazy CustomerService customerService, AuthenticationManager authenticationManager, JwtTokenGenerator jwtTokenGenerator) {
         this.customerService=customerService;
         this.authenticationManager=authenticationManager;
         this.jwtTokenGenerator=jwtTokenGenerator;

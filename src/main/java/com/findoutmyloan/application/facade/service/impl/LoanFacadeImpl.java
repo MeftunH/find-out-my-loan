@@ -56,11 +56,10 @@ public class LoanFacadeImpl implements LoanFacade {
         LoanSaveRequestDTO loanSaveRequestDTO=LoanMapper.INSTANCE.loanRequestFromCustomerDTOToLoanSaveRequestDTO(loanApplicationRequestDTO);
         float limitOfLoan=getTotalLimitOfLoan(creditScoreRequestDTO, creditScoreResponseDTO);
         LoanDTO loanDTO=setLoanDTO(creditScoreResponseDTO, loanSaveRequestDTO, limitOfLoan);
-        System.out.println(creditScoreResponseDTO.getCreditScore());
-        return getCustomerLoanResponseDTO(loanApplicationRequestDTO, limitOfLoan, loanDTO);
+        return getCustomerLoanResponseDTO(limitOfLoan, loanDTO);
     }
 
-    private CustomerLoanResponseDTO getCustomerLoanResponseDTO(LoanApplicationRequestDTO loanApplicationRequestDTO, float limitOfLoan, LoanDTO loanDTO) {
+    private CustomerLoanResponseDTO getCustomerLoanResponseDTO(float limitOfLoan, LoanDTO loanDTO) {
         float limitOfCustomer=customerService.getUpdatedLimitOfCustomer(limitOfLoan);
 
         CustomerLoanResponseDTO customerLoanResponseDTO=LoanMapper.INSTANCE.convertLoanDTOToCustomerLoanResponseDTO(loanDTO);
