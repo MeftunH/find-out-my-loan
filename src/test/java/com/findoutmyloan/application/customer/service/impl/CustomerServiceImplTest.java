@@ -13,6 +13,7 @@ import com.findoutmyloan.application.loan.service.LoanService;
 import com.findoutmyloan.application.person.enums.PersonType;
 import com.findoutmyloan.application.security.service.AuthenticationService;
 import com.findoutmyloan.application.util.DateUtil;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -35,8 +36,6 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class CustomerServiceImplTest {
     @Mock
-    Customer customer;
-    @Mock
     CustomerValidationService customerValidationService;
     @Mock
     private AuthenticationService authenticationService;
@@ -49,14 +48,20 @@ class CustomerServiceImplTest {
     @Mock
     private LoanService loanService;
 
+    private Authentication authentication;
+    private SecurityContextHolder securityContextHolder;
+    private Customer customer;
+
+    @BeforeEach
+    void setUp() {
+        authentication=mock(Authentication.class);
+        securityContextHolder=mock(SecurityContextHolder.class);
+        customer=mock(Customer.class);
+    }
+
     @Test
     void shouldGetUpdatedLimitOfCustomer() {
-
-        Authentication authentication=mock(Authentication.class);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
         long identityNo=81655500404L;
-        Customer customer=mock(Customer.class);
         when(customer.getIdentityNo()).thenReturn(identityNo);
 
         when(authenticationService.getCurrentCustomer()).thenReturn(customer);
@@ -76,7 +81,6 @@ class CustomerServiceImplTest {
         when(customerSaveRequestDTO.getPassword()).thenReturn("123");
         when(customerSaveRequestDTO.getIdentityNo()).thenReturn(identityNo);
 
-        Customer customer=mock(Customer.class);
         when(customer.getIdentityNo()).thenReturn(identityNo);
         when(customerSaveRequestDTO.getPassword()).thenReturn("123");
 
@@ -96,7 +100,6 @@ class CustomerServiceImplTest {
     @Test
     void shouldFindCustomerByIdentityNoOrThrowExceptionFindCase() {
         long identityNo=81655500404L;
-        Customer customer=mock(Customer.class);
         when(customer.getIdentityNo()).thenReturn(identityNo);
         when(customerRepository.findByIdentityNo(anyLong())).thenReturn(Optional.of(customer));
         Customer result=customerService.findCustomerByIdentityNoOrThrowException(identityNo);
@@ -114,7 +117,6 @@ class CustomerServiceImplTest {
     void shouldGetByIdWithControlWithIdData() {
         long id=18L;
         long identityNo=81655500404L;
-        Customer customer=mock(Customer.class);
         when(customer.getIdentityNo()).thenReturn(identityNo);
         when(customer.getPersonType()).thenReturn(PersonType.CUSTOMER);
         when(customer.getId()).thenReturn(id);
@@ -134,7 +136,6 @@ class CustomerServiceImplTest {
     void shouldGetByIdWithControl() {
         long id=18L;
         long identityNo=81655500404L;
-        Customer customer=mock(Customer.class);
         when(customer.getIdentityNo()).thenReturn(identityNo);
         when(customer.getPersonType()).thenReturn(PersonType.CUSTOMER);
 
@@ -152,7 +153,6 @@ class CustomerServiceImplTest {
 
     @Test
     void shouldDeleteAccountById() {
-        Customer customer=mock(Customer.class);
         when(customer.getPersonType()).thenReturn(PersonType.CUSTOMER);
         when(customerRepository.findById(customer.getId())).thenReturn(Optional.of(customer));
         customerService.deleteAccountByIdControl(customer.getId());
@@ -161,7 +161,6 @@ class CustomerServiceImplTest {
 
     @Test
     void shouldNotDeleteWhenAccountTypeIsNotCustomer() {
-        Customer customer=mock(Customer.class);
         when(customer.getPersonType()).thenReturn(PersonType.SURETY);
         when(customerRepository.findById(customer.getId())).thenReturn(Optional.of(customer));
         assertThrows(ItemNotFoundException.class, ()->customerService.deleteAccountByIdControl(customer.getId()));
@@ -174,7 +173,6 @@ class CustomerServiceImplTest {
 
     @Test
     void shouldNotDeleteAccountByIdControlWhenCustomerIsNotExists() {
-        Customer customer=mock(Customer.class);
         assertThrows(ItemNotFoundException.class, ()->customerService.deleteAccountByIdControl(customer.getId()));
     }
 
@@ -183,15 +181,14 @@ class CustomerServiceImplTest {
         Long identityNo=81655500404L;
 
         CustomerUpdateRequestDTO customerUpdateRequestDTO=mock(CustomerUpdateRequestDTO.class);
-        Customer mockCustomer=mock(Customer.class);
-        when(mockCustomer.getId()).thenReturn(18L);
-        when(mockCustomer.getIdentityNo()).thenReturn(identityNo);
-        when(mockCustomer.getPersonType()).thenReturn(PersonType.CUSTOMER);
-        when(customerRepository.findByIdentityNo(anyLong())).thenReturn(Optional.of(mockCustomer));
-        when(customerRepository.save(any())).thenReturn(mockCustomer);
+        when(customer.getId()).thenReturn(18L);
+        when(customer.getIdentityNo()).thenReturn(identityNo);
+        when(customer.getPersonType()).thenReturn(PersonType.CUSTOMER);
+        when(customerRepository.findByIdentityNo(anyLong())).thenReturn(Optional.of(customer));
+        when(customerRepository.save(any())).thenReturn(customer);
 
         CustomerResponseDTO result=customerService.updateAccount(customerUpdateRequestDTO);
-        assertEquals(mockCustomer.getIdentityNo(), result.getIdentityNo());
+        assertEquals(customer.getIdentityNo(), result.getIdentityNo());
     }
 
     @Test

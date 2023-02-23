@@ -5,6 +5,7 @@ import com.findoutmyloan.application.facade.dto.LoanApplicationRequestDTO;
 import com.findoutmyloan.application.facade.errorMessage.LoanApplicationErrorMessage;
 import com.findoutmyloan.application.general.exception.InformationMismatchException;
 import com.findoutmyloan.application.loan.enums.PaybackGuaranteeType;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -27,14 +28,19 @@ class CollateralValidationCommandTest {
     @InjectMocks
     private CollateralValidationCommand collateralValidationCommand;
 
+    private LoanApplicationRequestDTO loanApplicationRequestDTO;
+    @BeforeEach
+    void setUp() {
+        loanApplicationRequestDTO=mock(LoanApplicationRequestDTO.class);
+        loanApplicationRequestDTO.setPaybackGuaranteeType(PaybackGuaranteeType.COLLATERAL);
+        when(loanApplicationRequestDTO.getPaybackGuaranteeType()).thenReturn(PaybackGuaranteeType.COLLATERAL);
+    }
 
     @Test
     void shouldDoesNotThrowExceptionValidateLoanApplicationInformationIsMatchGuaranteeTypeWhenGuaranteeTypeIsCollateral() {
         // Given
-        LoanApplicationRequestDTO loanApplicationRequestDTO=mock(LoanApplicationRequestDTO.class);
 
         // When
-        when(loanApplicationRequestDTO.getPaybackGuaranteeType()).thenReturn(PaybackGuaranteeType.COLLATERAL);
         loanApplicationRequestDTO.setPaybackGuaranteeType(PaybackGuaranteeType.COLLATERAL);
         when(loanApplicationRequestDTO.getCollateralWorth()).thenReturn(1000.0f);
 
@@ -55,7 +61,6 @@ class CollateralValidationCommandTest {
     void shouldThrowExceptionLoanApplicationInformationIsMatchGuaranteeTypeWithCollateralValidationServiceError() {
         // Given
         LoanApplicationRequestDTO loanApplicationRequestDTO=mock(LoanApplicationRequestDTO.class);
-        loanApplicationRequestDTO.setPaybackGuaranteeType(PaybackGuaranteeType.COLLATERAL);
         assertThrows(InformationMismatchException.class,
                 ()->collateralValidationCommand.validateLoanApplicationInformationIsMatchGuaranteeType(loanApplicationRequestDTO));
     }
