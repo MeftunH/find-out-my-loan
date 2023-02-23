@@ -8,6 +8,7 @@ import com.findoutmyloan.application.customer.dto.CustomerCreditScoreRequestDTO;
 import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -51,8 +52,8 @@ public class CreditScoreApiServiceImplTest {
         service = new CreditScoreApiServiceImpl(restTemplateConfiguration,httpHeaders);
     }
 
-    @Test
-     void shouldGetCreditScore() {
+    @RepeatedTest(3)
+    void shouldGetCreditScore() {
         CreditScoreRequestDTO requestDTO = mock(CreditScoreRequestDTO.class);
         CustomerCreditScoreRequestDTO customerCreditScoreRequestDTO = mock(CustomerCreditScoreRequestDTO.class);
 
