@@ -23,6 +23,5 @@ public interface SuretyMapper {
     @Mapping(source="suretyBirthDate",target="birthDate")
     @Mapping(source="suretyPhoneNumber",target="phoneNumber")
     @Mapping(source="suretyPersonType",target="personType")
-    @Mapping(source="suretyType",target="suretyType")
     Surety convertLoanApplicationRequestToSurety(LoanApplicationRequestDTO loanApplicationRequestDTO);
 }
