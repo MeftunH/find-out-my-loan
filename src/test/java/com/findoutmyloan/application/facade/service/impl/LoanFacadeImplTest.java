@@ -18,6 +18,7 @@ import com.findoutmyloan.application.loan.dto.LoanSaveRequestDTO;
 import com.findoutmyloan.application.loan.enums.LoanResult;
 import com.findoutmyloan.application.loan.service.LoanService;
 import com.findoutmyloan.application.surety.dto.SuretySaveRequestDTO;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -47,6 +48,15 @@ class LoanFacadeImplTest {
 
     @InjectMocks
     private LoanFacadeImpl loanFacade;
+
+    private LoanSaveRequestDTO loanSaveRequestDTO;
+    private CustomerLoanResponseDTO customerLoanResponseDTO;
+
+    @BeforeEach
+    void setUp() {
+        loanSaveRequestDTO=mock(LoanSaveRequestDTO.class);
+        customerLoanResponseDTO=mock(CustomerLoanResponseDTO.class);
+    }
 
     @Test
     void shouldApplyLoan() {
@@ -85,10 +95,6 @@ class LoanFacadeImplTest {
 
     @Test
     void shouldApplyLoanApproved() {
-        LoanSaveRequestDTO loanSaveRequestDTO=mock(LoanSaveRequestDTO.class);
-
-        CustomerLoanResponseDTO customerLoanResponseDTO=mock(CustomerLoanResponseDTO.class);
-
         when(customerLoanResponseDTO.getResult()).thenReturn(LoanResult.APPROVED);
         when(loanSaveRequestDTO.getResult()).thenReturn(LoanResult.APPROVED);
 
@@ -97,10 +103,6 @@ class LoanFacadeImplTest {
 
     @Test
     void shouldNotApplyLoanRejected() {
-        LoanSaveRequestDTO loanSaveRequestDTO=mock(LoanSaveRequestDTO.class);
-
-        CustomerLoanResponseDTO customerLoanResponseDTO=mock(CustomerLoanResponseDTO.class);
-
         when(customerLoanResponseDTO.getResult()).thenReturn(LoanResult.REJECTED);
         when(loanSaveRequestDTO.getResult()).thenReturn(LoanResult.REJECTED);
 

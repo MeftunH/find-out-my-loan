@@ -1,6 +1,5 @@
 package com.findoutmyloan.application.surety.validation.service.impl;
 
-import com.findoutmyloan.application.customer.enums.CustomerErrorMessage;
 import com.findoutmyloan.application.general.exception.IllegalFieldException;
 import com.findoutmyloan.application.person.enums.PersonType;
 import com.findoutmyloan.application.person.validation.PersonValidationService;
@@ -11,13 +10,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -29,8 +28,9 @@ class SuretyValidationServiceImplTest {
     @InjectMocks
     @Spy
     private SuretyValidationServiceImpl suretyValidationService;
+
     @Test
-     void testValidateIsPersonTypeSuretyWithSurety() {
+    void testValidateIsPersonTypeSuretyWithSurety() {
         when(surety.getPersonType()).thenReturn(PersonType.SURETY);
         suretyValidationService.validateIsPersonTypeSurety(surety);
         verify(surety, times(1)).getPersonType();
@@ -39,14 +39,14 @@ class SuretyValidationServiceImplTest {
     @Test
     void testValidateIsPersonTypeSuretyWithOtherPersonType() {
         when(surety.getPersonType()).thenReturn(PersonType.CUSTOMER);
-        assertThrows(IllegalFieldException.class, () -> {
+        assertThrows(IllegalFieldException.class, ()->{
             suretyValidationService.validateIsPersonTypeSurety(surety);
         });
     }
 
     @Test
-     void testValidateSuretyType_HappyPath() {
-        Surety surety = mock(Surety.class);
+    void testValidateSuretyType_HappyPath() {
+        Surety surety=mock(Surety.class);
         when(surety.getSuretyType()).thenReturn(SuretyType.ORDINARY);
 
         suretyValidationService.validateSuretyType(surety);
@@ -57,10 +57,10 @@ class SuretyValidationServiceImplTest {
     }
 
     @Test
-     void testValidateSuretyType_UnhappyPath() {
-        Surety surety = mock(Surety.class);
+    void testValidateSuretyType_UnhappyPath() {
+        Surety surety=mock(Surety.class);
         when(surety.getSuretyType()).thenReturn(null);
-        assertThrows(IllegalFieldException.class, () -> {
+        assertThrows(IllegalFieldException.class, ()->{
             suretyValidationService.validateSuretyType(surety);
         });
     }
@@ -68,7 +68,7 @@ class SuretyValidationServiceImplTest {
     @Test
     public void testValidateFieldsAreNotNull_AllFieldsNotNull() {
         // Arrange
-        Surety surety = new Surety();
+        Surety surety=new Surety();
         surety.setName("John");
         surety.setSurname("Doe");
         surety.setBirthDate(DateUtil.convertToDate(LocalDate.of(2000, 1, 1)));
@@ -81,15 +81,15 @@ class SuretyValidationServiceImplTest {
 
         // Assert
         // If no exception was thrown, the test passes
-       assertDoesNotThrow(() -> {
-           suretyValidationService.validateFieldsAreNotNull(surety);
-       });
+        assertDoesNotThrow(()->{
+            suretyValidationService.validateFieldsAreNotNull(surety);
+        });
     }
 
     @Test
     public void testValidateFieldsAreNotNull_AllFieldsNull() {
         // Arrange
-        Surety surety = new Surety();
+        Surety surety=new Surety();
         surety.setName("");
         surety.setSurname("");
         surety.setBirthDate(null);
@@ -97,7 +97,7 @@ class SuretyValidationServiceImplTest {
         surety.setPersonType(null);
         surety.setIdentityNo(0L);
 
-        assertThrows(IllegalFieldException.class,() -> {
+        assertThrows(IllegalFieldException.class, ()->{
             suretyValidationService.validateFieldsAreNotNull(surety);
         });
     }
@@ -105,7 +105,7 @@ class SuretyValidationServiceImplTest {
 
     @Test
     void validateSurety() {
-        Surety surety = new Surety();
+        Surety surety=new Surety();
         surety.setName("John");
         surety.setSurname("Doe");
         surety.setBirthDate(DateUtil.convertToDate(LocalDate.of(2000, 1, 1)));
@@ -113,7 +113,7 @@ class SuretyValidationServiceImplTest {
         surety.setPersonType(PersonType.SURETY);
         surety.setIdentityNo(45586784456L);
         surety.setSuretyType(SuretyType.CO_GUARANTEES);
-        assertDoesNotThrow(() -> {
+        assertDoesNotThrow(()->{
             suretyValidationService.validateSurety(surety);
         });
     }

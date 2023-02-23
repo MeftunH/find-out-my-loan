@@ -2,7 +2,6 @@ package com.findoutmyloan.application.surety.service.impl;
 
 import com.findoutmyloan.application.customer.entity.Customer;
 import com.findoutmyloan.application.customer.repository.CustomerRepository;
-import com.findoutmyloan.application.loan.entity.Loan;
 import com.findoutmyloan.application.security.service.AuthenticationService;
 import com.findoutmyloan.application.surety.dto.SuretyDTO;
 import com.findoutmyloan.application.surety.dto.SuretySaveRequestDTO;
@@ -64,6 +63,7 @@ class SuretyServiceImplTest {
 
         assertEquals(surety.getIdentityNo(), result.getIdentityNo());
     }
+
     @Test
     void shouldThrowNullPointerExceptionWhenSaveEntityParameterIsNull() {
         assertThrows(NullPointerException.class, ()->suretyService.saveSurety(null));

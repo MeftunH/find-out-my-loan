@@ -6,11 +6,11 @@ import com.findoutmyloan.application.collateral.service.CollateralService;
 import com.findoutmyloan.application.person.enums.PersonType;
 import com.findoutmyloan.application.surety.dto.SuretySaveRequestDTO;
 import com.findoutmyloan.application.surety.service.SuretyService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.mockito.Mockito.*;
@@ -21,21 +21,27 @@ class EntityFacadeImplTest {
     private SuretyService suretyService;
     @Mock
     private CollateralService collateralService;
-
     @InjectMocks
     private EntityFacadeImpl entityFacade;
 
+    private SuretyService mockSuretyService;
+    private CollateralService mockCollateralService;
+
+
+    @BeforeEach
+    void setUp() {
+        mockSuretyService=mock(SuretyService.class);
+        mockCollateralService=mock(CollateralService.class);
+        entityFacade=new EntityFacadeImpl(mockSuretyService, mockCollateralService);
+    }
+
     @Test
     public void shouldSaveEntityCallSuretyServiceAndCollateralService() {
-        // create a mock of the SuretyService and CollateralService
-        SuretyService mockSuretyService = mock(SuretyService.class);
-        CollateralService mockCollateralService = mock(CollateralService.class);
-        EntityFacadeImpl entityFacade = new EntityFacadeImpl(mockSuretyService, mockCollateralService);
 
         // create valid requests
-        SuretySaveRequestDTO suretySaveRequestDTO = mock(SuretySaveRequestDTO.class);
+        SuretySaveRequestDTO suretySaveRequestDTO=mock(SuretySaveRequestDTO.class);
         when(suretySaveRequestDTO.getPersonType()).thenReturn(PersonType.CUSTOMER);
-        CollateralSaveRequestDTO collateralSaveRequestDTO = mock(CollateralSaveRequestDTO.class);
+        CollateralSaveRequestDTO collateralSaveRequestDTO=mock(CollateralSaveRequestDTO.class);
         when(collateralSaveRequestDTO.getCollateralType()).thenReturn(CollateralType.MONEY);
 
         // call the saveEntity method
@@ -47,16 +53,11 @@ class EntityFacadeImplTest {
     }
 
     @Test
-     void shouldSaveEntityDoesNotCallAnyServiceWithNullValues() {
-        // create a mock of the SuretyService and CollateralService
-        SuretyService mockSuretyService = mock(SuretyService.class);
-        CollateralService mockCollateralService = mock(CollateralService.class);
-        EntityFacadeImpl entityFacade = new EntityFacadeImpl(mockSuretyService, mockCollateralService);
-
+    void shouldSaveEntityDoesNotCallAnyServiceWithNullValues() {
         // create requests with null values
-        SuretySaveRequestDTO suretySaveRequestDTO = mock(SuretySaveRequestDTO.class);
+        SuretySaveRequestDTO suretySaveRequestDTO=mock(SuretySaveRequestDTO.class);
         when(suretySaveRequestDTO.getPersonType()).thenReturn(null);
-        CollateralSaveRequestDTO collateralSaveRequestDTO = mock(CollateralSaveRequestDTO.class);
+        CollateralSaveRequestDTO collateralSaveRequestDTO=mock(CollateralSaveRequestDTO.class);
         when(collateralSaveRequestDTO.getCollateralType()).thenReturn(null);
 
         // call the saveEntity method

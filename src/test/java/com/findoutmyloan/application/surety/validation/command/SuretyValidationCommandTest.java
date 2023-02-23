@@ -4,6 +4,7 @@ import com.findoutmyloan.application.facade.dto.LoanApplicationRequestDTO;
 import com.findoutmyloan.application.loan.enums.PaybackGuaranteeType;
 import com.findoutmyloan.application.surety.entity.Surety;
 import com.findoutmyloan.application.surety.validation.service.SuretyValidationService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,10 +21,15 @@ class SuretyValidationCommandTest {
     @InjectMocks
     private SuretyValidationCommand suretyValidationCommand;
 
+    private LoanApplicationRequestDTO loanApplicationRequestDTO;
+    @BeforeEach
+    void setUp() {
+        loanApplicationRequestDTO =mock(LoanApplicationRequestDTO.class);
+    }
+
     @Test
     void shouldValidateLoanApplicationInformationIsMatchGuaranteeTypePaybackGuaranteeTypeIsNotSurety() {
         // Arrange
-        LoanApplicationRequestDTO loanApplicationRequestDTO=mock(LoanApplicationRequestDTO.class);
         when(loanApplicationRequestDTO.getPaybackGuaranteeType()).thenReturn(PaybackGuaranteeType.COLLATERAL);
         // Act
         suretyValidationCommand.validateLoanApplicationInformationIsMatchGuaranteeType(loanApplicationRequestDTO);
@@ -33,7 +39,6 @@ class SuretyValidationCommandTest {
 
     @Test
     void shouldValidateLoanApplicationInformationIsMatchGuaranteeTypePaybackGuaranteeTypeIsSurety() {
-        LoanApplicationRequestDTO loanApplicationRequestDTO=mock(LoanApplicationRequestDTO.class);
         Surety surety=mock(Surety.class);
        // Act
         suretyValidationService.validateFieldsAreNotNull(Mockito.any(Surety.class));
