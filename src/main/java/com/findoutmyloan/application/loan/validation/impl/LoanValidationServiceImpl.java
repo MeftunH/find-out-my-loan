@@ -7,7 +7,6 @@ import com.findoutmyloan.application.general.errorMessage.GeneralErrorMessage;
 import com.findoutmyloan.application.general.exception.GeneralBusinessException;
 import com.findoutmyloan.application.general.exception.IllegalFieldException;
 import com.findoutmyloan.application.loan.entity.Loan;
-import com.findoutmyloan.application.loan.enums.LoanErrorMessage;
 import com.findoutmyloan.application.loan.validation.LoanValidationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,15 +25,15 @@ public class LoanValidationServiceImpl implements LoanValidationService {
 
     @Override
     public void validateLoan(Loan loan) {
-        validateIsAmountPositive(loan.getAmount());
         validateAreFieldsNotNull(loan);
+        validateIsAmountPositive(loan.getAmount());
     }
 
     @Override
     public void validateCreditScore(int creditScore) {
-       if (creditScore<0) {
-           throw new GeneralBusinessException(GeneralErrorMessage.VALUE_CANNOT_BE_NEGATIVE);
-       }
+        if (creditScore<0) {
+            throw new GeneralBusinessException(GeneralErrorMessage.VALUE_CANNOT_BE_NEGATIVE);
+        }
     }
 
     @Override
