@@ -9,6 +9,8 @@ import com.findoutmyloan.application.loan.enums.PaybackGuaranteeType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -55,10 +57,9 @@ class LoanValidationServiceImplTest {
         });
     }
 
-    @Test
-    void shouldValidateIsAmountPositiveWithNegativeCreditScore() {
-        // Call the function with a negative amount
-        int creditScore=-100;
+    @ParameterizedTest
+    @ValueSource(ints = {-100, -1, -992})
+    void shouldValidateIsAmountPositiveWithNegativeCreditScore(int creditScore) {
 
         assertThrows(GeneralBusinessException.class, ()->{
             loanValidationService.validateCreditScore(creditScore);
@@ -89,10 +90,10 @@ class LoanValidationServiceImplTest {
         assertThrows(NullPointerException.class, ()->loanValidationService.validateLoan(null));
     }
 
-    @Test
-    void testValidateCreditScoreWithPositiveCreditScore() {
+    @ParameterizedTest
+    @ValueSource(ints = {100, 1, Integer.MAX_VALUE})
+    void testValidateCreditScoreWithPositiveCreditScore(int creditScore) {
         // Call the function with a positive credit score
-        int creditScore=100;
         assertDoesNotThrow(()->{
             loanValidationService.validateCreditScore(creditScore);
         });
