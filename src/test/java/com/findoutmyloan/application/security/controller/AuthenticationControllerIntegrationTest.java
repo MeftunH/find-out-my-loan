@@ -2,7 +2,7 @@ package com.findoutmyloan.application.security.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.findoutmyloan.application.BaseTest;
+import com.findoutmyloan.application.BaseIntegrationTest;
 import com.findoutmyloan.application.customer.dto.CustomerSaveRequestDTO;
 import com.findoutmyloan.application.customer.repository.CustomerRepository;
 import com.findoutmyloan.application.person.enums.PersonType;
@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class AuthenticationControllerTest extends BaseTest {
+class AuthenticationControllerIntegrationTest extends BaseIntegrationTest {
     private static final String BASE_URL="http://localhost:8082/auth";
     private MockMvc mockMvc;
     private ObjectMapper objectMapper;

@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-public class BaseTest {
+public class BaseIntegrationTest {
     private static final String LOGIN_URL="/auth/login";
     private static final String REGISTER_URL="/auth/register";
     protected ObjectMapper objectMapper=new ObjectMapper();

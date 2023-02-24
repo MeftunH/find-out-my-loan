@@ -2,7 +2,7 @@ package com.findoutmyloan.application.customer.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.findoutmyloan.application.BaseTest;
+import com.findoutmyloan.application.BaseIntegrationTest;
 import com.findoutmyloan.application.customer.dto.CustomerSaveRequestDTO;
 import com.findoutmyloan.application.customer.dto.CustomerUpdateRequestDTO;
 import com.findoutmyloan.application.customer.entity.Customer;
@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
-class CustomerControllerTest extends BaseTest {
+class CustomerControllerIntegrationTest extends BaseIntegrationTest {
 
     private static final String BASE_URL="http://localhost:8082/api/v1/customer";
     private MockMvc mockMvc;
