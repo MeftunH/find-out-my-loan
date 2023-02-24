@@ -10,6 +10,7 @@ import com.findoutmyloan.application.loan.dto.LoanDTO;
 import com.findoutmyloan.application.security.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.hateoas.EntityModel;
@@ -57,8 +58,25 @@ public class CustomerController {
                                     Content(
                                     mediaType = "application/json",
                                     schema = @io.swagger.v3.oas.annotations.media.
-                                            Schema(implementation = CustomerUpdateRequestDTO.class)
-                            ))
+                                            Schema(implementation = CustomerUpdateRequestDTO.class),
+                                    examples = {
+                                            @ExampleObject(
+                                                    name = "new user",
+                                                    summary = "New User Example",
+                                                    description = "Complete request with all available fields for user",
+                                                    value = "{\n"+
+                                                            "\t\"name\": \"Updated John 65\",\n"+
+                                                            "  \"surname\": \"Doe\",\n"+
+                                                            "  \"identityNo\": 66079804482,\n"+
+                                                            "\"birthDate\": \"1999-01-01\",   \n"+
+                                                            "  \"phoneNumber\": \"2555555555\",\n"+
+                                                            "  \"personType\": \"CUSTOMER\",\n"+
+                                                            "  \"monthlyIncome\": 5000.0\n"+
+                                                            "}"
+                                            )
+                                    }
+                            )
+                    )
     )
     @PutMapping
     public ResponseEntity<RestResponse<CustomerResponseDTO>> updateAccount(@RequestBody CustomerUpdateRequestDTO customerUpdateRequestDTO) {
@@ -66,7 +84,8 @@ public class CustomerController {
         return ResponseEntity.ok(RestResponse.of(customerResponseDTO));
     }
 
-    @Operation(tags = "Customer", summary = "Find loans by customer identity number and customer birth date", description = "Find loans by customer identity number and customer birth date")
+    @Operation(tags = "Customer", summary = "Find loans by customer identity number and customer birth date",
+                description = "Find loans by customer identity number and customer birth date")
     @GetMapping("/{identityNo}/{birthday}/find-loans")
     public ResponseEntity<RestResponse<List<LoanDTO>>> findLoansByCustomerIdentityNoAndCustomerBirthDate(@Parameter(description = "70632842798") @PathVariable long identityNo,
                                                                                                          @Parameter(description = "01-01-1980") @PathVariable("birthday") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date birthDate) {
