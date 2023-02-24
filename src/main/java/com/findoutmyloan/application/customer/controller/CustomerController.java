@@ -66,7 +66,8 @@ public class CustomerController {
         return ResponseEntity.ok(RestResponse.of(customerResponseDTO));
     }
 
-    @Operation(tags = "Customer", summary = "Find loans by customer identity number and customer birth date", description = "Find loans by customer identity number and customer birth date")
+    @Operation(tags = "Customer", summary = "Find loans by customer identity number and customer birth date",
+                description = "Find loans by customer identity number and customer birth date")
     @GetMapping("/{identityNo}/{birthday}/find-loans")
     public ResponseEntity<RestResponse<List<LoanDTO>>> findLoansByCustomerIdentityNoAndCustomerBirthDate(@Parameter(description = "70632842798") @PathVariable long identityNo,
                                                                                                          @Parameter(description = "01-01-1980") @PathVariable("birthday") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date birthDate) {
