@@ -1,6 +1,7 @@
 package com.findoutmyloan.application.customer.validation.impl;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
+import com.findoutmyloan.application.collateral.service.impl.CollateralServiceImpl;
 import com.findoutmyloan.application.customer.entity.Customer;
 import com.findoutmyloan.application.customer.repository.CustomerRepository;
 import com.findoutmyloan.application.customer.validation.CustomerValidationService;
@@ -9,6 +10,8 @@ import com.findoutmyloan.application.general.exception.IllegalFieldException;
 import com.findoutmyloan.application.person.enums.PersonType;
 import com.findoutmyloan.application.person.validation.PersonValidationService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -21,11 +24,14 @@ import static com.findoutmyloan.application.customer.enums.CustomerErrorMessage.
 public class CustomerValidationServiceImpl implements CustomerValidationService {
     private final CustomerRepository customerRepository;
     private final PersonValidationService personValidationService;
+    private static final Logger logger = LoggerFactory.getLogger(CustomerValidationServiceImpl.class);
 
     @Override
     public void validateCustomerByIdentityNoAndBirthDate(Long identityNo, Date birthDate) {
-        if (customerRepository.findByIdentityNoAndBirthDate(identityNo, birthDate).equals(Optional.empty()))
+        if (customerRepository.findByIdentityNoAndBirthDate(identityNo, birthDate).equals(Optional.empty())) {
+            logger.warn("Customer with identityNo {} and birthDate {} does not exist",identityNo,birthDate);
             throw new GeneralBusinessException(INFORMATION_MISMATCH);
+        }
     }
     @Override
     public void validateCustomerPasswordIsMinimumThreeCharacters(String password) {
@@ -36,6 +42,7 @@ public class CustomerValidationServiceImpl implements CustomerValidationService 
     public void validateAreFieldsNonNull(Customer customer) {
         boolean hasNullField=customer.getName().isBlank()||customer.getSurname().isBlank()||customer.getBirthDate()==null||customer.getPhoneNumber().isBlank()||String.valueOf(customer.getMonthlyIncome())==null||String.valueOf(customer.getCustomerLimit())==null||String.valueOf(customer.getPersonType())==null||String.valueOf(customer.getIdentityNo())==null||customer.getPassword().isBlank();
         if (hasNullField) {
+            logger.warn("Customer {} fields are null",customer);
             throw new IllegalFieldException(FIELD_CANNOT_BE_NULL);
         }
     }
@@ -56,6 +63,7 @@ public class CustomerValidationServiceImpl implements CustomerValidationService 
     @Override
     public void validateIsPersonTypeCustomer(Customer customer) {
         if (!customer.getPersonType().equals(PersonType.CUSTOMER)) {
+            logger.warn("Person type {} is not customer",customer.getPersonType());
             throw new IllegalFieldException(PERSON_TYPE_MUST_BE_CUSTOMER);
         }
     }
@@ -63,6 +71,7 @@ public class CustomerValidationServiceImpl implements CustomerValidationService 
     @Override
     public void validateMonthlyIncome(float monthlyIncome) {
         if (monthlyIncome<0) {
+            logger.warn("Monthly income {} is negative",monthlyIncome);
             throw new IllegalFieldException(MONTHLY_INCOME_CANNOT_BE_NEGATIVE);
         }
     }

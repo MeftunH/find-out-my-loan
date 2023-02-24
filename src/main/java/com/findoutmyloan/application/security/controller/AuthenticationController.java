@@ -3,12 +3,15 @@ package com.findoutmyloan.application.security.controller;
 
 import com.findoutmyloan.application.customer.dto.CustomerResponseDTO;
 import com.findoutmyloan.application.customer.dto.CustomerSaveRequestDTO;
+import com.findoutmyloan.application.customer.validation.impl.CustomerValidationServiceImpl;
 import com.findoutmyloan.application.generic.dto.RestResponse;
 import com.findoutmyloan.application.security.dto.SecurityLoginRequestDTO;
 import com.findoutmyloan.application.security.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
+    private static final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
 
     @Operation(tags = "Authentication", summary = "Login", description = "Login with identity no and password",
             requestBody= @io.swagger.v3.oas.annotations.parameters.RequestBody
@@ -46,6 +50,7 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity<RestResponse<String>> login(@RequestBody SecurityLoginRequestDTO securityLoginRequestDTO) {
         String token=authenticationService.login(securityLoginRequestDTO);
+        logger.info("Login is successful by token: {}",token);
         return ResponseEntity.ok(RestResponse.of(token));
     }
 
@@ -81,6 +86,7 @@ public class AuthenticationController {
     @PostMapping("/register")
     public ResponseEntity<RestResponse<CustomerResponseDTO>> register(@RequestBody CustomerSaveRequestDTO customerSaveRequestDTO) {
         CustomerResponseDTO customerResponseDTO=authenticationService.register(customerSaveRequestDTO);
+        logger.info("Register is successful by customer: {}",customerResponseDTO);
         return ResponseEntity.ok(RestResponse.of(customerResponseDTO));
     }
 }

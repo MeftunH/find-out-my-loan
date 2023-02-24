@@ -8,28 +8,37 @@ import com.findoutmyloan.application.surety.entity.Surety;
 import com.findoutmyloan.application.surety.enums.SuretyErrorMessage;
 import com.findoutmyloan.application.surety.validation.service.SuretyValidationService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 
 @Service
 @RequiredArgsConstructor
 public class SuretyValidationServiceImpl implements SuretyValidationService {
+    private static final Logger logger = LoggerFactory.getLogger(SuretyValidationServiceImpl.class);
+
     private final PersonValidationService personValidationService;
     @Override
     public void validateIsPersonTypeSurety(Surety surety) {
-        if (!surety.getPersonType().equals(PersonType.SURETY))
+        if (!surety.getPersonType().equals(PersonType.SURETY)) {
+            logger.error("Person type must be surety.Surety id: {}", surety.getId());
             throw new IllegalFieldException(SuretyErrorMessage.PERSON_TYPE_MUST_BE_SURETY);
+        }
     }
     @Override
     public void validateSuretyType(Surety surety) {
-        if (surety.getSuretyType() == null)
+        if (surety.getSuretyType() == null) {
+            logger.error("Surety type must not be null, surety id: {}", surety.getId());
             throw new IllegalFieldException(SuretyErrorMessage.SURETY_TYPE_MUST_NOT_BE_NULL);
+        }
     }
 
     @Override
     public void validateFieldsAreNotNull(Surety surety) {
         boolean hasNullField = surety.getName()==null || surety.getSurname()==null || surety.getBirthDate() == null || surety.getPhoneNumber()==null || String.valueOf(surety.getPersonType()) == null || String.valueOf(surety.getIdentityNo())==null;
         if (hasNullField) {
+            logger.error("Surety fields cannot be null, surety id: {}", surety.getId());
             throw new IllegalFieldException(SuretyErrorMessage.SURETY_FIELD_CANNOT_BE_NULL);
         }
     }
