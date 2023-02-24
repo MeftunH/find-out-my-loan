@@ -8,6 +8,7 @@ import com.findoutmyloan.application.creditscore.dto.CreditScoreResponseDTO;
 import com.findoutmyloan.application.creditscore.service.CreditScoreApiService;
 import com.findoutmyloan.application.customer.dto.CustomerCreditScoreRequestDTO;
 import com.findoutmyloan.application.customer.service.CustomerService;
+import com.findoutmyloan.application.customer.validation.CustomerValidationService;
 import com.findoutmyloan.application.facade.dto.CustomerLoanResponseDTO;
 import com.findoutmyloan.application.facade.dto.LoanApplicationRequestDTO;
 import com.findoutmyloan.application.facade.service.BuilderFacade;
@@ -22,6 +23,7 @@ import com.findoutmyloan.application.loan.service.LoanService;
 import com.findoutmyloan.application.surety.dto.SuretySaveRequestDTO;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,25 +39,26 @@ public class LoanFacadeImpl implements LoanFacade {
     private final CollateralService collateralService;
     private final CustomerService customerService;
     private final LoanApplicationValidationCommand loanApplicationValidationCommand;
+    private static final Logger logger = LoggerFactory.getLogger(LoanFacadeImpl.class);
 
     @Override
     public CustomerLoanResponseDTO applyLoan(LoanApplicationRequestDTO loanApplicationRequestDTO) {
 
         loanApplicationValidationCommand.validateLoanApplicationInformationIsMatchGuaranteeType(loanApplicationRequestDTO);
-
+        logger.info("Loan Validated");
         builderFacade.invokeBuilder(loanApplicationRequestDTO);
-
+        logger.info("Builders invoked");
         CustomerCreditScoreRequestDTO customerCreditScoreRequestDTO=builderFacade.getCustomerCreditScoreRequestDTO();
         SuretySaveRequestDTO suretySaveRequestDTO=builderFacade.getSuretySaveRequestDTO();
         CollateralSaveRequestDTO collateralSaveRequestDTO=builderFacade.getCollateralSaveRequestDTO();
         CreditScoreRequestDTO creditScoreRequestDTO=builderFacade.getCreditScoreRequestDTO();
         CreditScoreResponseDTO creditScoreResponseDTO=creditScoreApiService.getCreditScore(creditScoreRequestDTO);
-
         entityFacade.saveEntity(suretySaveRequestDTO, collateralSaveRequestDTO);
 
         LoanSaveRequestDTO loanSaveRequestDTO=LoanMapper.INSTANCE.loanRequestFromCustomerDTOToLoanSaveRequestDTO(loanApplicationRequestDTO);
         float limitOfLoan=getTotalLimitOfLoan(creditScoreRequestDTO, creditScoreResponseDTO);
         LoanDTO loanDTO=setLoanDTO(creditScoreResponseDTO, loanSaveRequestDTO, limitOfLoan);
+        logger.info("Loan application has been returned successfully");
         return getCustomerLoanResponseDTO(limitOfLoan, loanDTO);
     }
 
@@ -73,6 +76,7 @@ public class LoanFacadeImpl implements LoanFacade {
         if (creditScoreRequestDTO.getCollateralSaveRequestDTO().getCollateralType()!=null) {
             limitOfLoan=addCollateralWorthToLoanLimit(creditScoreRequestDTO, creditScoreResponseDTO, limitOfLoan);
         }
+        logger.info("Limit of loan is: {}" ,limitOfLoan);
         return limitOfLoan;
     }
 
@@ -84,6 +88,7 @@ public class LoanFacadeImpl implements LoanFacade {
                     limitOfLoan
             );
         }
+        logger.info("Limit with collateral loan is: {}", limitOfLoan);
         return limitOfLoan;
     }
 
@@ -91,9 +96,12 @@ public class LoanFacadeImpl implements LoanFacade {
         loanSaveRequestDTO.setAmount(limitOfLoan);
         if (!loanService.isSuitableForCalculate(creditScoreResponseDTO.getCreditScore())) {
             loanSaveRequestDTO.setResult(LoanResult.REJECTED);
+            logger.info("Loan {} is rejected with credit score: {}", loanSaveRequestDTO, creditScoreResponseDTO.getCreditScore());
         } else {
             loanSaveRequestDTO.setResult(LoanResult.APPROVED);
+            logger.info("Loan {} is approved with credit score: {}", loanSaveRequestDTO, creditScoreResponseDTO.getCreditScore());
         }
+        logger.info("Loan {} is saved", loanSaveRequestDTO);
         return loanService.saveLoan(loanSaveRequestDTO);
     }
 }

@@ -13,7 +13,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Data
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 public class PersonDTO implements Serializable {
     @NotNull
