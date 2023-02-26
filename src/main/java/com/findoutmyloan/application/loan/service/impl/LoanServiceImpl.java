@@ -5,7 +5,6 @@ import com.findoutmyloan.application.creditscore.enums.CreditScoreType;
 import com.findoutmyloan.application.customer.entity.Customer;
 import com.findoutmyloan.application.customer.profiler.service.CustomerProfilerService;
 import com.findoutmyloan.application.customer.repository.CustomerRepository;
-import com.findoutmyloan.application.facade.service.impl.LoanFacadeImpl;
 import com.findoutmyloan.application.generic.service.BaseService;
 import com.findoutmyloan.application.loan.dto.LoanDTO;
 import com.findoutmyloan.application.loan.dto.LoanSaveRequestDTO;
@@ -14,12 +13,11 @@ import com.findoutmyloan.application.loan.mapper.LoanMapper;
 import com.findoutmyloan.application.loan.repository.LoanRepository;
 import com.findoutmyloan.application.loan.service.LoanService;
 import com.findoutmyloan.application.loan.validation.LoanValidationService;
+import com.findoutmyloan.application.log.SingletonLogger;
 import com.findoutmyloan.application.notification.enums.NotificationType;
 import com.findoutmyloan.application.notification.service.NotificationService;
 import com.findoutmyloan.application.notification.sms.enums.SmsMessageTemplate;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,10 +34,11 @@ public class LoanServiceImpl extends BaseService<Loan> implements LoanService {
     private final NotificationService notificationService;
     private final CustomerRepository customerRepository;
     private final LoanValidationService loanValidationService;
-    private static final Logger logger = LoggerFactory.getLogger(LoanServiceImpl.class);
+    private final SingletonLogger logger=SingletonLogger.getInstance();
+
     @Override
     public boolean isSuitableForCalculate(int creditScore) {
-        logger.info("Checking if credit score {} is suitable for calculate",creditScore);
+        logger.info("Checking if credit score"+creditScore+"is suitable for calculate");
         return creditScore>=CreditScoreType.LOW_CREDIT_SCORE.getMaximumCreditScore();
     }
 
@@ -75,7 +74,7 @@ public class LoanServiceImpl extends BaseService<Loan> implements LoanService {
         notificationService.notify(NotificationType.SMS,
                 SmsMessageTemplate.LOAN_APPLICATION_SUBMITTED.getMessage(),
                 customer);
-        logger.info("Loan with id {} is saved",loan.getId());
+        logger.info("Loan with id "+loan.getId()+" is saved");
         return LoanMapper.INSTANCE.convertToLoanDto(loan);
     }
 

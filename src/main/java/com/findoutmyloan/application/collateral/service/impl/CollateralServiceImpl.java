@@ -13,9 +13,8 @@ import com.findoutmyloan.application.collateral.validation.service.CollateralVal
 import com.findoutmyloan.application.customer.enums.CustomerProfiler;
 import com.findoutmyloan.application.customer.profiler.service.CustomerProfilerService;
 import com.findoutmyloan.application.generic.service.BaseService;
+import com.findoutmyloan.application.log.SingletonLogger;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,8 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional(propagation = Propagation.REQUIRED)
 public class CollateralServiceImpl extends BaseService<Collateral> implements CollateralService {
-    private static final Logger logger = LoggerFactory.getLogger(CollateralServiceImpl.class);
-
+    private final SingletonLogger logger=SingletonLogger.getInstance();
     private final CollateralRepository collateralRepository;
     private final CustomerProfilerService customerProfilerService;
     private final CollateralValidationService collateralValidationService;
@@ -39,7 +37,7 @@ public class CollateralServiceImpl extends BaseService<Collateral> implements Co
 
         collateral.setCustomerId(getCurrentCustomerId());
         Collateral savedCollateral=collateralRepository.save(collateral);
-        logger.info("Collateral {} saved successfully",collateral);
+        logger.info("Collateral "+collateral+" saved successfully");
         return CollateralMapper.INSTANCE.convertToCollateralDTO(savedCollateral);
     }
 
