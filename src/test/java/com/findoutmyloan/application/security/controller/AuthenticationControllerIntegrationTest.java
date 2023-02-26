@@ -23,7 +23,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
-@ActiveProfiles("integration-test")
 class AuthenticationControllerIntegrationTest extends BaseIntegrationTest {
     private static final String BASE_URL="http://localhost:8082/auth";
     private MockMvc mockMvc;
