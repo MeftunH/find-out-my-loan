@@ -16,7 +16,8 @@ public enum CustomerErrorMessage implements BaseErrorMessage {
     CUSTOMER_IDENTITY_NO_INVALID("Customer Identity No Invalid!", "Please check the identity no."),
     CUSTOMER_BIRTH_DATE_INVALID("Customer Birth Date Invalid!", "Please check the birth date."),
     CUSTOMER_PROFILE_NOT_FOUND("Customer Profile Not Found!", "Please check the profile of the customer."),
-    CUSTOMER_PROFILE_CANNOT_BE_NULL("Customer Profile Cannot Be Null!", "Please check the profile of the customer.");
+    CUSTOMER_PROFILE_CANNOT_BE_NULL("Customer Profile Cannot Be Null!", "Please check the profile of the customer."),
+    CUSTOMER_CREDENTIALS_INVALID("Customer Credentials Invalid!", "Please check the credentials of the customer.");
 
     private final String message;
     private final String detailMessage;

@@ -3,13 +3,11 @@ package com.findoutmyloan.application.facade.service.impl;
 
 import com.findoutmyloan.application.collateral.dto.CollateralSaveRequestDTO;
 import com.findoutmyloan.application.collateral.service.CollateralService;
-import com.findoutmyloan.application.customer.validation.CustomerValidationService;
 import com.findoutmyloan.application.facade.service.EntityFacade;
+import com.findoutmyloan.application.log.SingletonLogger;
 import com.findoutmyloan.application.surety.dto.SuretySaveRequestDTO;
 import com.findoutmyloan.application.surety.service.SuretyService;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class EntityFacadeImpl implements EntityFacade {
     private final SuretyService suretyService;
     private final CollateralService collateralService;
-    private static final Logger logger = LoggerFactory.getLogger(CustomerValidationService.class);
+    private final SingletonLogger logger=SingletonLogger.getInstance();
 
     @Override
     public void saveEntity(SuretySaveRequestDTO suretySaveRequestDTO, CollateralSaveRequestDTO collateralSaveRequestDTO) {

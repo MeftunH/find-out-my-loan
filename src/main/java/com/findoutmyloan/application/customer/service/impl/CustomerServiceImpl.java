@@ -1,7 +1,6 @@
 package com.findoutmyloan.application.customer.service.impl;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
-import com.findoutmyloan.application.collateral.service.impl.CollateralServiceImpl;
 import com.findoutmyloan.application.customer.dto.CustomerDTO;
 import com.findoutmyloan.application.customer.dto.CustomerResponseDTO;
 import com.findoutmyloan.application.customer.dto.CustomerSaveRequestDTO;
@@ -18,10 +17,9 @@ import com.findoutmyloan.application.loan.dto.LoanDTO;
 import com.findoutmyloan.application.loan.entity.Loan;
 import com.findoutmyloan.application.loan.mapper.LoanMapper;
 import com.findoutmyloan.application.loan.service.LoanService;
+import com.findoutmyloan.application.log.SingletonLogger;
 import com.findoutmyloan.application.person.enums.PersonType;
 import com.findoutmyloan.application.security.service.AuthenticationService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -40,7 +38,7 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
     private final LoanService loanService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationService authenticationService;
-    private static final Logger logger = LoggerFactory.getLogger(CustomerServiceImpl.class);
+    private final SingletonLogger logger=SingletonLogger.getInstance();
 
 
     //fixed: @Lazy annotation is used to avoid circular dependency
@@ -57,7 +55,7 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
         Customer customer=findCustomerByIdentityNoOrThrowException(authenticationService.getCurrentCustomer().getIdentityNo());
         float limitOfCustomer=customer.getCustomerLimit()+limitOfLoan;
         updateCustomerLimit(customer, limitOfCustomer);
-        logger.info("Customer limit is updated to:{} ", limitOfCustomer);
+        logger.info("Customer limit is updated to: "+limitOfCustomer);
         return limitOfCustomer;
     }
 
@@ -78,7 +76,7 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
         customer.setPassword(password);
 
         Customer savedCustomer=customerRepository.save(customer);
-        logger.info("Customer {} saved ", savedCustomer);
+        logger.info("Customer "+savedCustomer+" saved ");
         return CustomerMapper.INSTANCE.convertToCustomerResponseDTO(savedCustomer);
     }
 
@@ -87,7 +85,7 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
         if (customer.getPersonType()==PersonType.CUSTOMER)
             return customer;
         else {
-            logger.warn("Customer does not exists by id: {} ", id);
+            logger.warn("Customer does not exists by id: "+id);
             throw new ItemNotFoundException(CustomerErrorMessage.CUSTOMER_NOT_FOUND);
         }
     }
@@ -114,7 +112,7 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
     public void deleteAccountByIdControl(Long id) {
         Customer customer=findCustomerByIdOrThrowException(id);
         customerRepository.delete(customer);
-        logger.info("Customer deleted by id: {} ", id);
+        logger.info("Customer deleted by id: "+id);
     }
 
     @Override
@@ -130,7 +128,7 @@ public class CustomerServiceImpl extends BaseService<Customer> implements Custom
         customerValidationService.validateCustomer(customerToUpdate);
 
         customerRepository.save(customerToUpdate);
-        logger.info("Customer updated {} to: {} ", customerUpdateRequestDTO, customerToUpdate);
+        logger.info("Customer updated"+customerUpdateRequestDTO+" to: "+customerToUpdate);
 
         return CustomerMapper.INSTANCE.convertToCustomerResponseDTO(customerToUpdate);
     }
