@@ -452,247 +452,346 @@ I use it for the notification service to send notification to the user
 ![image](https://user-images.githubusercontent.com/48466124/221478674-4f97b582-58ce-4aff-8456-87049f5632e9.png)
 ![image](https://user-images.githubusercontent.com/48466124/221478710-8f464606-688e-4941-bbeb-b80319ea1a3e.png)
 
-**Author:** Maftun Hashimli
+## Transactions
 
-**Version:** 0.0.1-SNAPSHOT
+Spring Boot provides built-in support for transactions through the Spring Framework's transaction management
+capabilities. Transactions ensure that a group of database operations are executed as a single unit of work, either
+succeeding or failing as a whole.
 
-### Class Name：CustomerController
+Spring Boot's transaction management features make it easy to manage transactions declaratively using annotations. Here
+are some key concepts to keep in mind:
 
-## 1.GET MY PERSONAL INFORMATION
+Transactions are managed by the underlying transaction manager, which can be either a JDBC-based manager or a JTA-based
+manager.
 
-**URL:** http://localhost/api/v1/customer/
+Transactions can be managed programmatically using the TransactionTemplate class or declaratively using annotations such
+as @Transactional.
 
-**Type:** GET
+The @Transactional annotation can be applied to methods or classes, and allows you to specify the transactional behavior
+of the method or class.
 
-**Content-Type:** application/x-www-form-urlencoded;charset=UTF-8
+The @Transactional annotation supports various attributes, such as propagation, isolation, timeout, and read-only, which
+allow you to customize the behavior of the transaction.
+The @Transactional annotation in Spring Boot supports several types of transactional behavior that can be customized
+according to the needs of your application. Here are some of the most commonly used types of transactional behavior:
 
-**Request-parameters:**
+REQUIRED: This is the default behavior of @Transactional. If a transactional method is called within the scope of an
+existing transaction, it will be executed within that transaction. If there is no existing transaction, a new
+transaction will be created.
 
-None
+REQUIRES_NEW: This type of behavior always creates a new transaction, even if an existing transaction is already in
+progress. When the method is complete, the new transaction is committed independently of any outer transactions.
 
-**Response-fields:**
+MANDATORY: This type of behavior requires that an existing transaction already be in progress when the method is called.
+If there is no existing transaction, a TransactionRequiredException will be thrown.
 
- Field                               | Type    | Description 
--------------------------------------|---------|-------------
- ┌─&nbsp;                            | object  | &nbsp;      
- ├── data                            | object  | &nbsp;      
- │&nbsp;&nbsp; ├── value             | object  | &nbsp;      
- │&nbsp;&nbsp; ├── serializationView | object  | &nbsp;      
- │&nbsp;&nbsp; └── filters           | object  | &nbsp;      
- ├── responseDate                    | string  | &nbsp;      
- ├── isSuccess                       | boolean | &nbsp;      
- └── message                         | string  | &nbsp;      
+NEVER: This type of behavior ensures that no transaction is in progress when the method is called. If an existing
+transaction is in progress, a TransactionException will be thrown.
 
-**Response-example:**
+SUPPORTS: This type of behavior allows the method to execute within an existing transaction, but also allows it to be
+executed outside of a transaction.
 
-``` json
+NOT_SUPPORTED: This type of behavior ensures that the method is executed outside of any existing transaction. If a
+transaction is already in progress, it is suspended for the duration of the method call.
+
+NESTED: This type of behavior creates a nested transaction within an existing transaction. If an existing transaction is
+in progress, the nested transaction will be executed within the scope of the outer transaction. If the nested
+transaction fails, only the nested transaction is rolled back, not the outer transaction.
+
+* For example:
+  ![image](https://user-images.githubusercontent.com/48466124/221490518-a64542de-90df-4922-a228-ff7e051a6e14.png)
+  ![image](https://user-images.githubusercontent.com/48466124/221490603-a739f2de-2101-4611-90c1-148509776991.png)
+
+## ENDPOINTS, REQUEST AND RESPONSE EXAMPLES
+
+You can reach Insomnia request set
+from [here](https://drive.google.com/file/d/13_eP8g8HN2ws9dfXfINQlTel1YOZ3HPQ/view?usp=sharing)
+
+* CREDIT SCORE 
+```http://localhost:8081/api/v1/credit-score``` GET
+ NO REQUEST BODY
+```agsl
+{
+	"creditScore": 486,
+	"customerIdentityNo": 1
+}
+```
+* LOGIN:
+  `http://localhost:8082/auth/login` POST
+
+``` 
+ {
+  "identityNo":88056746318,
+  "password": "123MmM"
+  }
+```
+
+```agsl
+{
+	"data": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI0NDA2IiwiaWF0IjoxNjc3NDc5NDE3LCJleHAiOjE2Nzc1NjU4MTd9.dW-k40No-ONnu-6i30RNYGBpER0iXrVaJ0tGJgeXGLmoyNLcxF2-2jue5M_02UDWWenttUTUoh8N1jUuU0w8EA",
+	"responseDate": "2023-02-27T06:30:17.024+00:00",
+	"message": null,
+	"success": true
+}
+```
+
+```agsl
+{
+	 "identityNo":88056546318,
+	"password": "123MmM"
+}
+```
+
+```agsl
+{
+	"data": {
+		"errorDate": "2023-02-27T06:39:42.940+00:00",
+		"message": "Customer Identity No Invalid!",
+		"detail": "Please check the identity no."
+	},
+	"responseDate": "2023-02-27T06:39:42.940+00:00",
+	"message": "Customer Identity No Invalid!",
+	"success": false
+}
+```
+
+* REGISTER:
+  `http://localhost:8082/auth/register` POST
+
+```agsl
+{
+"name": "John",
+ "surname": "Doe",
+  "identityNo": 88056746318,
+  "birthDate": "1999-01-01",   
+  "phoneNumber": "5125245556",
+  "personType": "CUSTOMER",
+  "monthlyIncome": 5000.0,
+  "password": "123MmM"
+}
+```
+```agsl
+{
+	"data": {
+		"name": "John",
+		"surname": "Doe",
+		"identityNo": 88056746318,
+		"birthDate": "1999-01-01",
+		"phoneNumber": "5125245556",
+		"personType": "CUSTOMER",
+		"monthlyIncome": 5000.0,
+		"customerLimit": 0.0,
+		"baseAdditionalFieldsCreatedDate": "2023-02-27T06:30:11.825+00:00",
+		"baseAdditionalFieldsUpdatedDate": "2023-02-27T06:30:11.825+00:00"
+	},
+	"responseDate": "2023-02-27T06:30:11.921+00:00",
+	"message": null,
+	"success": true
+}
+```
+
+```agsl
+{
+	"data": {
+		"errorDate": "2023-02-27T06:42:51.326+00:00",
+		"message": "Customer Identity No Must Be Unique!",
+		"detail": "Please check the identity no of the customer."
+	},
+	"responseDate": "2023-02-27T06:42:51.326+00:00",
+	"message": "Customer Identity No Must Be Unique!",
+	"success": false
+}
+```
+```agsl
+{
+	"data": {
+		"errorDate": "2023-02-27T06:43:23.708+00:00",
+		"message": "Customer Identity No Invalid!",
+		"detail": "Please check the identity no."
+	},
+	"responseDate": "2023-02-27T06:43:23.708+00:00",
+	"message": "Customer Identity No Invalid!",
+	"success": false
+}
+```
+```agsl
+{
+	"data": {
+		"errorDate": "2023-02-27T06:44:04.274+00:00",
+		"message": "Customer Phone Number Must Be Unique!",
+		"detail": "Please check the phone number."
+	},
+	"responseDate": "2023-02-27T06:44:04.274+00:00",
+	"message": "Customer Phone Number Must Be Unique!",
+	"success": false
+}
+```
+* UPDATE CUSTOMER
+  ```http://localhost:8082/api/v1/customer``` PUT
+```agsl
+{
+	"name": "Updated John 65",
+  "surname": "Doe",
+  "identityNo": 66079804482,
+"birthDate": "1999-01-01",   
+  "phoneNumber": "2555555555",
+  "personType": "CUSTOMER",
+  "monthlyIncome": 5000.0
+}
+```
+
+```
+{
+	"data": {
+		"errorDate": "2023-02-27T06:47:16.123+00:00",
+		"message": "Customer Not Found!",
+		"detail": "Please check the id of the customer."
+	},
+	"responseDate": "2023-02-27T06:47:16.123+00:00",
+	"message": "Customer Not Found!",
+	"success": false
+}
+```
+* DELETE CUSTOMER 
+```http://localhost:8082/api/v1/customer```
+NO REQUEST BODY
+```agsl
+{
+	"data": null,
+	"responseDate": "2023-02-15T16:13:20.259+00:00",
+	"message": null,
+	"success": true
+}
+
+
+```
+* GET CUSTOMER
+```http://localhost:8082/api/v1/customer``` GET
+ NO REQUEST BODY
+```agsl
 {
   "data": {
-    "value": {}
+    "value": {
+      "name": "John",
+      "surname": "Doe",
+      "identityNo": 48764713606,
+      "birthDate": "1999-12-22",
+      "phoneNumber": "5657555556",
+      "personType": "CUSTOMER",
+      "monthlyIncome": 5000,
+      "customerLimit": 0,
+      "baseAdditionalFieldsCreatedDate": "2023-02-27T06:12:28.467+00:00",
+      "baseAdditionalFieldsUpdatedDate": "2023-02-27T06:12:28.467+00:00",
+      "links": [
+        {
+          "rel": "deleteCustomerById",
+          "href": "http://localhost:8082/api/v1/customer"
+        }
+      ]
+    },
+    "serializationView": null,
+    "filters": null
   },
-  "message": "XyCD5",
-  "responseDate": "Aug 17, 2016, 5:55:19 AM",
-  "isSuccess": false
+  "responseDate": "2023-02-27T06:49:22.388+00:00",
+  "message": null,
+  "success": true
 }
 ```
-
-**Curl-example:**
-
-``` bash
-curl -X GET -i http://localhost/api/v1/customer/
-```
-
-### DELETE MY ACCOUNT
-
-**URL:** http://localhost/api/v1/customer/
-
-**Type:** DELETE
-
-**Content-Type:** application/x-www-form-urlencoded;charset=UTF-8
-
-**Request-parameters:**
-
-None
-
-**Response-fields:**
-
- Field            | Type    | Description 
-------------------|---------|-------------
- ┌─&nbsp;         | object  | &nbsp;      
- ├── data         | object  | &nbsp;      
- ├── responseDate | string  | &nbsp;      
- ├── isSuccess    | boolean | &nbsp;      
- └── message      | string  | &nbsp;      
-
-**Response-example:**
-
-``` json
-{
-  "data": {},
-  "message": "i",
-  "responseDate": "Feb 2, 1996, 10:02:59 AM",
-  "isSuccess": false
-}
-```
-
-**Curl-example:**
-
-``` bash
-curl -X DELETE -i http://localhost/api/v1/customer/
-```
-
-### 3.UPDATE MY ACCOUNT
-
-**URL:** http://localhost/api/v1/customer/
-
-**Type:** PUT
-
-**Content-Type:** application/json
-
-**Body-parameters:**
-
- Parameter                                        | Type   | Required | DefaultValue | Description               
---------------------------------------------------|--------|----------|--------------|---------------------------
- └── customerUpdateRequestDTO                     | object | true     | &nbsp;       |
- &nbsp;&nbsp; ├── monthlyIncome                   | float  | &nbsp;   | 0.0          | &nbsp;                    
- &nbsp;&nbsp; ├── baseAdditionalFieldsCreatedDate | string | &nbsp;   | &nbsp;       | &nbsp;                    
- &nbsp;&nbsp; ├── baseAdditionalFieldsUpdatedDate | string | &nbsp;   | &nbsp;       | &nbsp;                    
- &nbsp;&nbsp; ├── name                            | string | &nbsp;   | &nbsp;       | &nbsp;                    
- &nbsp;&nbsp; ├── surname                         | string | &nbsp;   | &nbsp;       | &nbsp;                    
- &nbsp;&nbsp; ├── identityNo                      | int64  | &nbsp;   | 0            | &nbsp;                    
- &nbsp;&nbsp; ├── birthDate                       | string | &nbsp;   | &nbsp;       | Pattern: yyyy-MM-dd       
- &nbsp;&nbsp; ├── phoneNumber                     | string | &nbsp;   | &nbsp;       | &nbsp;                    
- &nbsp;&nbsp; └── personType                      | enum   | &nbsp;   | &nbsp;       | CUSTOMER<br/>SURETY&nbsp; 
-
-**Request-body-example:**
-
-``` json
-{
-  "identityNo": 0,
-  "baseAdditionalFieldsUpdatedDate": "Nov 25, 1970, 9:21:59 PM",
-  "phoneNumber": "cv",
-  "surname": "Q6hFgYt6",
-  "baseAdditionalFieldsCreatedDate": "Aug 11, 1985, 8:19:05 PM",
-  "name": "IN",
-  "personType": "CUSTOMER",
-  "birthDate": "2077-05-18",
-  "monthlyIncome": 0.0
-}
-```
-
-**Response-fields:**
-
- Field                                             | Type    | Description                    
----------------------------------------------------|---------|--------------------------------
- ┌─&nbsp;                                          | object  | &nbsp;                         
- ├── data                                          | object  | A DTO for the<br/>entity&nbsp; 
- │&nbsp;&nbsp; ├── monthlyIncome                   | float   | &nbsp;                         
- │&nbsp;&nbsp; ├── customerLimit                   | float   | &nbsp;                         
- │&nbsp;&nbsp; ├── baseAdditionalFieldsCreatedDate | string  | &nbsp;                         
- │&nbsp;&nbsp; ├── baseAdditionalFieldsUpdatedDate | string  | &nbsp;                         
- │&nbsp;&nbsp; ├── name                            | string  | &nbsp;                         
- │&nbsp;&nbsp; ├── surname                         | string  | &nbsp;                         
- │&nbsp;&nbsp; ├── identityNo                      | int64   | &nbsp;                         
- │&nbsp;&nbsp; ├── birthDate                       | string  | Pattern: yyyy-MM-dd            
- │&nbsp;&nbsp; ├── phoneNumber                     | string  | &nbsp;                         
- │&nbsp;&nbsp; └── personType                      | enum    | CUSTOMER<br/>SURETY&nbsp;      
- ├── responseDate                                  | string  | &nbsp;                         
- ├── isSuccess                                     | boolean | &nbsp;                         
- └── message                                       | string  | &nbsp;                         
-
-**Response-example:**
-
-``` json
+* FIND LOAN
+```http://localhost:8082/api/v1/customer/{identityNo}/{birthday}/find-loans``` GET
+NO REQUEST BODY
+```agsl
 {
   "data": {
-    "identityNo": 0,
-    "baseAdditionalFieldsUpdatedDate": "Apr 26, 2018, 5:07:07 PM",
-    "phoneNumber": "A3",
-    "surname": "1BSiRbonHr",
-    "customerLimit": 0.0,
-    "baseAdditionalFieldsCreatedDate": "Jun 17, 1981, 8:11:52 PM",
-    "name": "0NJ3J",
-    "personType": "CUSTOMER",
-    "birthDate": "2095-09-04",
-    "monthlyIncome": 0.0
+    "errorDate": "2023-02-27T06:50:22.307+00:00",
+    "message": "Customer Information Mismatch!",
+    "detail": "Please make sure you have entered your information correctly."
   },
-  "message": "IKZi",
-  "responseDate": "Aug 6, 2097, 5:30:33 PM",
-  "isSuccess": false
+  "responseDate": "2023-02-27T06:50:22.307+00:00",
+  "message": "Customer Information Mismatch!",
+  "success": false
 }
 ```
-
-**Curl-example:**
-
-``` bash
-curl -X PUT -H 'Content-Type: application/json' -i http://localhost/api/v1/customer/ --data '{
-  "identityNo": 0,
-  "baseAdditionalFieldsUpdatedDate": "Nov 25, 1970, 9:21:59 PM",
-  "phoneNumber": "cv",
-  "surname": "Q6hFgYt6",
-  "baseAdditionalFieldsCreatedDate": "Aug 11, 1985, 8:19:05 PM",
-  "name": "IN",
-  "personType": "CUSTOMER",
-  "birthDate": "2077-05-18",
-  "monthlyIncome": 0.0
-}'
-```
-
-### 4.FIND LOANS BY CUSTOMER IDENTITY NO AND BIRTHDAY
-
-**URL:** http://localhost/api/v1/customer/{identityNo}/{birthday}/find-loans
-
-**Type:** GET
-
-**Content-Type:** application/x-www-form-urlencoded;charset=UTF-8
-
-**Path-parameters:**
-
- Parameter      | Type   | Required | DefaultValue | Description 
-----------------|--------|----------|--------------|-------------
- ├── identityNo | int64  | true     | 0            |
- └── birthday   | string | true     | &nbsp;       |
-
-**Response-fields:**
-
- Field                                             | Type                | Description                                 
----------------------------------------------------|---------------------|---------------------------------------------
- ┌─&nbsp;                                          | object              | &nbsp;                                      
- ├── data                                          | array&lt;object&gt; | &nbsp;                                      
- │&nbsp;&nbsp; ├── paybackGuaranteeType            | enum                | SURETY<br/>COLLATERAL<br/>ALL_OF_THEM&nbsp; 
- │&nbsp;&nbsp; ├── amount                          | float               | &nbsp;                                      
- │&nbsp;&nbsp; ├── result                          | enum                | APPROVED<br/>REJECTED&nbsp;                 
- │&nbsp;&nbsp; ├── baseAdditionalFieldsCreatedDate | string              | &nbsp;                                      
- │&nbsp;&nbsp; └── baseAdditionalFieldsUpdatedDate | string              | &nbsp;                                      
- ├── responseDate                                  | string              | &nbsp;                                      
- ├── isSuccess                                     | boolean             | &nbsp;                                      
- └── message                                       | string              | &nbsp;                                      
-
-**Response-example:**
-
-``` json
+* APPLY LOAN
+  ```http://localhost:8082/api/v1/loan/apply``` POST
+ PAYBACK GUARANTEE TYPE: COLLATERAL
+```agsl
 {
-  "data": [
-    {
-      "result": "APPROVED",
-      "amount": 0.0,
-      "paybackGuaranteeType": "COLLATERAL",
-      "baseAdditionalFieldsUpdatedDate": "Dec 28, 2069, 10:22:30 AM",
-      "baseAdditionalFieldsCreatedDate": "May 16, 2007, 3:11:50 PM"
-    }
-  ],
-  "message": "RsbQ",
-  "responseDate": "Jun 6, 2072, 8:09:47 PM",
-  "isSuccess": false
+  "paybackGuaranteeType": "COLLATERAL",
+	"collateralType": "MONEY",
+	"collateralWorth": 1928.0
 }
 ```
-
-**Curl-example:**
-
-``` bash
-curl -X GET -i http://localhost/api/v1/customer/0/Thu Feb 21 17:24:27 TRT 2008/find-loans
+```agsl
+{
+	"data": {
+		"paybackGuaranteeType": "COLLATERAL",
+		"amount": 20385.6,
+		"result": "APPROVED",
+		"customerLimit": 131715.6,
+		"baseAdditionalFieldsCreatedDate": "2023-02-27T01:12:21.618+00:00",
+		"baseAdditionalFieldsUpdatedDate": "2023-02-27T01:12:21.618+00:00"
+	},
+	"responseDate": "2023-02-27T02:55:45.435+00:00",
+	"message": null,
+	"success": true
+}
 ```
-
+PAYBACK GUARANTEE TYPE SURETY
+```agsl
+{
+  "suretyName": "Surety Jane",
+  "suretySurname": "Doe",
+	"suretyType": "JOINT",
+  "suretyIdentityNo": 47701739716,
+  "suretyBirthDate": "1980-01-01",
+  "suretyPhoneNumber": "55125559",
+  "suretyPersonType": "SURETY",
+  "paybackGuaranteeType": "SURETY"
+}
+```
+```agsl
+{
+	"data": {
+		"errorDate": "2023-02-27T00:22:03.177+00:00",
+		"message": "Surety Phone Number Must Be Unique!",
+		"detail": "Please check the phone number."
+	},
+	"responseDate": "2023-02-27T00:22:03.178+00:00",
+	"message": "Surety Phone Number Must Be Unique!",
+	"success": false
+}
+```
+PAYBACK GUARANTEE TYPE BOTH OF THEM
+```agsl
+{
+  "suretyName": "Jane",
+  "suretySurname": "Doe",
+	"suretyType": "JOINT",
+  "suretyIdentityNo": 97898017852,
+  "suretyBirthDate": "1980-01-01",
+  "suretyPhoneNumber": "51665547",
+  "suretyPersonType": "SURETY",
+  "paybackGuaranteeType": "ALL_OF_THEM",
+		"collateralType": "MONEY",
+	"collateralWorth": 2000.0
+}
+```
+```agsl
+{
+	"data": {
+		"paybackGuaranteeType": "ALL_OF_THEM",
+		"amount": 10200.0,
+		"result": "APPROVED",
+		"customerLimit": 20392.8,
+		"baseAdditionalFieldsCreatedDate": "2023-02-24T09:24:03.995+00:00",
+		"baseAdditionalFieldsUpdatedDate": "2023-02-24T09:24:03.995+00:00"
+	},
+	"responseDate": "2023-02-24T09:24:04.012+00:00",
+	"message": null,
+	"success": true
+}
+```
 ## Authors
 
 - [@maftunhashimli](https://www.github.com/MeftunH)
