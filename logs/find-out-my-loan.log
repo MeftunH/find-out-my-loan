@@ -1,0 +1,119 @@
+2023-02-27T14:28:47.963+03:00  INFO 10492 --- [restartedMain] c.f.FindOutMyLoanApplication             : Starting FindOutMyLoanApplication using Java 18.0.1.1 with PID 10492 (D:\java_repos\give-me-some-debt\find-out-my-credit-score\target\classes started by maftu in D:\java_repos\give-me-some-debt\find-out-my-credit-score)
+2023-02-27T14:28:47.965+03:00  INFO 10492 --- [restartedMain] c.f.FindOutMyLoanApplication             : No active profile set, falling back to 1 default profile: "default"
+2023-02-27T14:28:51.656+03:00  INFO 10492 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-02-27T14:28:51.656+03:00  INFO 10492 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.5]
+2023-02-27T14:28:51.748+03:00  INFO 10492 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-02-27T14:28:52.184+03:00  INFO 10492 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2023-02-27T14:28:52.328+03:00  INFO 10492 --- [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@44a28775
+2023-02-27T14:28:52.329+03:00  INFO 10492 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2023-02-27T14:28:52.366+03:00  INFO 10492 --- [restartedMain] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2023-02-27T14:28:54.815+03:00  INFO 10492 --- [restartedMain] c.f.FindOutMyLoanApplication             : Started FindOutMyLoanApplication in 7.222 seconds (process running for 11.248)
+2023-02-27T14:29:19.460+03:00  INFO 10492 --- [http-nio-8082-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-02-27T14:29:19.637+03:00  INFO 10492 --- [http-nio-8082-exec-1] c.f.application.log.SingletonLogger      : Loan Validated
+2023-02-27T14:29:19.643+03:00  INFO 10492 --- [http-nio-8082-exec-1] c.f.application.log.SingletonLogger      : Builders invoked
+2023-02-27T14:29:19.808+03:00  INFO 10492 --- [http-nio-8082-exec-1] c.f.application.log.SingletonLogger      : Surety is validated
+2023-02-27T14:29:19.816+03:00  INFO 10492 --- [http-nio-8082-exec-1] c.f.application.log.SingletonLogger      : Suretycom.findoutmyloan.application.surety.entity.Surety@69740b66saved successfully
+2023-02-27T14:29:19.817+03:00  INFO 10492 --- [http-nio-8082-exec-1] c.f.application.log.SingletonLogger      : Loan Application Surety saved
+2023-02-27T14:29:19.819+03:00  INFO 10492 --- [http-nio-8082-exec-1] c.f.application.log.SingletonLogger      : Collateral com.findoutmyloan.application.collateral.entity.Collateral@2083a669 saved successfully
+2023-02-27T14:29:19.819+03:00  INFO 10492 --- [http-nio-8082-exec-1] c.f.application.log.SingletonLogger      : Loan Application Collateral saved
+2023-02-27T14:29:19.823+03:00  INFO 10492 --- [http-nio-8082-exec-1] c.f.application.log.SingletonLogger      : Limit with collateral loan is: 0.0
+2023-02-27T14:29:19.823+03:00  INFO 10492 --- [http-nio-8082-exec-1] c.f.application.log.SingletonLogger      : Limit of loan is: 0.0
+2023-02-27T14:29:19.824+03:00  INFO 10492 --- [http-nio-8082-exec-1] c.f.application.log.SingletonLogger      : Checking if credit score377is suitable for calculate
+2023-02-27T14:29:19.825+03:00  INFO 10492 --- [http-nio-8082-exec-1] c.f.application.log.SingletonLogger      : Loan LoanSaveRequestDTO(paybackGuaranteeType=ALL_OF_THEM, amount=0.0, result=REJECTED, baseAdditionalFieldsCreatedDate=null, baseAdditionalFieldsUpdatedDate=null) is rejected with credit score: 377
+2023-02-27T14:29:19.825+03:00  INFO 10492 --- [http-nio-8082-exec-1] c.f.application.log.SingletonLogger      : Loan LoanSaveRequestDTO(paybackGuaranteeType=ALL_OF_THEM, amount=0.0, result=REJECTED, baseAdditionalFieldsCreatedDate=null, baseAdditionalFieldsUpdatedDate=null) is saved
+2023-02-27T14:29:19.830+03:00  INFO 10492 --- [http-nio-8082-exec-1] c.f.application.log.SingletonLogger      : SMS notification is created
+2023-02-27T14:29:19.830+03:00  INFO 10492 --- [http-nio-8082-exec-1] c.f.application.log.SingletonLogger      : SMS notification message: Your loan application has been submit.is sent to person:4406
+2023-02-27T14:29:19.830+03:00  INFO 10492 --- [http-nio-8082-exec-1] c.f.application.log.SingletonLogger      : Loan with id 652 is saved
+2023-02-27T14:29:19.831+03:00  INFO 10492 --- [http-nio-8082-exec-1] c.f.application.log.SingletonLogger      : Loan application has been returned successfully
+2023-02-27T14:29:19.848+03:00  INFO 10492 --- [http-nio-8082-exec-1] c.f.application.log.SingletonLogger      : Customer limit is updated to: 0.0
+2023-02-27T14:29:26.114+03:00  INFO 10492 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2023-02-27T14:29:26.116+03:00  INFO 10492 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2023-02-27T14:33:48.846+03:00  INFO 43544 --- [restartedMain] c.f.FindOutMyLoanApplication             : Starting FindOutMyLoanApplication using Java 18.0.1.1 with PID 43544 (D:\java_repos\give-me-some-debt\find-out-my-credit-score\target\classes started by maftu in D:\java_repos\give-me-some-debt\find-out-my-credit-score)
+2023-02-27T14:33:48.849+03:00  INFO 43544 --- [restartedMain] c.f.FindOutMyLoanApplication             : No active profile set, falling back to 1 default profile: "default"
+2023-02-27T14:33:50.422+03:00  INFO 43544 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-02-27T14:33:50.423+03:00  INFO 43544 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.5]
+2023-02-27T14:33:50.474+03:00  INFO 43544 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-02-27T14:33:50.884+03:00  INFO 43544 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2023-02-27T14:33:51.027+03:00  INFO 43544 --- [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@539f2439
+2023-02-27T14:33:51.029+03:00  INFO 43544 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2023-02-27T14:33:51.063+03:00  INFO 43544 --- [restartedMain] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2023-02-27T14:33:53.555+03:00  INFO 43544 --- [restartedMain] c.f.FindOutMyLoanApplication             : Started FindOutMyLoanApplication in 5.142 seconds (process running for 5.826)
+2023-02-27T14:34:29.202+03:00  INFO 43544 --- [http-nio-8082-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-02-27T14:34:29.413+03:00  INFO 43544 --- [http-nio-8082-exec-1] c.f.application.log.SingletonLogger      : Loan Validated
+2023-02-27T14:34:29.419+03:00  INFO 43544 --- [http-nio-8082-exec-1] c.f.application.log.SingletonLogger      : Builders invoked
+2023-02-27T14:34:50.931+03:00  INFO 43544 --- [http-nio-8082-exec-2] c.f.application.log.SingletonLogger      : Loan Validated
+2023-02-27T14:34:50.935+03:00  INFO 43544 --- [http-nio-8082-exec-2] c.f.application.log.SingletonLogger      : Builders invoked
+2023-02-27T14:34:50.949+03:00  INFO 43544 --- [http-nio-8082-exec-2] c.f.application.log.SingletonLogger      : Collateral com.findoutmyloan.application.collateral.entity.Collateral@2257e1c5 saved successfully
+2023-02-27T14:34:50.950+03:00  INFO 43544 --- [http-nio-8082-exec-2] c.f.application.log.SingletonLogger      : Loan Application Collateral saved
+2023-02-27T14:34:50.953+03:00  INFO 43544 --- [http-nio-8082-exec-2] c.f.application.log.SingletonLogger      : Limit with collateral loan is: 10192.8
+2023-02-27T14:34:50.953+03:00  INFO 43544 --- [http-nio-8082-exec-2] c.f.application.log.SingletonLogger      : Limit of loan is: 10192.8
+2023-02-27T14:34:50.954+03:00  INFO 43544 --- [http-nio-8082-exec-2] c.f.application.log.SingletonLogger      : Checking if credit score958is suitable for calculate
+2023-02-27T14:34:50.955+03:00  INFO 43544 --- [http-nio-8082-exec-2] c.f.application.log.SingletonLogger      : Loan LoanSaveRequestDTO(paybackGuaranteeType=COLLATERAL, amount=10192.8, result=APPROVED, baseAdditionalFieldsCreatedDate=null, baseAdditionalFieldsUpdatedDate=null) is approved with credit score: 958
+2023-02-27T14:34:50.955+03:00  INFO 43544 --- [http-nio-8082-exec-2] c.f.application.log.SingletonLogger      : Loan LoanSaveRequestDTO(paybackGuaranteeType=COLLATERAL, amount=10192.8, result=APPROVED, baseAdditionalFieldsCreatedDate=null, baseAdditionalFieldsUpdatedDate=null) is saved
+2023-02-27T14:34:50.960+03:00  INFO 43544 --- [http-nio-8082-exec-2] c.f.application.log.SingletonLogger      : SMS notification is created
+2023-02-27T14:34:50.960+03:00  INFO 43544 --- [http-nio-8082-exec-2] c.f.application.log.SingletonLogger      : SMS notification message: Your loan application has been submit.is sent to person:4406
+2023-02-27T14:34:50.961+03:00  INFO 43544 --- [http-nio-8082-exec-2] c.f.application.log.SingletonLogger      : Loan with id 702 is saved
+2023-02-27T14:34:50.963+03:00  INFO 43544 --- [http-nio-8082-exec-2] c.f.application.log.SingletonLogger      : Loan application has been returned successfully
+2023-02-27T14:34:50.970+03:00  INFO 43544 --- [http-nio-8082-exec-2] c.f.application.log.SingletonLogger      : Customer limit is updated to: 10192.8
+2023-02-27T14:45:16.243+03:00  INFO 43544 --- [http-nio-8082-exec-5] c.f.application.log.SingletonLogger      : Login is successful by token: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI0NDA3IiwiaWF0IjoxNjc3NDk4MzE2LCJleHAiOjE2Nzc1ODQ3MTZ9.4LYgPvtz7UO5jRrLWDM5-hroOPBCkMeq1Ajio1fwQgo6nqd7dpzQzcTst1n_wvfyx81_1u2nYi-jI1f0bTh86A
+2023-02-27T14:53:05.635+03:00  WARN 43544 --- [http-nio-8082-exec-2] c.f.application.log.SingletonLogger      : Customer com.findoutmyloan.application.customer.entity.Customer@2ea3b135 fields are null
+2023-02-27T14:53:54.605+03:00  WARN 43544 --- [http-nio-8082-exec-3] c.f.application.log.SingletonLogger      : Monthly income -1.0 is negative
+2023-02-27T15:02:57.552+03:00  INFO 43544 --- [http-nio-8082-exec-8] c.f.application.log.SingletonLogger      : Customer com.findoutmyloan.application.customer.entity.Customer@640a0847 saved 
+2023-02-27T15:02:57.567+03:00  INFO 43544 --- [http-nio-8082-exec-8] c.f.application.log.SingletonLogger      : Register is successful by customer: CustomerResponseDTO(monthlyIncome=5000.0, customerLimit=0.0, baseAdditionalFieldsCreatedDate=Mon Feb 27 15:02:57 TRT 2023, baseAdditionalFieldsUpdatedDate=Mon Feb 27 15:02:57 TRT 2023)
+2023-02-27T15:03:06.490+03:00  INFO 43544 --- [http-nio-8082-exec-9] c.f.application.log.SingletonLogger      : Customer updatedCustomerUpdateRequestDTO(monthlyIncome=4000.0, baseAdditionalFieldsCreatedDate=null, baseAdditionalFieldsUpdatedDate=null) to: com.findoutmyloan.application.customer.entity.Customer@254b55c6
+2023-02-27T15:04:40.731+03:00  WARN 43544 --- [http-nio-8082-exec-2] c.f.application.log.SingletonLogger      : Monthly income -1.0 is negative
+2023-02-27T15:07:24.435+03:00  WARN 43544 --- [http-nio-8082-exec-4] c.f.application.log.SingletonLogger      : Customer with identityNo 89565435274 and birthDate Sat Feb 22 02:00:00 TRT 2003+ does not exist
+2023-02-27T15:11:33.272+03:00  WARN 43544 --- [http-nio-8082-exec-1] c.f.application.log.SingletonLogger      : Customer with identityNo 98310393712 and birthDate Sun Sep 10 03:00:00 TRST 2000+ does not exist
+2023-02-27T15:18:31.552+03:00  INFO 43544 --- [http-nio-8082-exec-3] c.f.application.log.SingletonLogger      : Loan Validated
+2023-02-27T15:18:31.556+03:00  INFO 43544 --- [http-nio-8082-exec-3] c.f.application.log.SingletonLogger      : Builders invoked
+2023-02-27T15:18:31.626+03:00  INFO 43544 --- [http-nio-8082-exec-3] c.f.application.log.SingletonLogger      : Collateral com.findoutmyloan.application.collateral.entity.Collateral@c71f391 saved successfully
+2023-02-27T15:18:31.626+03:00  INFO 43544 --- [http-nio-8082-exec-3] c.f.application.log.SingletonLogger      : Loan Application Collateral saved
+2023-02-27T15:18:31.627+03:00  INFO 43544 --- [http-nio-8082-exec-3] c.f.application.log.SingletonLogger      : Limit with collateral loan is: 0.0
+2023-02-27T15:18:31.627+03:00  INFO 43544 --- [http-nio-8082-exec-3] c.f.application.log.SingletonLogger      : Limit of loan is: 0.0
+2023-02-27T15:18:31.627+03:00  INFO 43544 --- [http-nio-8082-exec-3] c.f.application.log.SingletonLogger      : Checking if credit score177is suitable for calculate
+2023-02-27T15:18:31.627+03:00  INFO 43544 --- [http-nio-8082-exec-3] c.f.application.log.SingletonLogger      : Loan LoanSaveRequestDTO(paybackGuaranteeType=COLLATERAL, amount=0.0, result=REJECTED, baseAdditionalFieldsCreatedDate=null, baseAdditionalFieldsUpdatedDate=null) is rejected with credit score: 177
+2023-02-27T15:18:31.627+03:00  INFO 43544 --- [http-nio-8082-exec-3] c.f.application.log.SingletonLogger      : Loan LoanSaveRequestDTO(paybackGuaranteeType=COLLATERAL, amount=0.0, result=REJECTED, baseAdditionalFieldsCreatedDate=null, baseAdditionalFieldsUpdatedDate=null) is saved
+2023-02-27T15:18:31.629+03:00  INFO 43544 --- [http-nio-8082-exec-3] c.f.application.log.SingletonLogger      : SMS notification is created
+2023-02-27T15:18:31.629+03:00  INFO 43544 --- [http-nio-8082-exec-3] c.f.application.log.SingletonLogger      : SMS notification message: Your loan application has been submit.is sent to person:4407
+2023-02-27T15:18:31.629+03:00  INFO 43544 --- [http-nio-8082-exec-3] c.f.application.log.SingletonLogger      : Loan with id 703 is saved
+2023-02-27T15:18:31.629+03:00  INFO 43544 --- [http-nio-8082-exec-3] c.f.application.log.SingletonLogger      : Loan application has been returned successfully
+2023-02-27T15:18:31.631+03:00  INFO 43544 --- [http-nio-8082-exec-3] c.f.application.log.SingletonLogger      : Customer limit is updated to: 0.0
+2023-02-27T15:18:52.255+03:00  INFO 43544 --- [http-nio-8082-exec-6] c.f.application.log.SingletonLogger      : Loan Validated
+2023-02-27T15:18:52.257+03:00  INFO 43544 --- [http-nio-8082-exec-6] c.f.application.log.SingletonLogger      : Builders invoked
+2023-02-27T15:18:52.273+03:00  WARN 43544 --- [http-nio-8082-exec-6] c.f.application.log.SingletonLogger      : Collateral worth -1.0 is not positive
+2023-02-27T15:20:23.679+03:00  INFO 43544 --- [http-nio-8082-exec-7] c.f.application.log.SingletonLogger      : Loan Validated
+2023-02-27T15:20:23.682+03:00  INFO 43544 --- [http-nio-8082-exec-7] c.f.application.log.SingletonLogger      : Builders invoked
+2023-02-27T15:21:08.764+03:00  INFO 43544 --- [http-nio-8082-exec-8] c.f.application.log.SingletonLogger      : Loan Validated
+2023-02-27T15:21:08.769+03:00  INFO 43544 --- [http-nio-8082-exec-8] c.f.application.log.SingletonLogger      : Builders invoked
+2023-02-27T15:21:08.782+03:00  INFO 43544 --- [http-nio-8082-exec-8] c.f.application.log.SingletonLogger      : Surety is validated
+2023-02-27T15:21:08.785+03:00  INFO 43544 --- [http-nio-8082-exec-8] c.f.application.log.SingletonLogger      : Suretycom.findoutmyloan.application.surety.entity.Surety@5c42fc07saved successfully
+2023-02-27T15:21:08.786+03:00  INFO 43544 --- [http-nio-8082-exec-8] c.f.application.log.SingletonLogger      : Loan Application Surety saved
+2023-02-27T15:21:08.786+03:00  INFO 43544 --- [http-nio-8082-exec-8] c.f.application.log.SingletonLogger      : Limit of loan is: 0.0
+2023-02-27T15:21:08.786+03:00  INFO 43544 --- [http-nio-8082-exec-8] c.f.application.log.SingletonLogger      : Checking if credit score99is suitable for calculate
+2023-02-27T15:21:08.786+03:00  INFO 43544 --- [http-nio-8082-exec-8] c.f.application.log.SingletonLogger      : Loan LoanSaveRequestDTO(paybackGuaranteeType=SURETY, amount=0.0, result=REJECTED, baseAdditionalFieldsCreatedDate=null, baseAdditionalFieldsUpdatedDate=null) is rejected with credit score: 99
+2023-02-27T15:21:08.786+03:00  INFO 43544 --- [http-nio-8082-exec-8] c.f.application.log.SingletonLogger      : Loan LoanSaveRequestDTO(paybackGuaranteeType=SURETY, amount=0.0, result=REJECTED, baseAdditionalFieldsCreatedDate=null, baseAdditionalFieldsUpdatedDate=null) is saved
+2023-02-27T15:21:08.788+03:00  INFO 43544 --- [http-nio-8082-exec-8] c.f.application.log.SingletonLogger      : SMS notification is created
+2023-02-27T15:21:08.788+03:00  INFO 43544 --- [http-nio-8082-exec-8] c.f.application.log.SingletonLogger      : SMS notification message: Your loan application has been submit.is sent to person:4407
+2023-02-27T15:21:08.788+03:00  INFO 43544 --- [http-nio-8082-exec-8] c.f.application.log.SingletonLogger      : Loan with id 704 is saved
+2023-02-27T15:21:08.788+03:00  INFO 43544 --- [http-nio-8082-exec-8] c.f.application.log.SingletonLogger      : Loan application has been returned successfully
+2023-02-27T15:21:08.797+03:00  INFO 43544 --- [http-nio-8082-exec-8] c.f.application.log.SingletonLogger      : Customer limit is updated to: 0.0
+2023-02-27T15:22:16.160+03:00  INFO 43544 --- [http-nio-8082-exec-10] c.f.application.log.SingletonLogger      : Loan Validated
+2023-02-27T15:22:16.165+03:00  INFO 43544 --- [http-nio-8082-exec-10] c.f.application.log.SingletonLogger      : Builders invoked
+2023-02-27T15:22:23.590+03:00  INFO 43544 --- [http-nio-8082-exec-1] c.f.application.log.SingletonLogger      : Loan Validated
+2023-02-27T15:22:23.592+03:00  INFO 43544 --- [http-nio-8082-exec-1] c.f.application.log.SingletonLogger      : Builders invoked
+2023-02-27T15:23:04.064+03:00  INFO 43544 --- [http-nio-8082-exec-2] c.f.application.log.SingletonLogger      : Loan Validated
+2023-02-27T15:23:04.067+03:00  INFO 43544 --- [http-nio-8082-exec-2] c.f.application.log.SingletonLogger      : Builders invoked
+2023-02-27T15:24:13.859+03:00  INFO 43544 --- [http-nio-8082-exec-4] c.f.application.log.SingletonLogger      : Loan Validated
+2023-02-27T15:24:13.861+03:00  INFO 43544 --- [http-nio-8082-exec-4] c.f.application.log.SingletonLogger      : Builders invoked
+2023-02-27T15:24:13.877+03:00  INFO 43544 --- [http-nio-8082-exec-4] c.f.application.log.SingletonLogger      : Surety is validated
+2023-02-27T15:24:13.878+03:00  INFO 43544 --- [http-nio-8082-exec-4] c.f.application.log.SingletonLogger      : Suretycom.findoutmyloan.application.surety.entity.Surety@2fb6053saved successfully
+2023-02-27T15:24:13.878+03:00  INFO 43544 --- [http-nio-8082-exec-4] c.f.application.log.SingletonLogger      : Loan Application Surety saved
+2023-02-27T15:24:13.878+03:00  INFO 43544 --- [http-nio-8082-exec-4] c.f.application.log.SingletonLogger      : Limit of loan is: 0.0
+2023-02-27T15:24:13.878+03:00  INFO 43544 --- [http-nio-8082-exec-4] c.f.application.log.SingletonLogger      : Checking if credit score81is suitable for calculate
+2023-02-27T15:24:13.878+03:00  INFO 43544 --- [http-nio-8082-exec-4] c.f.application.log.SingletonLogger      : Loan LoanSaveRequestDTO(paybackGuaranteeType=SURETY, amount=0.0, result=REJECTED, baseAdditionalFieldsCreatedDate=null, baseAdditionalFieldsUpdatedDate=null) is rejected with credit score: 81
+2023-02-27T15:24:13.878+03:00  INFO 43544 --- [http-nio-8082-exec-4] c.f.application.log.SingletonLogger      : Loan LoanSaveRequestDTO(paybackGuaranteeType=SURETY, amount=0.0, result=REJECTED, baseAdditionalFieldsCreatedDate=null, baseAdditionalFieldsUpdatedDate=null) is saved
+2023-02-27T15:24:13.879+03:00  INFO 43544 --- [http-nio-8082-exec-4] c.f.application.log.SingletonLogger      : SMS notification is created
+2023-02-27T15:24:13.879+03:00  INFO 43544 --- [http-nio-8082-exec-4] c.f.application.log.SingletonLogger      : SMS notification message: Your loan application has been submit.is sent to person:4407
+2023-02-27T15:24:13.879+03:00  INFO 43544 --- [http-nio-8082-exec-4] c.f.application.log.SingletonLogger      : Loan with id 705 is saved
+2023-02-27T15:24:13.879+03:00  INFO 43544 --- [http-nio-8082-exec-4] c.f.application.log.SingletonLogger      : Loan application has been returned successfully
+2023-02-27T15:24:13.884+03:00  INFO 43544 --- [http-nio-8082-exec-4] c.f.application.log.SingletonLogger      : Customer limit is updated to: 0.0
