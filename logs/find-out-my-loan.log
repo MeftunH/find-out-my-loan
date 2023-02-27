@@ -1,0 +1,30 @@
+2023-02-27T14:28:47.963+03:00  INFO 10492 --- [restartedMain] c.f.FindOutMyLoanApplication             : Starting FindOutMyLoanApplication using Java 18.0.1.1 with PID 10492 (D:\java_repos\give-me-some-debt\find-out-my-credit-score\target\classes started by maftu in D:\java_repos\give-me-some-debt\find-out-my-credit-score)
+2023-02-27T14:28:47.965+03:00  INFO 10492 --- [restartedMain] c.f.FindOutMyLoanApplication             : No active profile set, falling back to 1 default profile: "default"
+2023-02-27T14:28:51.656+03:00  INFO 10492 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-02-27T14:28:51.656+03:00  INFO 10492 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.5]
+2023-02-27T14:28:51.748+03:00  INFO 10492 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-02-27T14:28:52.184+03:00  INFO 10492 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2023-02-27T14:28:52.328+03:00  INFO 10492 --- [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@44a28775
+2023-02-27T14:28:52.329+03:00  INFO 10492 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2023-02-27T14:28:52.366+03:00  INFO 10492 --- [restartedMain] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2023-02-27T14:28:54.815+03:00  INFO 10492 --- [restartedMain] c.f.FindOutMyLoanApplication             : Started FindOutMyLoanApplication in 7.222 seconds (process running for 11.248)
+2023-02-27T14:29:19.460+03:00  INFO 10492 --- [http-nio-8082-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-02-27T14:29:19.637+03:00  INFO 10492 --- [http-nio-8082-exec-1] c.f.application.log.SingletonLogger      : Loan Validated
+2023-02-27T14:29:19.643+03:00  INFO 10492 --- [http-nio-8082-exec-1] c.f.application.log.SingletonLogger      : Builders invoked
+2023-02-27T14:29:19.808+03:00  INFO 10492 --- [http-nio-8082-exec-1] c.f.application.log.SingletonLogger      : Surety is validated
+2023-02-27T14:29:19.816+03:00  INFO 10492 --- [http-nio-8082-exec-1] c.f.application.log.SingletonLogger      : Suretycom.findoutmyloan.application.surety.entity.Surety@69740b66saved successfully
+2023-02-27T14:29:19.817+03:00  INFO 10492 --- [http-nio-8082-exec-1] c.f.application.log.SingletonLogger      : Loan Application Surety saved
+2023-02-27T14:29:19.819+03:00  INFO 10492 --- [http-nio-8082-exec-1] c.f.application.log.SingletonLogger      : Collateral com.findoutmyloan.application.collateral.entity.Collateral@2083a669 saved successfully
+2023-02-27T14:29:19.819+03:00  INFO 10492 --- [http-nio-8082-exec-1] c.f.application.log.SingletonLogger      : Loan Application Collateral saved
+2023-02-27T14:29:19.823+03:00  INFO 10492 --- [http-nio-8082-exec-1] c.f.application.log.SingletonLogger      : Limit with collateral loan is: 0.0
+2023-02-27T14:29:19.823+03:00  INFO 10492 --- [http-nio-8082-exec-1] c.f.application.log.SingletonLogger      : Limit of loan is: 0.0
+2023-02-27T14:29:19.824+03:00  INFO 10492 --- [http-nio-8082-exec-1] c.f.application.log.SingletonLogger      : Checking if credit score377is suitable for calculate
+2023-02-27T14:29:19.825+03:00  INFO 10492 --- [http-nio-8082-exec-1] c.f.application.log.SingletonLogger      : Loan LoanSaveRequestDTO(paybackGuaranteeType=ALL_OF_THEM, amount=0.0, result=REJECTED, baseAdditionalFieldsCreatedDate=null, baseAdditionalFieldsUpdatedDate=null) is rejected with credit score: 377
+2023-02-27T14:29:19.825+03:00  INFO 10492 --- [http-nio-8082-exec-1] c.f.application.log.SingletonLogger      : Loan LoanSaveRequestDTO(paybackGuaranteeType=ALL_OF_THEM, amount=0.0, result=REJECTED, baseAdditionalFieldsCreatedDate=null, baseAdditionalFieldsUpdatedDate=null) is saved
+2023-02-27T14:29:19.830+03:00  INFO 10492 --- [http-nio-8082-exec-1] c.f.application.log.SingletonLogger      : SMS notification is created
+2023-02-27T14:29:19.830+03:00  INFO 10492 --- [http-nio-8082-exec-1] c.f.application.log.SingletonLogger      : SMS notification message: Your loan application has been submit.is sent to person:4406
+2023-02-27T14:29:19.830+03:00  INFO 10492 --- [http-nio-8082-exec-1] c.f.application.log.SingletonLogger      : Loan with id 652 is saved
+2023-02-27T14:29:19.831+03:00  INFO 10492 --- [http-nio-8082-exec-1] c.f.application.log.SingletonLogger      : Loan application has been returned successfully
+2023-02-27T14:29:19.848+03:00  INFO 10492 --- [http-nio-8082-exec-1] c.f.application.log.SingletonLogger      : Customer limit is updated to: 0.0
+2023-02-27T14:29:26.114+03:00  INFO 10492 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2023-02-27T14:29:26.116+03:00  INFO 10492 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
