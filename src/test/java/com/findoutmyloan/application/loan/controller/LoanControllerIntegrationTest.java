@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.findoutmyloan.application.BaseIntegrationTest;
 import com.findoutmyloan.application.collateral.enums.CollateralType;
-import com.findoutmyloan.application.customer.repository.CustomerRepository;
 import com.findoutmyloan.application.facade.dto.LoanApplicationRequestDTO;
 import com.findoutmyloan.application.loan.dto.LoanSaveRequestDTO;
 import com.findoutmyloan.application.loan.enums.LoanResult;
@@ -14,17 +13,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @SpringBootTest
-@ActiveProfiles("integration-test")
 class LoanControllerIntegrationTest extends BaseIntegrationTest {
     private static final String BASE_URL="http://localhost:8082/api/v1/loan";
     private MockMvc mockMvc;
@@ -54,7 +51,7 @@ class LoanControllerIntegrationTest extends BaseIntegrationTest {
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
         assertTrue(isRestResponseSuccess(result));
-        deleteDummyUser(token,mockMvc);
+        deleteDummyUser(token, mockMvc);
     }
 
     @Test
@@ -75,6 +72,6 @@ class LoanControllerIntegrationTest extends BaseIntegrationTest {
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
         assertTrue(isRestResponseSuccess(result));
-        deleteDummyUser(token,mockMvc);
+        deleteDummyUser(token, mockMvc);
     }
 }
