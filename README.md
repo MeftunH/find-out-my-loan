@@ -502,30 +502,74 @@ transaction fails, only the nested transaction is rolled back, not the outer tra
   ![image](https://user-images.githubusercontent.com/48466124/221490518-a64542de-90df-4922-a228-ff7e051a6e14.png)
   ![image](https://user-images.githubusercontent.com/48466124/221490603-a739f2de-2101-4611-90c1-148509776991.png)
 
+### OPENAPI 
+![image](https://user-images.githubusercontent.com/48466124/221551571-8be5dc18-63f4-417c-944b-b868d2383b7e.png)
+
+### HATEOAS
+```agsl
+{
+  "data": {
+    "value": {
+      "name": "John",
+      "surname": "Doe",
+      "identityNo": 88198508850,
+      "birthDate": "1998-12-31",
+      "phoneNumber": "5655355556",
+      "personType": "CUSTOMER",
+      "monthlyIncome": 5000,
+      "customerLimit": 0,
+      "baseAdditionalFieldsCreatedDate": "2023-02-27T11:25:10.671+00:00",
+      "baseAdditionalFieldsUpdatedDate": "2023-02-27T11:25:10.671+00:00",
+      "links": [
+        {
+          "rel": "deleteCustomerById",
+          "href": "http://localhost:8082/api/v1/customer"
+        }
+      ]
+    },
+    "serializationView": null,
+    "filters": null
+  },
+  "responseDate": "2023-02-27T11:25:49.837+00:00",
+  "message": null,
+  "success": true
+}
+```
+### LOG AND NOTIFICATION 
+![image](https://user-images.githubusercontent.com/48466124/221553802-077d2b66-5635-49c4-b6e4-2d5aef16e4a8.png)
+![image](https://user-images.githubusercontent.com/48466124/221553868-eff49371-77cd-4352-a664-e072a82c0026.png)
+![image](https://user-images.githubusercontent.com/48466124/221553898-290e7fad-c873-4170-8e05-3d576780c8a2.png)
+
 ## ENDPOINTS, REQUEST AND RESPONSE EXAMPLES
 
 You can reach Insomnia request set
 from [here](https://drive.google.com/file/d/13_eP8g8HN2ws9dfXfINQlTel1YOZ3HPQ/view?usp=sharing)
 
-* CREDIT SCORE 
-```http://localhost:8081/api/v1/credit-score``` GET
- NO REQUEST BODY
+* CREDIT SCORE
+* ```http://localhost:8081/api/v1/credit-score``` 
+* `GET`
+* `NO REQUEST BODY`
+
+`RESPONSE BODY`
 ```agsl
 {
 	"creditScore": 486,
 	"customerIdentityNo": 1
 }
 ```
-* LOGIN:
-  `http://localhost:8082/auth/login` POST
+* SUCCESSFULLY LOGIN:
+* `http://localhost:8082/auth/login` 
+* `POST`
 
+
+`REQUEST BODY`
 ``` 
  {
   "identityNo":88056746318,
   "password": "123MmM"
   }
 ```
-
+`RESPONSE BODY`
 ```agsl
 {
 	"data": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI0NDA2IiwiaWF0IjoxNjc3NDc5NDE3LCJleHAiOjE2Nzc1NjU4MTd9.dW-k40No-ONnu-6i30RNYGBpER0iXrVaJ0tGJgeXGLmoyNLcxF2-2jue5M_02UDWWenttUTUoh8N1jUuU0w8EA",
@@ -535,13 +579,16 @@ from [here](https://drive.google.com/file/d/13_eP8g8HN2ws9dfXfINQlTel1YOZ3HPQ/vi
 }
 ```
 
+* FAILED LOGIN:
+
+`REQUEST BODY`
 ```agsl
 {
 	 "identityNo":88056546318,
 	"password": "123MmM"
 }
 ```
-
+`RESPONSE BODY`
 ```agsl
 {
 	"data": {
@@ -554,10 +601,56 @@ from [here](https://drive.google.com/file/d/13_eP8g8HN2ws9dfXfINQlTel1YOZ3HPQ/vi
 	"success": false
 }
 ```
+* WRONG PASSWORD:
 
+`REQUEST BODY`
+```agsl
+{
+  "identityNo": 88198508850,
+  "password": "113MmM"
+}
+```
+
+`RESPONSE BODY`
+```agsl
+{
+    "data": {
+        "errorDate": "2023-02-27T06:41:06.000+00:00",
+        "message": "Password Invalid!",
+        "detail": "Please check the password."
+    },
+    "responseDate": "2023-02-27T06:41:06.000+00:00",
+    "message": "Password Invalid!",
+    "success": false
+}
+```
+
+* Missing Password:
+
+`REQUEST BODY`
+```agsl
+{
+  "identityNo": 88198508850
+}
+```
+
+`RESPONSE BODY`
+```agsl
+{
+  "type": "about:blank",
+  "title": "Bad Request",
+  "status": 400,
+  "detail": "Failed to read request",
+  "instance": "/auth/login"
+}
+```
 * REGISTER:
-  `http://localhost:8082/auth/register` POST
 
+`http://localhost:8082/auth/register` 
+
+`POST`
+
+`REQUEST BODY`
 ```agsl
 {
 "name": "John",
@@ -570,6 +663,7 @@ from [here](https://drive.google.com/file/d/13_eP8g8HN2ws9dfXfINQlTel1YOZ3HPQ/vi
   "password": "123MmM"
 }
 ```
+`RESPONSE BODY`
 ```agsl
 {
 	"data": {
@@ -589,7 +683,7 @@ from [here](https://drive.google.com/file/d/13_eP8g8HN2ws9dfXfINQlTel1YOZ3HPQ/vi
 	"success": true
 }
 ```
-
+* FAILED REGISTER: IDENTİTY NO NOT UNIQUE
 ```agsl
 {
 	"data": {
@@ -602,6 +696,7 @@ from [here](https://drive.google.com/file/d/13_eP8g8HN2ws9dfXfINQlTel1YOZ3HPQ/vi
 	"success": false
 }
 ```
+* FAILED REGISTER: IDENTİTY NO NOT NOT VALID
 ```agsl
 {
 	"data": {
@@ -614,6 +709,7 @@ from [here](https://drive.google.com/file/d/13_eP8g8HN2ws9dfXfINQlTel1YOZ3HPQ/vi
 	"success": false
 }
 ```
+* FAILED REGISTER: PHONE NUMBER NOT UNIQUE
 ```agsl
 {
 	"data": {
@@ -625,9 +721,51 @@ from [here](https://drive.google.com/file/d/13_eP8g8HN2ws9dfXfINQlTel1YOZ3HPQ/vi
 	"message": "Customer Phone Number Must Be Unique!",
 	"success": false
 }
+* FAILED REGISTER: PHONE NUMBER NOT VALID
+```agsl
+{
+    "data": {
+        "errorDate": "2023-02-27T06:44:37.000+00:00",
+        "message": "Customer Phone Number Invalid!",
+        "detail": "Please check the phone number."
+    },
+    "responseDate": "2023-02-27T06:44:37.000+00:00",
+    "message": "Customer Phone Number Invalid!",
+    "success": false
+}
 ```
-* UPDATE CUSTOMER
-  ```http://localhost:8082/api/v1/customer``` PUT
+* FAILED REGISTER: CUSTOMER NAME FIELD IS NULL
+```agsl
+{
+  "data": {
+    "errorDate": "2023-02-27T11:53:05.635+00:00",
+    "message": "Customer Fields Cannot Be Null!",
+    "detail": "Please be sure that all fields are entered."
+  },
+  "responseDate": "2023-02-27T11:53:05.635+00:00",
+  "message": "Customer Fields Cannot Be Null!",
+  "success": false
+}
+```
+* FAILED REGISTER: MONTHLY INCOME IS NEGATIVE
+```agsl
+{
+  "data": {
+    "errorDate": "2023-02-27T11:53:54.605+00:00",
+    "message": "Monthly Income Cannot Be Negative!",
+    "detail": "Please check the monthly income."
+  },
+  "responseDate": "2023-02-27T11:53:54.605+00:00",
+  "message": "Monthly Income Cannot Be Negative!",
+  "success": false
+}
+```
+* UPDATE CUSTOMER SUCCESSFULLY REQUEST
+```http://localhost:8082/api/v1/customer``` 
+
+`PUT`
+
+`REQUEST BODY`
 ```agsl
 {
 	"name": "Updated John 65",
@@ -639,7 +777,27 @@ from [here](https://drive.google.com/file/d/13_eP8g8HN2ws9dfXfINQlTel1YOZ3HPQ/vi
   "monthlyIncome": 5000.0
 }
 ```
-
+`RESPONSE BODY`
+```agsl
+{
+  "data": {
+    "name": "Updated John 65",
+    "surname": "Doe",
+    "identityNo": 74701447228,
+    "birthDate": "1999-01-01",
+    "phoneNumber": "2555555555",
+    "personType": "CUSTOMER",
+    "monthlyIncome": 4000,
+    "customerLimit": 0,
+    "baseAdditionalFieldsCreatedDate": "2023-02-27T12:02:57.468+00:00",
+    "baseAdditionalFieldsUpdatedDate": "2023-02-27T12:03:06.484+00:00"
+  },
+  "responseDate": "2023-02-27T12:03:06.491+00:00",
+  "message": null,
+  "success": true
+}
+```
+* WHEN CUSTOMER ID NOT FOUND
 ```
 {
 	"data": {
@@ -652,9 +810,37 @@ from [here](https://drive.google.com/file/d/13_eP8g8HN2ws9dfXfINQlTel1YOZ3HPQ/vi
 	"success": false
 }
 ```
+* WHEN IDENTITY NOT VALID
+```agsl
+{
+  "data": {
+    "errorDate": "2023-02-27T12:03:48.634+00:00",
+    "message": "Customer Not Found!",
+    "detail": "Please check the id of the customer."
+  },
+  "responseDate": "2023-02-27T12:03:48.634+00:00",
+  "message": "Customer Not Found!",
+  "success": false
+}
+* WHEN MONTHLY INCOME NOT VALID
+
+```agsl
+{
+  "data": {
+    "errorDate": "2023-02-27T12:04:40.732+00:00",
+    "message": "Monthly Income Cannot Be Negative!",
+    "detail": "Please check the monthly income."
+  },
+  "responseDate": "2023-02-27T12:04:40.732+00:00",
+  "message": "Monthly Income Cannot Be Negative!",
+  "success": false
+}
+```
 * DELETE CUSTOMER 
+
 ```http://localhost:8082/api/v1/customer```
-NO REQUEST BODY
+
+`NO REQUEST BODY`
 ```agsl
 {
 	"data": null,
@@ -666,8 +852,13 @@ NO REQUEST BODY
 
 ```
 * GET CUSTOMER
-```http://localhost:8082/api/v1/customer``` GET
- NO REQUEST BODY
+```http://localhost:8082/api/v1/customer``` 
+
+`GET`
+
+`NO REQUEST BODY`
+
+`RESPONSE BODY`
 ```agsl
 {
   "data": {
@@ -697,24 +888,87 @@ NO REQUEST BODY
   "success": true
 }
 ```
-* FIND LOAN
-```http://localhost:8082/api/v1/customer/{identityNo}/{birthday}/find-loans``` GET
-NO REQUEST BODY
+* FIND LOAN SUCCESSFUL REQUEST
+```http://localhost:8082/api/v1/customer/{identityNo}/{birthday}/find-loans```
+
+`GET`
+
+`NO REQUEST BODY`
+```agsl
+{
+  "data": [
+    {
+      "paybackGuaranteeType": "COLLATERAL",
+      "amount": 0,
+      "result": "REJECTED",
+      "baseAdditionalFieldsCreatedDate": "2023-02-27T06:13:28.424+00:00",
+      "baseAdditionalFieldsUpdatedDate": "2023-02-27T06:13:28.424+00:00"
+    },
+    {
+      "paybackGuaranteeType": "COLLATERAL",
+      "amount": 20400,
+      "result": "APPROVED",
+      "baseAdditionalFieldsCreatedDate": "2023-02-27T06:13:31.757+00:00",
+      "baseAdditionalFieldsUpdatedDate": "2023-02-27T06:13:31.757+00:00"
+    },
+    {
+      "paybackGuaranteeType": "ALL_OF_THEM",
+      "amount": 0,
+      "result": "REJECTED",
+      "baseAdditionalFieldsCreatedDate": "2023-02-27T11:29:19.826+00:00",
+      "baseAdditionalFieldsUpdatedDate": "2023-02-27T11:29:19.826+00:00"
+    },
+    {
+      "paybackGuaranteeType": "COLLATERAL",
+      "amount": 10192.8,
+      "result": "APPROVED",
+      "baseAdditionalFieldsCreatedDate": "2023-02-27T11:34:50.956+00:00",
+      "baseAdditionalFieldsUpdatedDate": "2023-02-27T11:34:50.956+00:00"
+    },
+    {
+      "paybackGuaranteeType": "SURETY",
+      "amount": 0,
+      "result": "REJECTED",
+      "baseAdditionalFieldsCreatedDate": "2023-02-24T09:57:15.330+00:00",
+      "baseAdditionalFieldsUpdatedDate": "2023-02-24T09:57:15.330+00:00"
+    }
+  ],
+  "responseDate": "2023-02-27T12:10:36.815+00:00",
+  "message": null,
+  "success": true
+}
+```
+* INFORMATION MISMATCH CASE
 ```agsl
 {
   "data": {
-    "errorDate": "2023-02-27T06:50:22.307+00:00",
+    "errorDate": "2023-02-27T12:11:33.273+00:00",
     "message": "Customer Information Mismatch!",
     "detail": "Please make sure you have entered your information correctly."
   },
-  "responseDate": "2023-02-27T06:50:22.307+00:00",
+  "responseDate": "2023-02-27T12:11:33.273+00:00",
   "message": "Customer Information Mismatch!",
   "success": false
 }
 ```
+* NULL CASE
+```agsl
+{
+  "data": [],
+  "responseDate": "2023-02-27T12:08:59.055+00:00",
+  "message": null,
+  "success": true
+}
+```
+
 * APPLY LOAN
-  ```http://localhost:8082/api/v1/loan/apply``` POST
- PAYBACK GUARANTEE TYPE: COLLATERAL
+  ```http://localhost:8082/api/v1/loan/apply``` 
+
+`POST`
+
+- PAYBACK GUARANTEE TYPE: COLLATERAL SUCCESSFUL CASE
+
+`REQUEST BODY`
 ```agsl
 {
   "paybackGuaranteeType": "COLLATERAL",
@@ -722,6 +976,7 @@ NO REQUEST BODY
 	"collateralWorth": 1928.0
 }
 ```
+`RESPONSE BODY`
 ```agsl
 {
 	"data": {
@@ -736,8 +991,52 @@ NO REQUEST BODY
 	"message": null,
 	"success": true
 }
+- PAYBACK GUARANTEE TYPE: COLLATERAL WORTH MINUS VALUE CASE
+
+`REQUEST BODY`
+```agsl
+{
+  "paybackGuaranteeType": "COLLATERAL",
+    "collateralType": "MONEY",
+    "collateralWorth": -1
+}
 ```
-PAYBACK GUARANTEE TYPE SURETY
+`RESPONSE BODY`
+```agsl
+{
+  "data": {
+    "errorDate": "2023-02-27T12:18:52.274+00:00",
+    "message": "Worth must be positive",
+    "detail": "Please enter a positive value for worth"
+  },
+  "responseDate": "2023-02-27T12:18:52.274+00:00",
+  "message": "Worth must be positive",
+  "success": false
+}
+```
+
+```agsl
+{
+  "paybackGuaranteeType": "COLLATERAL",
+	"collateralType": "MONEY",
+	"collateralWorth": -1
+}
+```
+- PAYBACK GUARANTEE TYPE SURETY SUCCESSFUL CASE
+```
+`REQUEST BODY`
+```agsl
+{
+  "paybackGuaranteeType": "SURETY",
+    "suretyName": "Surety Jane",
+    "suretySurname": "Doe",
+    "suretyType": "JOINT",
+    "suretyIdentityNo": 47701739716,
+    "suretyBirthDate": "1980-01-01",
+    "suretyPhoneNumber": "55125559",
+    "suretyPersonType": "SURETY"
+}
+```
 ```agsl
 {
   "suretyName": "Surety Jane",
@@ -750,6 +1049,23 @@ PAYBACK GUARANTEE TYPE SURETY
   "paybackGuaranteeType": "SURETY"
 }
 ```
+`RESPONSE BODY`
+```agsl
+{
+  "data": {
+    "paybackGuaranteeType": "SURETY",
+    "amount": 0,
+    "result": "REJECTED",
+    "customerLimit": 0,
+    "baseAdditionalFieldsCreatedDate": "2023-02-27T12:21:08.787+00:00",
+    "baseAdditionalFieldsUpdatedDate": "2023-02-27T12:21:08.787+00:00"
+  },
+  "responseDate": "2023-02-27T12:21:08.799+00:00",
+  "message": null,
+  "success": true
+}
+```
+- PAYBACK GUARANTEE TYPE SURETY PHONE NUMBER IS NOT UNIQUE CASE
 ```agsl
 {
 	"data": {
@@ -762,7 +1078,35 @@ PAYBACK GUARANTEE TYPE SURETY
 	"success": false
 }
 ```
+- PAYBACK GUARANTEE TYPE SURETY IDENTITY NUMBER IS NOT UNIQUE CASE
+```agsl
+{
+  "data": {
+    "errorDate": "2023-02-27T12:22:23.604+00:00",
+    "message": "Surety Identity No Must Be Unique!",
+    "detail": "Please check the identity no of the surety."
+  },
+  "responseDate": "2023-02-27T12:22:23.604+00:00",
+  "message": "Surety Identity No Must Be Unique!",
+  "success": false
+}
+```
+- PAYBACK GUARANTEE TYPE SURETY IDENTITY NUMBER IS NOT VALID CASE
+```agsl
+{
+  "data": {
+    "errorDate": "2023-02-27T12:23:04.088+00:00",
+    "message": "Surety Identity No Invalid!",
+    "detail": "Please check the identity no."
+  },
+  "responseDate": "2023-02-27T12:23:04.088+00:00",
+  "message": "Surety Identity No Invalid!",
+  "success": false
+}
+```
 PAYBACK GUARANTEE TYPE BOTH OF THEM
+
+`REQUEST BODY`
 ```agsl
 {
   "suretyName": "Jane",
@@ -777,6 +1121,7 @@ PAYBACK GUARANTEE TYPE BOTH OF THEM
 	"collateralWorth": 2000.0
 }
 ```
+`RESPONSE BODY`
 ```agsl
 {
 	"data": {
