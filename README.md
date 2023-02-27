@@ -67,9 +67,13 @@ customized loan solutions to customers based on their individual financial situa
 ## Find Out My Loan Frontend
 
 * Login Page
+
   ![image](https://user-images.githubusercontent.com/48466124/221462486-68dc0b1f-e9a5-49cc-9448-743ba49ce4cb.png)
+  
 * Register Page
+
   ![image](https://user-images.githubusercontent.com/48466124/221462778-bd34be56-3ff9-4da3-9ee8-c7277490c158.png)
+  
 * Loan Apply Page
   ![image](https://user-images.githubusercontent.com/48466124/221463396-64d6accd-6339-40f6-ad06-a716f39f9cd8.png)
   ![image](https://user-images.githubusercontent.com/48466124/221463416-e50bdfaa-8a2f-4d89-96e0-c90b11d67c36.png)
