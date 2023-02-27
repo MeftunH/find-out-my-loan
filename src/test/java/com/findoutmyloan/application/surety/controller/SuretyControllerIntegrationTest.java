@@ -28,7 +28,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-@ActiveProfiles("integration-test")
 class SuretyControllerIntegrationTest extends BaseIntegrationTest {
     private static final String BASE_URL="http://localhost:8082/api/v1/surety";
     private MockMvc mockMvc;
