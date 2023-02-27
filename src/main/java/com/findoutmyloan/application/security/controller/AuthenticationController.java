@@ -73,7 +73,6 @@ public class AuthenticationController {
                                                             "  \"phoneNumber\": \"5655555556\",\n"+
                                                             "  \"personType\": \"CUSTOMER\",\n"+
                                                             "  \"monthlyIncome\": 5000.0,\n"+
-                                                            "  \"paybackGuaranteeType\": \"COLLATERAL\",\n"+
                                                             "\t\"password\": \"123MmM\"\n"+
                                                             "}"
                                             )
