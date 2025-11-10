@@ -1151,7 +1151,7 @@ PAYBACK GUARANTEE TYPE BOTH OF THEM
 [![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
 [![AGPL License](https://img.shields.io/badge/license-AGPL-blue.svg)](http://www.gnu.org/licenses/agpl-3.0)
 
-## Feedback
+## Feedback 
 
 If you have any feedback, please reach out to us at ```maftunhashimli@gmail.com```
 
